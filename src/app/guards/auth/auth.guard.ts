@@ -16,14 +16,14 @@ export class AuthGuard {
     private jwtHelper: JwtHelperService
   ) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     const decodedToken = this.authService.decodeToken();
 
-    /*if (decodedToken || this.jwtHelper.isTokenExpired(this.authService.getToken())) {
+    if (!decodedToken || this.jwtHelper.isTokenExpired(this.authService.getToken())) {
       this.authService.logout();
-      this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-    }*/
+      this.router.navigate(['/login']);
+    }
 
     return true;
   }

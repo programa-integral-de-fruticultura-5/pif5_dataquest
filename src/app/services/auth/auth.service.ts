@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs';
+import { ApiService } from '../api/api.service';
 
 const TOKEN_KEY = "TOKEN_KEY";
+const ENDPOINT = "login"
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,8 @@ const TOKEN_KEY = "TOKEN_KEY";
 export class AuthService {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private api: ApiService
   ) { }
 
   public saveToken(token: string): void {
@@ -29,6 +32,10 @@ export class AuthService {
       return jwt_decode(token as string);
     }
     return null;
+  }
+
+  public login(credentials: { email: string, password: string }): Observable<any> {
+    return this.api.post(ENDPOINT, credentials)
   }
 
   public logout(): void {

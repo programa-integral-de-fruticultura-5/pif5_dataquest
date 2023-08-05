@@ -1,0 +1,40 @@
+.container {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  background-color: #999999;
+}
+
+.login-button {
+  margin-top: 2%;
+  width: 100%;
+}
+
+.bottom-info {
+  margin-top: 10%;
+  font-size: 11px;
+  color: #999999;
+}
+
+.center {
+  text-align: center;
+}
+
+.login-input {
+  border-radius: 4%;
+}
+
+ion-card {
+  min-width: 200px;
+  max-width: 500px;
+  background-color: white;
+}
+
+ion-item {
+  --background: white;
+}
+
+ion-input {
+  --color: #999999;
+}
+
