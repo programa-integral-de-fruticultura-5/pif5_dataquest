@@ -29,7 +29,7 @@ export class AuthService {
   public decodeToken(): string | null {
     const token = this.getToken();
     if (token) {
-      return jwt_decode(token as string);
+      return jwt_decode(token);
     }
     return null;
   }
