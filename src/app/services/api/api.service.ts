@@ -19,7 +19,7 @@ export class ApiService {
     return this.httpClient.get<T>(`/api/${endpoint}/${id}`);
   }
 
-  public post (endpoint: string, resource: { email: string; password: string; }): Observable<any> {
+  public post (endpoint: string, resource?: { email: string; password: string; }): Observable<any> {
     return this.httpClient.post(`/api/${endpoint}/`, resource);
   }
 }
