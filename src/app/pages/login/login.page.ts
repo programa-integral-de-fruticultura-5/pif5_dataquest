@@ -6,8 +6,6 @@ import { IonicModule } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 
-console.log("login");
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -49,7 +47,7 @@ export class LoginPage implements OnInit {
         next: async (data) => {
           await this.loadingController.dismiss();
           console.log(data);
-          this.auth.saveToken(data.access_token);
+          this.auth.saveToken(data.token);
           this.router.navigate(['/tabs']);
           console.log(this.auth.getToken());
         },
