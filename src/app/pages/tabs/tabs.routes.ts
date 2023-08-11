@@ -7,9 +7,9 @@ export const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
+        path: 'forms',
         loadComponent: () =>
-          import('../tab1/tab1.page').then((m) => m.Tab1Page),
+          import('../forms/forms.page').then((m) => m.FormsPage),
       },
       {
         path: 'tab2',
@@ -20,6 +20,13 @@ export const routes: Routes = [
         path: 'tab3',
         loadComponent: () =>
           import('../tab3/tab3.page').then((m) => m.Tab3Page),
+      },
+      {
+        path: 'details',
+        loadComponent: () =>
+          import('../../components/detailed-form/detailed-form.component').then(
+            (c) => c.DetailedFormComponent
+          ),
       }
     ]
   }

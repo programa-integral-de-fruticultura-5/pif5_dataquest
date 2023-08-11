@@ -1,12 +1,17 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'pif5_dataquest',
+  appId: 'com.example.app',
+  appName: 'Dataquest',
   webDir: 'www',
   server: {
     androidScheme: 'https'
-  }
+  },
+  plugins: {
+    CapacitorHttp: {
+      enabled: true,
+    },
+  },
 };
 
 export default config;

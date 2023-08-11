@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { ApiService } from '../api/api.service';
+import { HttpResponse } from '@capacitor/core';
 
 const TOKEN_KEY = "TOKEN_KEY";
 const ENDPOINT = "login"
@@ -34,7 +35,7 @@ export class AuthService {
     return null;
   }
 
-  public login(credentials: { email: string, password: string }): Observable<any> {
+  public login(credentials: { email: string, password: string }): Promise<HttpResponse> {
     return this.api.post(ENDPOINT, credentials)
   }
 

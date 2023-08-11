@@ -43,28 +43,24 @@ export class LoginPage implements OnInit {
 		await loading.present();
 
     if (this.form.valid) {
-      this.auth.login(this.form.value).subscribe({
-        next: async (data) => {
-          await this.loadingController.dismiss();
-          console.log(data);
-          this.auth.saveToken(data.token);
-          this.router.navigate(['/tabs']);
-          console.log(this.auth.getToken());
-        },
-        error: async (err) => {
-          await loading.dismiss();
-          const alert = await this.alertController.create({
-            header: 'Algo salió mal :/',
-            message: 'Contacta con el administrador',
-            buttons: ['OK']
-          });
-
-				  await alert.present();
-
-          console.log(err);
+      this.auth.login(this.form.value).then(
+        async (res) => {
+          if (res.status === 200) {
+            await this.loadingController.dismiss();
+            console.log(res);
+            this.auth.saveToken(res.data.token);
+            this.router.navigate(['/tabs']);
+          } else {
+            await this.loadingController.dismiss();
+            const alert = await this.alertController.create({
+              header: 'Error',
+              message: res.data.error,
+              buttons: ['OK'],
+            });
+            await alert.present();
+          }
         }
-      });
+      )
     }
   }
-
 }
