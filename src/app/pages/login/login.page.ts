@@ -59,8 +59,17 @@ export class LoginPage implements OnInit {
             });
             await alert.present();
           }
+        }).catch(
+        async (err) => {
+          await this.loadingController.dismiss();
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: err.message,
+            buttons: ['OK'],
+          });
+          await alert.present();
         }
-      )
+      );
     }
   }
 }

@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { AlertController, IonicModule, Platform } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Form } from 'src/app/models/form';
 import { FormService } from 'src/app/services/form/form.service';
@@ -14,55 +14,40 @@ import { Router } from '@angular/router';
 })
 export class FormsPage {
 
-  private forms: Form[] = [];
-
-  constructor(private formsService: FormService, private router: Router) {}
+  constructor(
+    private formsService: FormService,
+    private router: Router,
+    private platform: Platform,
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {
-    this.callOneForm();
+    this.formsService.sendRequest();
   }
 
-  getForms() {
-    return this.forms;
+  getForms(): Form[] {
+    return this.formsService.getForms();
   }
 
-  navigate(form: Form) {
-    this.formsService.setForm(form);
-    this.router.navigate(['tabs/details']);
-
-  }
-
-  openModal() {
-    console.log('openModal()');
+  async navigate(form: Form) {
+    if(this.platform.is('mobile')) {
+      this.router.navigate(['details/' + form.id]);
+    }else {
+      window.alert('Esta funcionalidad solo está disponible en dispositivos móviles');
+      const alert = await this.alertController.create({
+        header: 'Dispositivo no compatible',
+        message: 'Esta funcionalidad solo está disponible en dispositivos móviles',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    }
   }
 
   handleRefresh(event: any) {
     setTimeout(() => {
-      this.callForms()
+      this.formsService.sendRequest();
       event.target.complete();
     }, 2000);
-  }
-
-  callOneForm (): void {
-    this.formsService.getForms().then(
-      (forms) => {
-        this.forms.push(forms.data[0]);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-
-  callForms (): void {
-    this.formsService.getForms().then(
-      (forms) => {
-        this.forms = forms.data;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
   }
 }
 
