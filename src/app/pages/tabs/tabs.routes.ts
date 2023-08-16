@@ -20,13 +20,6 @@ export const routes: Routes = [
         path: 'tab3',
         loadComponent: () =>
           import('../tab3/tab3.page').then((m) => m.Tab3Page),
-      },
-      {
-        path: 'details',
-        loadComponent: () =>
-          import('../../components/detailed-form/detailed-form.component').then(
-            (c) => c.DetailedFormComponent
-          ),
       }
     ]
   }
