@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Form } from 'src/app/models/form';
 import { FormService } from 'src/app/services/form/form.service';
 import { Router } from '@angular/router';
+import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
 
 @Component({
   selector: 'app-forms',
@@ -16,6 +17,7 @@ export class FormsPage {
 
   constructor(
     private formsService: FormService,
+    private detailedFormService: DetailedFormService,
     private router: Router,
     private platform: Platform,
     private alertController: AlertController
@@ -31,12 +33,12 @@ export class FormsPage {
 
   async navigate(form: Form) {
     if(this.platform.is('mobile')) {
-      this.router.navigate(['details/' + form.id]);
+      this.detailedFormService.setForm(form);
+      this.router.navigate(['details']);
     }else {
-      window.alert('Esta funcionalidad solo está disponible en dispositivos móviles');
       const alert = await this.alertController.create({
         header: 'Dispositivo no compatible',
-        message: 'Esta funcionalidad solo está disponible en dispositivos móviles',
+        message: 'Para acceder al formulario, ingresa desde un dispositivo móvil',
         buttons: ['OK'],
       });
       await alert.present();

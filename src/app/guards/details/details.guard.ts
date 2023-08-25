@@ -8,14 +8,6 @@ export const DetailsGuard = () => {
   const router = inject(Router);
 
   if (!detailedFormService.getForm()) {
-    router.navigate(['/tabs/forms']);
-  }
-
-  try {
-    detailedFormService.getLocation()
-    return true;
-  } catch (error) {
-    alert('Por favor, activa la localización en tu dispositivo')
-    return false;
+    router.navigate(['/home/forms']);
   }
 }

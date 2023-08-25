@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Form } from 'src/app/models/form';
 import { FormService } from '../form/form.service';
 import { Geolocation, Position } from '@capacitor/geolocation';
+import { QuestionService } from './question/question.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,11 @@ import { Geolocation, Position } from '@capacitor/geolocation';
 export class DetailedFormService {
 
   private selectedForm!: Form;
-  private permissions!: string;
 
-  constructor(private formService: FormService) { }
+  constructor(
+    private formService: FormService,
+    private questionService: QuestionService
+  ) { }
 
   public getForm(): Form {
     return this.selectedForm;
@@ -19,41 +22,24 @@ export class DetailedFormService {
 
   public setForm(form: Form): void {
     this.selectedForm = form;
+    this.setQuestions();
+  }
+
+  public setQuestions(): void {
+    this.questionService.setQuestions(this.selectedForm.questions);
   }
 
   public getLocation(): void {
-    this.permissions = this.checkPermissions();
-    if (this.permissions === 'denied' || this.permissions === 'prompt') {
-      this.requestPermissions();
-    } else if (this.permissions === 'granted') {
-      this.getCurrentPosition();
-    }
-  }
-
-  private getCurrentPosition(): void {
-    Geolocation.getCurrentPosition().then((result) => {
-      const latitude = result.coords.latitude;
-      const longitude = result.coords.longitude;
-
-      this.selectedForm.position = "Latitud: " + latitude + ', Logitud: ' + longitude;
+    Geolocation.getCurrentPosition().then((position) => {
+      this.selectedForm.position = position.coords.latitude + ',' + position.coords.longitude;
+    }).catch((err) => {
+      throw err;
     })
   }
 
-  private checkPermissions(): string {
-    let permissions: string = 'denied';
-    Geolocation.checkPermissions().then((result) => {
-      permissions = result.location;
-    })
-    return permissions;
+  public getTotalQuestions(): number {
+    return this.selectedForm.questions.length;
   }
 
-  private requestPermissions(): void {
-    Geolocation.requestPermissions().then((result) => {
-      if (result.location === 'denied' || result.location === 'prompt') {
-        this.requestPermissions();
-      } else if (result.location === 'granted') {
-        this.getCurrentPosition();
-      }
-    })
-  }
+
 }

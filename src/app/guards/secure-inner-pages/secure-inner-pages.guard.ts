@@ -19,7 +19,7 @@ export class SecureInnerPagesGuard {
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
 
     if (this.authService.getToken() && !this.jwtHelper.isTokenExpired(this.authService.getToken())) {
-      this.router.navigate(['/tabs']);  //TODO review route when routes are finished
+      this.router.navigate(['/home']);  //TODO review route when routes are finished
     }
 
     return true

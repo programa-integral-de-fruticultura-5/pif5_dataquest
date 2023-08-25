@@ -30,7 +30,7 @@ export class ApiService {
   public post (endpoint: string, resource?: { email: string; password: string; }): Promise<HttpResponse> {
     const token = window.sessionStorage.getItem('TOKEN_KEY');
     const options = {
-      url: `${this.url}/api/${endpoint}/`,
+      url: `${this.url}/api/${endpoint}`,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`

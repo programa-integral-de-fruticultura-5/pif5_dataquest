@@ -4,8 +4,11 @@ ion-img {
 
 ion-toolbar {
   padding: 10px 10px 0px 10px;
+  --background: url('../../../assets/imgs/header-inner-2.jpg');
+  --background-size: cover;
 }
 
 .cloud-icon {
   font-size: 25px;
 }
+

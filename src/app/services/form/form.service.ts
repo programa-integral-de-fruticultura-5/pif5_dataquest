@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
-import { Observable } from 'rxjs';
 import { Form } from 'src/app/models/form';
 import { HttpResponse } from '@capacitor/core';
 
@@ -11,21 +10,29 @@ const ENDPOINT = 'form-detail';
 })
 export class FormService {
 
-  private form!: Form;
+  private forms: Form[];
 
   constructor(
     private apiService: ApiService
-  ) { }
-
-  public getForms(): Promise<HttpResponse> {
-    return this.apiService.post(ENDPOINT);
+  ) {
+    this.forms = [];
   }
 
-  public setForm(newForm: Form): void {
-    this.form = newForm;
+  public sendRequest(): void {
+    var response: Promise<HttpResponse> = this.apiService.post(ENDPOINT);
+
+    response.then(
+      (forms) => {
+        this.forms = JSON.parse(forms.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
-  public getForm(): Form | undefined {
-    return this.form;
+  public getForms(): Form[] {
+    return this.forms.filter((form) => !form.draft)
   }
+
 }

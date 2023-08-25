@@ -49,7 +49,7 @@ export class LoginPage implements OnInit {
             await this.loadingController.dismiss();
             console.log(res);
             this.auth.saveToken(res.data.token);
-            this.router.navigate(['/tabs']);
+            this.router.navigate(['/home']);
           } else {
             await this.loadingController.dismiss();
             const alert = await this.alertController.create({

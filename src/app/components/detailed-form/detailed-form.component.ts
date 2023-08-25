@@ -1,29 +1,83 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { FormService } from 'src/app/services/form/form.service';
 import { Geolocation, Position } from '@capacitor/geolocation';
 import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
+import { Form } from 'src/app/models/form';
+import { QuestionComponent } from '../question/question.component';
 
 @Component({
   selector: 'app-detailed-form',
   templateUrl: './detailed-form.component.html',
   styleUrls: ['./detailed-form.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule ],
+  imports: [CommonModule, IonicModule, QuestionComponent ],
 })
 export class DetailedFormComponent {
 
-  // form = this.formService.getForm();
+  value: boolean = false;
 
   constructor(
-    private detailedFormService: DetailedFormService
+    private detailedFormService: DetailedFormService,
+    private alertController: AlertController
   ) { }
 
-  ngOnInit() {
-
+  getForm(): Form {
+    return this.detailedFormService.getForm();
   }
 
-  // TODO: check permissions, if equal to 'denied' or 'prompt' then ask for permissions; if equal to 'granted' then proceed to get location; if error then ask to enable location in an window alert
+  // TODO move location logic to service
 
+/*   async checkPermissions(): Promise<void> {
+    const locationAlert = await this.alertController.create({
+      header: 'Problema con la ubicación',
+      message: 'No se pudo obtener la ubicación del dispositivo. Por favor, habilita la ubicación en los ajustes del dispositivo y vuelve a intentarlo.',
+      buttons: ['OK'],
+    });
+
+    Geolocation.checkPermissions().then((result) => {
+      if(result.location !== 'granted') {
+        this.requestPermissions(locationAlert)
+      }
+      this.getLocation();
+    }).catch((err) => {
+      locationAlert.present();
+    })
+  }
+
+  private async requestPermissions(locationAlert: HTMLIonAlertElement): Promise<void> {
+    const permissionAlert = await this.alertController.create({
+      header: 'Problema con los permisos',
+      message: 'No se pudo obtener los permisos de ubicación del dispositivo. Por favor, habilita los permisos de ubicación en los ajustes del dispositivo y vuelve a intentarlo.',
+      buttons: ['OK'],
+    });
+
+    Geolocation.requestPermissions().then(async (result) => {
+      if(result.location !== 'granted') {
+        permissionAlert.present();
+      }
+      this.getLocation();
+    },
+    async (err) => {
+      permissionAlert.present();
+    }
+    ).catch((err) => {
+
+    })
+  } */
+
+ /*  getLocation(): void {
+    Geolocation.getCurrentPosition().then((position) => {
+      this.form.position = position.coords.latitude + ',' + position.coords.longitude;
+    })
+  } */
+
+  getTotalQuestions(): number {
+    return this.detailedFormService.getTotalQuestions();
+  }
+
+  startForm(): boolean {
+    return !this.value;
+  }
 }

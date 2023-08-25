@@ -1,4 +1,5 @@
 import { Answer } from "./answer";
+import { QuestionCategory } from "./question-category";
 
 export class Question {
   constructor(
@@ -12,10 +13,12 @@ export class Question {
     public isExtendable: boolean,
     public questionParentId: number,
     public answers: Array<Answer>,
+    public question_category: QuestionCategory,
     public answerRelation: Array<{ type: string, questionId: number, anserId: number }>,
     public questionChildren: Array<Question>,
     public value: string,
     public values: Array<string>,
+    public user_type_restriction: string,
     public min?: number,
     public max?: number
   ) {}

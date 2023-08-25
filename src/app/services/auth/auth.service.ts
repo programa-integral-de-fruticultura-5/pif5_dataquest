@@ -6,7 +6,7 @@ import { ApiService } from '../api/api.service';
 import { HttpResponse } from '@capacitor/core';
 
 const TOKEN_KEY = "TOKEN_KEY";
-const ENDPOINT = "login"
+const ENDPOINT = "auth/login"
 
 @Injectable({
   providedIn: 'root'
