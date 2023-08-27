@@ -4,12 +4,26 @@ import { QuestionService } from 'src/app/services/detailed-form/question/questio
 import { OpenTypeComponent } from './open-type/open-type.component';
 import { Question } from 'src/app/models/question';
 import { DataquestHeaderComponent } from '../header/dataquest-header/dataquest-header.component';
+import { CommonModule } from '@angular/common';
+import { AutocompleteTypeComponent } from './autocomplete-type/autocomplete-type.component';
+import { MultiTypeComponent } from './multi-type/multi-type.component';
+import { TableTypeComponent } from './table-type/table-type.component';
+import { UniqueTypeComponent } from './unique-type/unique-type.component';
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss'],
-  imports: [IonicModule, OpenTypeComponent, DataquestHeaderComponent ],
+  imports: [
+    CommonModule,
+    IonicModule,
+    OpenTypeComponent,
+    DataquestHeaderComponent,
+    AutocompleteTypeComponent,
+    MultiTypeComponent,
+    TableTypeComponent,
+    UniqueTypeComponent
+  ],
   standalone: true,
 })
 export class QuestionComponent {
@@ -36,5 +50,10 @@ export class QuestionComponent {
 
   getProgress(): number {
     return this.questionService.getCurrentIndex(this.currentQuestion) / this.questionService.getLength();
+  }
+
+  getType(): string {
+    console.log(this.currentQuestion.type)
+    return this.currentQuestion.type;
   }
 }

@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-multi-type',
   templateUrl: './multi-type.component.html',
   styleUrls: ['./multi-type.component.scss'],
+  standalone: true,
 })
 export class MultiTypeComponent  implements OnInit {
 

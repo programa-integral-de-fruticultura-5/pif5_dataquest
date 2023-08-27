@@ -3,7 +3,26 @@
   <ion-text>
     <h1>{{getCategory()}}</h1>
   </ion-text>
-  <app-open-type></app-open-type>
+
+  <app-open-type *ngIf="
+    getType() === 'Abierta'
+  "/>
+  <app-autocomplete-type *ngIf="
+    getType() === 'Autocompletar'
+  "/>
+  <app-multi-type *ngIf="
+    getType() === 'Múltiple respuesta' ||
+    getType() === 'Múltiple respuesta con otro'
+  "/>
+  <app-unique-type *ngIf="
+    getType() === 'Única respuesta' ||
+    getType() === 'Única respuesta con otro' ||
+    getType() === 'Única respuesta con select'
+  "/>
+  <app-table-type *ngIf="
+    getType() === 'Tabla'
+  "/>
+
   <ion-button (click)="previousQuestion()">Anterior</ion-button>
   <ion-button (click)="nextQuestion()">Siguiente</ion-button>
 </ion-content>
