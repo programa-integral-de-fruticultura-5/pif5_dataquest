@@ -6,15 +6,18 @@ import { Geolocation, Position } from '@capacitor/geolocation';
 import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
 import { Form } from 'src/app/models/form';
 import { QuestionComponent } from '../question/question.component';
+import { DataquestHeaderComponent } from '../header/dataquest-header/dataquest-header.component';
 
 @Component({
   selector: 'app-detailed-form',
   templateUrl: './detailed-form.component.html',
   styleUrls: ['./detailed-form.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, QuestionComponent ],
+  imports: [CommonModule, IonicModule, QuestionComponent, DataquestHeaderComponent ],
 })
 export class DetailedFormComponent {
+
+  component = QuestionComponent
 
   value: boolean = false;
 

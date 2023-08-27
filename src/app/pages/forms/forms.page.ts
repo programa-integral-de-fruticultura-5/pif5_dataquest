@@ -34,7 +34,7 @@ export class FormsPage {
   async navigate(form: Form) {
     if(this.platform.is('mobile')) {
       this.detailedFormService.setForm(form);
-      this.router.navigate(['details']);
+      this.router.navigate(['detail']);
     }else {
       const alert = await this.alertController.create({
         header: 'Dispositivo no compatible',

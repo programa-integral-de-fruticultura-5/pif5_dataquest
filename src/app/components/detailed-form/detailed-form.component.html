@@ -1,10 +1,4 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button default-href="#"></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-dataquest-header></app-dataquest-header>
 <ion-content>
   <ion-card>
     <ion-card-header>
@@ -17,7 +11,8 @@
     <ion-card-content>
       {{getForm().description}}
     </ion-card-content>
-    <ion-button fill="clear">Comenzar formulario</ion-button>
+    <ion-nav-link router-direction="forward" [component]="component">
+      <ion-button fill="clear">Comenzar formulario</ion-button>
+    </ion-nav-link>
   </ion-card>
-  <app-question/>
 </ion-content>

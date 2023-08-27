@@ -15,11 +15,8 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'details',
-    loadComponent: () =>
-      import('./components/detailed-form/detailed-form.component').then(
-        (c) => c.DetailedFormComponent
-      ),
+    path: 'detail',
+    loadComponent: () => import('./pages/detail/detail.page').then( m => m.DetailPage),
     canActivate: [DetailsGuard]
   },
   {
