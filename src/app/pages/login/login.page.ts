@@ -5,6 +5,9 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { IonicModule } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { FormService } from 'src/app/services/form/form.service';
+import { AssociationService } from 'src/app/services/association/association.service';
+import { ProducerService } from 'src/app/services/producer/producer.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +23,10 @@ export class LoginPage implements OnInit {
     private auth: AuthService,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    private router: Router
+    private router: Router,
+    private formService: FormService,
+    private producerService: ProducerService,
+    private associationService: AssociationService
   ) { }
 
   form: FormGroup = this.fb.group({
@@ -50,6 +56,7 @@ export class LoginPage implements OnInit {
             console.log(res);
             this.auth.saveToken(res.data.token);
             this.router.navigate(['/home']);
+            this.requestData();
           } else {
             await this.loadingController.dismiss();
             const alert = await this.alertController.create({
@@ -71,5 +78,23 @@ export class LoginPage implements OnInit {
         }
       );
     }
+  }
+
+  private requestData(): void {
+    this.requestForms();
+    this.requestProducers();
+    this.requestAssociations();
+  }
+
+  private requestForms(): void {
+    this.formService.sendRequest();
+  }
+
+  private requestProducers(): void {
+    this.producerService.sendRequest();
+  }
+
+  private requestAssociations(): void {
+    this.associationService.sendRequest();
   }
 }
