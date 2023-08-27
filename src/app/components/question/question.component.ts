@@ -3,12 +3,13 @@ import { IonicModule } from '@ionic/angular';
 import { QuestionService } from 'src/app/services/detailed-form/question/question.service';
 import { OpenTypeComponent } from './open-type/open-type.component';
 import { Question } from 'src/app/models/question';
+import { DataquestHeaderComponent } from '../header/dataquest-header/dataquest-header.component';
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss'],
-  imports: [IonicModule, OpenTypeComponent ],
+  imports: [IonicModule, OpenTypeComponent, DataquestHeaderComponent ],
   standalone: true,
 })
 export class QuestionComponent {
