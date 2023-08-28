@@ -1,1 +1,9 @@
-<h1>Open type component</h1>
+
+<ion-input *ngIf="getDataType() === 'text'"></ion-input>
+<app-autocomplete-type *ngIf="getDataType() === 'autocomplete'"/>
+<app-date-data-type *ngIf="getDataType() === 'date'"/>
+<app-photo-data-type *ngIf="getDataType() === 'photo'"/>
+<app-drawing-pad-data-type *ngIf="getDataType() === 'drawing pad'"/>
+<app-text-area-data-type *ngIf="getDataType() === 'textarea'"/>
+<app-number-data-type *ngIf="getDataType() === 'number'"/>
+<app-percentage-data-type *ngIf="getDataType() === 'percentage'"/>

@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-photo-data-type',
   templateUrl: './photo-data-type.component.html',
   styleUrls: ['./photo-data-type.component.scss'],
+  standalone: true,
 })
 export class PhotoDataTypeComponent  implements OnInit {
 
