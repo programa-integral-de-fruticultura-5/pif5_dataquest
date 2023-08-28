@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Answer } from 'src/app/models/answer';
 import { Question } from 'src/app/models/question';
+import { AnswerService } from './answer/answer.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +10,7 @@ export class QuestionService {
 
   private questions!: Question[]
 
-  constructor() { }
+  constructor(private answerService: AnswerService) { }
 
   getQuestions(): Question[] {
     return this.questions;
@@ -18,11 +20,16 @@ export class QuestionService {
     this.questions = questions;
   }
 
+  setAnswers(current: Question): void {
+    this.answerService.setAnswers(current.answers);
+  }
+
   getLength(): number {
     return this.questions.length;
   }
 
   getFirst(): Question {
+    this.setAnswers(this.questions[0]);
     return this.questions[0];
   }
 
@@ -32,7 +39,9 @@ export class QuestionService {
 
   nextQuestion(current: Question): Question {
     if (current !== this.getLast()) {
-      return this.questions[this.getCurrentIndex(current) + 1];
+      let next: Question = this.questions[this.getCurrentIndex(current) + 1]
+      this.setAnswers(next)
+      return next;
     }
     return current;
   }
@@ -43,7 +52,9 @@ export class QuestionService {
 
   previousQuestion(current: Question): Question {
     if (current !== this.getFirst()) {
-      return this.questions[this.getCurrentIndex(current) - 1];
+      let previous: Question = this.questions[this.getCurrentIndex(current) - 1]
+      this.setAnswers(previous)
+      return previous
     }
     return current;
   }

@@ -7,7 +7,7 @@ import { ApiService } from '../api/api.service';
 export class ProducerService {
 
   private producers: any[] = [];
-  private readonly ENDPOINT = 'producer';
+  private readonly ENDPOINT = 'producers';
 
   constructor(private apiService: ApiService) { }
 

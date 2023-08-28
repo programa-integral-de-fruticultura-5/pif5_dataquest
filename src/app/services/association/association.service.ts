@@ -7,7 +7,7 @@ import { ApiService } from '../api/api.service';
 export class AssociationService {
 
   private associations: any[] = [];
-  private readonly ENDPOINT = 'association';
+  private readonly ENDPOINT = 'associations';
 
   constructor(private apiService: ApiService) { }
 
