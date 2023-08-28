@@ -23,7 +23,9 @@ export class FormsPage {
     private alertController: AlertController
   ) {}
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.formsService.sendRequest();
+  }
 
   getForms(): Form[] {
     return this.formsService.getForms();
