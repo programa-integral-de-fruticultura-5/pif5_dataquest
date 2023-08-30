@@ -5,6 +5,8 @@ import { Form } from 'src/app/models/form';
 import { FormService } from 'src/app/services/form/form.service';
 import { Router } from '@angular/router';
 import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
+import { ProducerService } from 'src/app/services/producer/producer.service';
+import { AssociationService } from 'src/app/services/association/association.service';
 
 @Component({
   selector: 'app-forms',
@@ -17,6 +19,8 @@ export class FormsPage {
 
   constructor(
     private formsService: FormService,
+    private producersService: ProducerService,
+    private associationService: AssociationService,
     private detailedFormService: DetailedFormService,
     private router: Router,
     private platform: Platform,
@@ -24,7 +28,7 @@ export class FormsPage {
   ) {}
 
   ngOnInit() {
-    this.formsService.sendRequest();
+    this.requestData();
   }
 
   getForms(): Form[] {
@@ -50,6 +54,12 @@ export class FormsPage {
       this.formsService.sendRequest();
       event.target.complete();
     }, 2000);
+  }
+
+  private requestData() {
+    this.formsService.sendRequest();
+    this.producersService.sendRequest();
+    this.associationService.sendRequest();
   }
 }
 
