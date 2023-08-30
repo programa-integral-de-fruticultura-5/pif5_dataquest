@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Answer } from 'src/app/models/answer';
 import { Question } from 'src/app/models/question';
 import { AnswerService } from './answer/answer.service';
 
@@ -8,16 +7,22 @@ import { AnswerService } from './answer/answer.service';
 })
 export class QuestionService {
 
-  private questions!: Question[]
+  private filteredQuestions!: Question[]
+  private originalQuestions!: Question[]
+  private tableQuestions!: Question[]
 
   constructor(private answerService: AnswerService) { }
 
   getQuestions(): Question[] {
-    return this.questions;
+    console.log("Questions length" + this.filteredQuestions.length)
+    let filteredQuestions: Question[] = this.filteredQuestions.filter(question => question.questionParentId === null);
+    console.log("Filtered questions length" + filteredQuestions.length)
+    return this.filteredQuestions.filter(question => question.questionParentId === null);
   }
 
   setQuestions(questions: Question[]): void {
-    this.questions = questions;
+    this.originalQuestions = questions;
+    this.filteredQuestions = questions.filter(question => question.questionParentId === null);
   }
 
   setAnswers(current: Question): void {
@@ -25,21 +30,21 @@ export class QuestionService {
   }
 
   getLength(): number {
-    return this.questions.length;
+    return this.originalQuestions.length;
   }
 
   getFirst(): Question {
-    this.setAnswers(this.questions[0]);
-    return this.questions[0];
+    this.setAnswers(this.filteredQuestions[0]);
+    return this.filteredQuestions[0];
   }
 
   getLast(): Question {
-    return this.questions[this.questions.length - 1];
+    return this.filteredQuestions[this.filteredQuestions.length - 1];
   }
 
   nextQuestion(current: Question): Question {
     if (current !== this.getLast()) {
-      let next: Question = this.questions[this.getCurrentIndex(current) + 1]
+      let next: Question = this.filteredQuestions[this.getCurrentIndex(current) + 1]
       this.setAnswers(next)
       return next;
     }
@@ -47,17 +52,21 @@ export class QuestionService {
   }
 
   getCurrentIndex(current: Question): number {
-    return this.questions.indexOf(current);
+    return this.filteredQuestions.indexOf(current);
   }
 
   previousQuestion(current: Question): Question {
     if (current !== this.getFirst()) {
-      let previous: Question = this.questions[this.getCurrentIndex(current) - 1]
+      let previous: Question = this.filteredQuestions[this.getCurrentIndex(current) - 1]
       this.setAnswers(previous)
       return previous
     }
     return current;
   }
 
+  getTableQuestions(current: Question): Question[] {
+    let tableQuestions: Question[] = this.originalQuestions.filter(question => question.questionParentId === current.id)
+    return tableQuestions;
+  }
 
 }
