@@ -16,39 +16,73 @@ import { ProducerService } from 'src/app/services/producer/producer.service';
 })
 export class AutocompleteComponent  implements OnInit {
 
-  private selectedAnswer!: Answer
-  private results: Answer[];
-  public data!: Answer[]
+  private selection!: any
+  private results!: any[];
+  public answersData!: any[]
+  public producersData!: any[]
+  public associationsData!: any[]
 
   constructor(
     private producersService: ProducerService,
     private associationService: AssociationService,
     private answerService: AnswerService
-  ) {
-    let answers = this.answerService.getAnswers();
-    let producer = this.producersService.getProducers();
-    let association = this.associationService.getAssociations();
-    this.data = answers.length === 0 ? producer.concat(association) : answers;  // TODO check the type of the answers when is producers and association, and when is answers
-    this.results = [...this.data];
-  }
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.answersData = this.getAnswers();
+    console.log(this.answersData)
+    this.producersData = this.getProducers();
+    this.associationsData = this.getAssociations();
+    let data = this.getData()  // TODO check the type of the answers when is producers and association, and when is answers
+    this.results = Array.from(data);
+
+  }
 
   search(event: any) {
+    this.hasAnswers() ? this.searchAnswer(event) : this.searchProducer(event);
+  }
+
+  private searchAnswer(event: any) {
     const query = event.target.value.toLowerCase();
-    this.results = this.data.filter((d) => d.value.toLowerCase().indexOf(query) > -1);
+    this.results = this.answersData.filter((d) => d.value.toLowerCase().indexOf(query) > -1);
   }
 
-  select(answer: Answer) {
-    this.setItemSelected(answer);
+  private searchProducer(event: any) {
+    const query = event.target.value.toLowerCase();
+    this.results = this.producersData.filter((d) => d.identification.toLowerCase().indexOf(query) > -1);
   }
 
-  getItemSelected() {
-    return this.selectedAnswer.value;
+  private searchAssociation(event: any) {
+    const query = event.target.value.toLowerCase();
+    this.results = this.associationsData.filter((d) => d.identification.toLowerCase().indexOf(query) > -1);
   }
 
-  setItemSelected(selectedAnswer: Answer) {
-    this.selectedAnswer = selectedAnswer;
+  private hasAnswers(): boolean {
+    return this.answersData.length > 1
+  }
+
+  select(selection: any) {
+    this.selection = selection;
+  }
+
+  getText(): string {
+    return this.hasAnswers() ? this.selection?.value : this.selection?.identification;
+  }
+
+  getValue(result: any): string {
+    return this.hasAnswers() ? result.value : result.identification;
+  }
+
+  private getData(): any[] {
+    if (this.hasAnswers())
+      return this.answersData
+    else
+      return this.producersData
+  }
+
+  getAnswers() {
+    return this.answerService.getAnswers();
   }
 
   getProducers()  {
