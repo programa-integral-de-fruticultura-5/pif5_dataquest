@@ -10,6 +10,9 @@ import { NumberDataTypeComponent } from './number-data-type/number-data-type.com
 import { TextDataTypeComponent } from './text-data-type/text-data-type.component';
 import { DateDataTypeComponent } from './date-data-type/date-data-type.component';
 import { PercentageDataTypeComponent } from './percentage-data-type/percentage-data-type.component';
+import { MonthDataTypeComponent } from './month-data-type/month-data-type.component';
+import { EmailDataTypeComponent } from './email-data-type/email-data-type.component';
+import { MoneyDataTypeComponent } from './money-data-type/money-data-type.component';
 
 @Component({
   selector: 'app-open',
@@ -25,7 +28,10 @@ import { PercentageDataTypeComponent } from './percentage-data-type/percentage-d
     NumberDataTypeComponent,
     TextDataTypeComponent,
     DateDataTypeComponent,
-    PercentageDataTypeComponent
+    PercentageDataTypeComponent,
+    MonthDataTypeComponent,
+    EmailDataTypeComponent,
+    MoneyDataTypeComponent
   ],
   standalone: true,
 })
