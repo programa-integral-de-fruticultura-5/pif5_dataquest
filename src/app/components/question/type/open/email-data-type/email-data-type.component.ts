@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
-  selector: 'app-number-data-type',
-  templateUrl: './number-data-type.component.html',
-  styleUrls: ['./number-data-type.component.scss'],
+  selector: 'app-email-data-type',
+  templateUrl: './email-data-type.component.html',
+  styleUrls: ['./email-data-type.component.scss'],
   standalone: true,
   imports: [ IonicModule ],
 })
-export class NumberDataTypeComponent  implements OnInit {
+export class EmailDataTypeComponent  implements OnInit {
 
   constructor() { }
 
