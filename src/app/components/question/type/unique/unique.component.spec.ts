@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { TableTypeComponent } from './table-type.component';
+import { UniqueComponent } from './unique.component';
 
-describe('TableTypeComponent', () => {
-  let component: TableTypeComponent;
-  let fixture: ComponentFixture<TableTypeComponent>;
+describe('UniqueComponent', () => {
+  let component: UniqueComponent;
+  let fixture: ComponentFixture<UniqueComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TableTypeComponent ],
+      declarations: [ UniqueComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TableTypeComponent);
+    fixture = TestBed.createComponent(UniqueComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

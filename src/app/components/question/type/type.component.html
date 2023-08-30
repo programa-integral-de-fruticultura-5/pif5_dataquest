@@ -1,0 +1,29 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>{{ getText() }}</ion-card-title>
+    <ion-card-subtitle>{{ getCategory() }}</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <app-open
+      [questionDataType]="getDataType()"
+      *ngIf="getType() === 'Abierta'"
+    />
+    <app-autocomplete *ngIf="getType() === 'Autocompletar'" />
+    <app-multiple
+      [questionType]="getType()"
+      *ngIf="
+        getType() === 'Múltiple respuesta' ||
+        getType() === 'Múltiple respuesta con otro'
+      "
+    />
+    <app-unique
+      [questionType]="getType()"
+      *ngIf="
+        getType() === 'Única respuesta' ||
+        getType() === 'Única respuesta con otro' ||
+        getType() === 'Única respuesta con select'
+      "
+    />
+  </ion-card-content>
+</ion-card>

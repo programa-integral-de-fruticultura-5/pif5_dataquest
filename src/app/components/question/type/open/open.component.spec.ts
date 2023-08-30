@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { MultiTypeComponent } from './multi-type.component';
+import { OpenComponent } from './open.component';
 
-describe('MultiTypeComponent', () => {
-  let component: MultiTypeComponent;
-  let fixture: ComponentFixture<MultiTypeComponent>;
+describe('OpenComponent', () => {
+  let component: OpenComponent;
+  let fixture: ComponentFixture<OpenComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MultiTypeComponent ],
+      declarations: [ OpenComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MultiTypeComponent);
+    fixture = TestBed.createComponent(OpenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

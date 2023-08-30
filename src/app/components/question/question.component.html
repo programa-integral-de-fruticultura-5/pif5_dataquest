@@ -1,28 +1,16 @@
 <app-dataquest-header progressBar></app-dataquest-header>
 <ion-content class="ion-padding">
-  <ion-text>
-    <h1>{{getCategory()}}</h1>
-  </ion-text>
 
-  <app-open-type *ngIf="
-    getType() === 'Abierta'
-  "/>
-  <app-autocomplete-type *ngIf="
-    getType() === 'Autocompletar'
-  "/>
-  <app-multi-type *ngIf="
-    getType() === 'Múltiple respuesta' ||
-    getType() === 'Múltiple respuesta con otro'
-  "/>
-  <app-unique-type *ngIf="
-    getType() === 'Única respuesta' ||
-    getType() === 'Única respuesta con otro' ||
-    getType() === 'Única respuesta con select'
-  "/>
-  <app-table-type *ngIf="
-    getType() === 'Tabla'
-  "/>
-
-  <ion-button (click)="previousQuestion()">Anterior</ion-button>
-  <ion-button (click)="nextQuestion()">Siguiente</ion-button>
+  <app-type [question]="currentQuestion" *ngIf="getType() !== 'Tabla'"></app-type>
+  <app-table [base]="getTableQuestions()" *ngIf="getType() === 'Tabla'"></app-table>
 </ion-content>
+<ion-footer class="ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="previousQuestion()">Anterior</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="nextQuestion()">Siguiente</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

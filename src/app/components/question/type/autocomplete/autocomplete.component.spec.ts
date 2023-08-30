@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { UniqueTypeComponent } from './unique-type.component';
+import { AutocompleteComponent } from './autocomplete.component';
 
-describe('UniqueTypeComponent', () => {
-  let component: UniqueTypeComponent;
-  let fixture: ComponentFixture<UniqueTypeComponent>;
+describe('AutocompleteComponent', () => {
+  let component: AutocompleteComponent;
+  let fixture: ComponentFixture<AutocompleteComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UniqueTypeComponent ],
+      declarations: [ AutocompleteComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UniqueTypeComponent);
+    fixture = TestBed.createComponent(AutocompleteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

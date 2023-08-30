@@ -1,6 +1,6 @@
 
 <ion-input *ngIf="getDataType() === 'text'"></ion-input>
-<app-autocomplete-type *ngIf="getDataType() === 'autocomplete'"/>
+<app-autocomplete *ngIf="getDataType() === 'autocomplete'"/>
 <app-date-data-type *ngIf="getDataType() === 'date'"/>
 <app-photo-data-type *ngIf="getDataType() === 'photo'"/>
 <app-drawing-pad-data-type *ngIf="getDataType() === 'drawing pad'"/>

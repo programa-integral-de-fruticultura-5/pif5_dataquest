@@ -1,0 +1,18 @@
+<ion-content>
+  <div slot="fixed" >
+    <ion-button (click)="removeSection()">
+      <ion-icon name="remove-circle"></ion-icon>
+    </ion-button>
+    <ion-button (click)="addSection()">
+      <ion-icon name="add-circle"></ion-icon>
+    </ion-button>
+  </div>
+  <ion-accordion-group [multiple]="true" [value]="0">
+    <ion-accordion *ngFor="let questions of tableQuestions; index as i" [value]="i">
+      <ion-item slot="header" color="light">
+        <ion-label>Sección {{i + 1}}</ion-label>
+      </ion-item>
+      <app-type *ngFor="let question of questions" [question]="question" slot="content"></app-type>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-content>

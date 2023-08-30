@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { QuestionService } from 'src/app/services/detailed-form/question/question.service';
-import { OpenTypeComponent } from './open-type/open-type.component';
+import { OpenComponent } from './type/open/open.component';
 import { Question } from 'src/app/models/question';
 import { DataquestHeaderComponent } from '../header/dataquest-header/dataquest-header.component';
 import { CommonModule } from '@angular/common';
-import { AutocompleteTypeComponent } from './autocomplete-type/autocomplete-type.component';
-import { MultiTypeComponent } from './multi-type/multi-type.component';
-import { TableTypeComponent } from './table-type/table-type.component';
-import { UniqueTypeComponent } from './unique-type/unique-type.component';
+import { AutocompleteComponent } from './type/autocomplete/autocomplete.component';
+import { MultipleComponent } from './type/multiple/multiple.component';
+import { TableComponent } from './type/table/table.component';
+import { UniqueComponent } from './type/unique/unique.component';
+import { TypeComponent } from './type/type.component';
 
 @Component({
   selector: 'app-question',
@@ -17,18 +18,15 @@ import { UniqueTypeComponent } from './unique-type/unique-type.component';
   imports: [
     CommonModule,
     IonicModule,
-    OpenTypeComponent,
+    TypeComponent,
+    TableComponent,
     DataquestHeaderComponent,
-    AutocompleteTypeComponent,
-    MultiTypeComponent,
-    TableTypeComponent,
-    UniqueTypeComponent
   ],
   standalone: true,
 })
 export class QuestionComponent {
 
-  private currentQuestion!: Question
+  currentQuestion!: Question
 
   constructor(private questionService: QuestionService) { }
 
@@ -53,7 +51,10 @@ export class QuestionComponent {
   }
 
   getType(): string {
-    console.log(this.currentQuestion.type)
     return this.currentQuestion.type;
+  }
+
+  getTableQuestions(): Question[] {
+    return this.questionService.getTableQuestions(this.currentQuestion);
   }
 }
