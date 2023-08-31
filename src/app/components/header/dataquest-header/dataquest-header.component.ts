@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, booleanAttribute } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import { QuestionService } from 'src/app/services/detailed-form/question/question.service';
 
 @Component({
   selector: 'app-dataquest-header',
@@ -11,12 +12,18 @@ import { CommonModule } from '@angular/common';
 })
 export class DataquestHeaderComponent  implements OnInit {
 
-  @Input({ transform: booleanAttribute }) progressBar: boolean = false; //TODO check this attribute and why is not working
+  @Input({ transform: booleanAttribute }) progressBar: boolean = false;
 
-  progress: number = 1/5;
+  progress: number;
 
-  constructor() { }
+  constructor(private questionService: QuestionService) {
+    this.progress = this.getProgress();
+  }
 
   ngOnInit() {}
+
+  getProgress(): number {
+    return this.questionService.getProgress();
+  }
 
 }

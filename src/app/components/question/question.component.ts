@@ -46,10 +46,6 @@ export class QuestionComponent {
     return this.currentQuestion.question_category.name;
   }
 
-  getProgress(): number {
-    return this.questionService.getCurrentIndex(this.currentQuestion) / this.questionService.getLength();
-  }
-
   getType(): string {
     return this.currentQuestion.type;
   }

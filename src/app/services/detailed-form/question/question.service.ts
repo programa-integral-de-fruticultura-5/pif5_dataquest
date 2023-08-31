@@ -10,6 +10,7 @@ export class QuestionService {
   private filteredQuestions!: Question[]
   private originalQuestions!: Question[]
   private tableQuestions!: Question[]
+  private progress: number = 0;
 
   constructor(private answerService: AnswerService) { }
 
@@ -29,36 +30,47 @@ export class QuestionService {
     this.answerService.setAnswers(current.answers);
   }
 
-  getLength(): number {
+  getOriginalLength(): number {
     return this.originalQuestions.length;
   }
 
+  getFilteredLength(): number {
+    return this.filteredQuestions.length;
+  }
+
   getFirst(): Question {
-    this.setAnswers(this.filteredQuestions[0]);
-    return this.filteredQuestions[0];
+    let firstQuestion: Question = this.filteredQuestions[0];
+    this.setAnswers(firstQuestion);
+    return firstQuestion;
   }
 
   getLast(): Question {
-    return this.filteredQuestions[this.filteredQuestions.length - 1];
+    let lastIndex: number = this.filteredQuestions.length - 1;
+    let lastQuestion: Question = this.filteredQuestions[lastIndex];
+    this.setAnswers(lastQuestion);
+    return lastQuestion;
   }
 
   nextQuestion(current: Question): Question {
     if (current !== this.getLast()) {
       let next: Question = this.filteredQuestions[this.getCurrentIndex(current) + 1]
       this.setAnswers(next)
+      this.updateProgress(next);
       return next;
     }
     return current;
   }
 
   getCurrentIndex(current: Question): number {
-    return this.filteredQuestions.indexOf(current);
+    let currentIndex: number = this.filteredQuestions.indexOf(current);
+    return currentIndex;
   }
 
   previousQuestion(current: Question): Question {
     if (current !== this.getFirst()) {
       let previous: Question = this.filteredQuestions[this.getCurrentIndex(current) - 1]
       this.setAnswers(previous)
+      this.updateProgress(previous);
       return previous
     }
     return current;
@@ -67,6 +79,18 @@ export class QuestionService {
   getTableQuestions(current: Question): Question[] {
     let tableQuestions: Question[] = this.originalQuestions.filter(question => question.questionParentId === current.id)
     return tableQuestions;
+  }
+
+  getProgress(): number {
+    return this.progress;
+  }
+
+  updateProgress(currentQuestion: Question): void {
+    let currentPosition: number = this.getCurrentIndex(currentQuestion) + 1
+    let length: number = this.getFilteredLength()
+    let currentProgress: number = currentPosition / length
+    console.log("Current progress: " + currentProgress)
+    this.progress = currentProgress
   }
 
 }
