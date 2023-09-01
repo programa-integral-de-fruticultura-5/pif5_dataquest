@@ -53,7 +53,6 @@ export class LoginPage implements OnInit {
         async (res) => {
           if (res.status === 200) {
             await this.loadingController.dismiss();
-            console.log(res);
             this.auth.saveToken(res.data.token);
             this.router.navigate(['/home']);
             this.requestData();
