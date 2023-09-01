@@ -31,7 +31,6 @@ export class AutocompleteComponent  implements OnInit {
   ngOnInit() {
 
     this.answersData = this.getAnswers();
-    console.log(this.answersData)
     this.producersData = this.getProducers();
     this.associationsData = this.getAssociations();
     let data = this.getData()  // TODO check the type of the answers when is producers and association, and when is answers
