@@ -1,18 +1,41 @@
 <ion-content>
-  <div slot="fixed" >
-    <ion-button (click)="removeSection()">
-      <ion-icon name="remove-circle"></ion-icon>
-    </ion-button>
-    <ion-button (click)="addSection()">
-      <ion-icon name="add-circle"></ion-icon>
-    </ion-button>
-  </div>
-  <ion-accordion-group [multiple]="true" [value]="0">
-    <ion-accordion *ngFor="let questions of tableQuestions; index as i" [value]="i">
-      <ion-item slot="header" color="light">
-        <ion-label>Sección {{i + 1}}</ion-label>
-      </ion-item>
-      <app-type *ngFor="let question of questions" [question]="question" slot="content"></app-type>
-    </ion-accordion>
-  </ion-accordion-group>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{ getCategory() }}</ion-card-subtitle>
+      <ion-card-title>{{ getText() }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-accordion-group [multiple]="true" [value]="0">
+        <ion-accordion
+          *ngFor="let questions of getQuestionChildren(); index as i"
+          [value]="i"
+        >
+          <ion-item slot="header" color="light">
+            <ion-label>Sección {{ i + 1 }}</ion-label>
+          </ion-item>
+          <app-type
+            *ngFor="let question of questions"
+            [question]="question"
+            slot="content"
+          ></app-type>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ion-card-content>
+  </ion-card>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" size="small">
+    <ion-fab-button>
+      <ion-icon name="list"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-fab-button (click)="addSection()">
+        <ion-icon name="add-circle"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="removeSection()">
+        <ion-icon name="remove-circle"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button>
+        <ion-icon name="globe"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>
