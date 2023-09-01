@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, SimpleChanges  } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { Question } from 'src/app/models/question';
 import { TypeComponent } from '../type.component';
@@ -15,25 +15,35 @@ import { TypeComponent } from '../type.component';
     TypeComponent
   ]
 })
-export class TableComponent  implements OnInit {
+export class TableComponent {
 
-  @Input({required: true}) base: Question[] = [];
-  tableQuestions: Question[][] = [];
+  @Input({required: true}) question!: Question;
 
   constructor() { }
 
-  ngOnInit() {
-    this.addSection()
-  }
+  ngOnInit() { }
 
   addSection() {
-    this.tableQuestions.push(this.base)
+    let base: Question[] = this.question.questionChildren[0];
+    this.question.questionChildren.push([...base])
   }
 
   removeSection() {
-    if (this.tableQuestions.length > 1) {
-      this.tableQuestions.pop();
+    if (this.question.questionChildren.length > 1) {
+      this.question.questionChildren.pop();
     }
+  }
+
+  getQuestionChildren(): Question[][] {
+    return this.question.questionChildren;
+  }
+
+  getText(): string {
+    return this.question.text;
+  }
+
+  getCategory(): string {
+    return this.question.question_category.name;
   }
 
 }

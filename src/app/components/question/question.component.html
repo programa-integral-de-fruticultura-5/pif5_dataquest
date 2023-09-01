@@ -2,9 +2,9 @@
 <ion-content class="ion-padding">
 
   <app-type [question]="currentQuestion" *ngIf="getType() !== 'Tabla'"></app-type>
-  <app-table [base]="getTableQuestions()" *ngIf="getType() === 'Tabla'"></app-table>
+  <app-table [question]="currentQuestion" *ngIf="getType() === 'Tabla'"></app-table>
 </ion-content>
-<ion-footer class="ion-padding">
+<ion-footer>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="previousQuestion()">Anterior</ion-button>

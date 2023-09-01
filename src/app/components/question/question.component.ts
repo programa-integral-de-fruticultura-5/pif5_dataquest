@@ -49,8 +49,4 @@ export class QuestionComponent {
   getType(): string {
     return this.currentQuestion.type;
   }
-
-  getTableQuestions(): Question[] {
-    return this.questionService.getTableQuestions(this.currentQuestion);
-  }
 }
