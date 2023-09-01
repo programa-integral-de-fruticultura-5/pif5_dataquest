@@ -15,7 +15,6 @@ export class ProducerService {
     this.apiService.post(this.ENDPOINT).then(
       (producers) => {
         this.producers = JSON.parse(producers.data);
-        console.log(this.producers);
       },
       (err) => {
         console.log(err);

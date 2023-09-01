@@ -15,9 +15,7 @@ export class QuestionService {
   constructor(private answerService: AnswerService) { }
 
   getQuestions(): Question[] {
-    console.log("Questions length" + this.filteredQuestions.length)
     let filteredQuestions: Question[] = this.filteredQuestions.filter(question => question.questionParentId === null);
-    console.log("Filtered questions length" + filteredQuestions.length)
     return this.filteredQuestions.filter(question => question.questionParentId === null);
   }
 
@@ -76,11 +74,6 @@ export class QuestionService {
     return current;
   }
 
-  getTableQuestions(current: Question): Question[] {
-    let tableQuestions: Question[] = this.originalQuestions.filter(question => question.questionParentId === current.id)
-    return tableQuestions;
-  }
-
   getProgress(): number {
     return this.progress;
   }
@@ -89,7 +82,6 @@ export class QuestionService {
     let currentPosition: number = this.getCurrentIndex(currentQuestion) + 1
     let length: number = this.getFilteredLength()
     let currentProgress: number = currentPosition / length
-    console.log("Current progress: " + currentProgress)
     this.progress = currentProgress
   }
 

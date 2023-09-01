@@ -15,7 +15,6 @@ export class AssociationService {
     this.apiService.post(this.ENDPOINT).then(
       (associations) => {
         this.associations = JSON.parse(associations.data);
-        console.log(this.associations);
       },
       (err) => {
         console.log(err);
