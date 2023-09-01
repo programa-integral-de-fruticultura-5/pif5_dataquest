@@ -15,7 +15,7 @@ export class Question {
     public answers: Array<Answer>,
     public question_category: QuestionCategory,
     public answerRelation: Array<{ type: string, questionId: number, anserId: number }>,
-    public questionChildren: Array<Question>,
+    public questionChildren: Array<Array<Question>>,
     public value: string,
     public values: Array<string>,
     public user_type_restriction: string,
