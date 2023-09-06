@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonModal, IonicModule } from '@ionic/angular';
+import { TypeaheadComponent } from 'src/app/components/typeahead/typeahead.component';
 import { Answer } from 'src/app/models/answer';
 import { AssociationService } from 'src/app/services/association/association.service';
 import { AnswerService } from 'src/app/services/detailed-form/question/answer/answer.service';
@@ -12,15 +13,18 @@ import { ProducerService } from 'src/app/services/producer/producer.service';
   templateUrl: './autocomplete.component.html',
   styleUrls: ['./autocomplete.component.scss'],
   standalone: true,
-  imports: [ CommonModule, IonicModule ],
+  imports: [ CommonModule, IonicModule, TypeaheadComponent ],
 })
 export class AutocompleteComponent  implements OnInit {
 
-  private selection!: any
-  private results!: any[];
+  @ViewChild('modal', { static: true }) modal!: IonModal;
+
+  selection!: any
   public answersData!: any[]
   public producersData!: any[]
   public associationsData!: any[]
+  public data!: any[]
+// private results!: any[];
 
   constructor(
     private producersService: ProducerService,
@@ -33,21 +37,12 @@ export class AutocompleteComponent  implements OnInit {
     this.answersData = this.getAnswers();
     this.producersData = this.getProducers();
     this.associationsData = this.getAssociations();
-    let data = this.getData()  // TODO check the type of the answers when is producers and association, and when is answers
-    this.results = Array.from(data);
+    this.data = this.getData()
+    // this.results = Array.from(this.data);
 
   }
 
-  search(event: any) {
-    this.hasAnswers() ? this.searchAnswer(event) : this.searchProducer(event);
-  }
-
-  private searchAnswer(event: any) {
-    const query = event.target.value.toLowerCase();
-    this.results = this.answersData.filter((d) => d.value.toLowerCase().indexOf(query) > -1);
-  }
-
-  private searchProducer(event: any) {
+/*   private searchProducer(event: any) {
     const query = event.target.value.toLowerCase();
     this.results = this.producersData.filter((d) => d.identification.toLowerCase().indexOf(query) > -1);
   }
@@ -55,29 +50,24 @@ export class AutocompleteComponent  implements OnInit {
   private searchAssociation(event: any) {
     const query = event.target.value.toLowerCase();
     this.results = this.associationsData.filter((d) => d.identification.toLowerCase().indexOf(query) > -1);
-  }
+  } */
 
   private hasAnswers(): boolean {
     return this.answersData.length > 1
   }
 
-  select(selection: any) {
-    this.selection = selection;
-  }
-
-  getText(): string {
-    return this.hasAnswers() ? this.selection?.value : this.selection?.identification;
-  }
-
-  getValue(result: any): string {
+/*   private getValue(result: any): string {
     return this.hasAnswers() ? result.value : result.identification;
-  }
+  } */
 
-  private getData(): any[] {
-    if (this.hasAnswers())
-      return this.answersData
-    else
-      return this.producersData
+  private getData(): string[] {
+    if (this.hasAnswers()) {
+      let stringAnswers = this.answersData.map((answer) => answer.value)
+      return stringAnswers
+    }else{
+      let stringProducers = this.producersData.map((producer) => producer.identification)
+      return stringProducers
+    }
   }
 
   getAnswers() {
@@ -92,8 +82,13 @@ export class AutocompleteComponent  implements OnInit {
     return this.associationService.getAssociations();
   }
 
-  getResults() {
+/*   getResults() {
     return this.results;
+  } */
+
+  selectionChanged(selection: string) {
+    this.selection = selection;
+    this.modal.dismiss();
   }
 
 }

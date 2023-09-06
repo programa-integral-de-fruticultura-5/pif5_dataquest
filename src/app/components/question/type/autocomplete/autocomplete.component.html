@@ -1,10 +1,18 @@
-<ion-searchbar [value]="getText()" placeholder="Ingrese aquí" [debounce]="100"
-  (ionInput)="search($event)"></ion-searchbar>
-<ion-list>
-  <ion-list-header>
-    <ion-label>Seleccione una opción</ion-label>
-  </ion-list-header>
-  <ion-item button (click)="select(result)" *ngFor="let result of getResults()">
-    <ion-label>{{ getValue(result) }}</ion-label>
+<ion-list [inset]="true">
+  <ion-item [button]="true" [detail]="false" id="select-item">
+    <ion-label *ngIf="!selection">Selecciona uno</ion-label>
+    <div slot="start" id="selected-item">{{ selection }}</div>
   </ion-item>
 </ion-list>
+
+<ion-modal trigger="select-item" #modal>
+  <ng-template>
+    <app-typeahead
+      class="ion-page"
+      [items]="data"
+      [selectedItem]="selection"
+      (selectionChange)="selectionChanged($event)"
+      (selectionCancel)="modal.dismiss()"
+    ></app-typeahead>
+  </ng-template>
+</ion-modal>
