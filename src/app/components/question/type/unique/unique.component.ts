@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Answer } from 'src/app/models/answer';
+import { Question } from 'src/app/models/question';
 import { AnswerService } from 'src/app/services/detailed-form/question/answer/answer.service';
 
 @Component({
@@ -9,11 +11,12 @@ import { AnswerService } from 'src/app/services/detailed-form/question/answer/an
   templateUrl: './unique.component.html',
   styleUrls: ['./unique.component.scss'],
   standalone: true,
-  imports: [ CommonModule, IonicModule ]
+  imports: [ CommonModule, IonicModule, ReactiveFormsModule ]
 })
 export class UniqueComponent  implements OnInit {
 
-  @Input({ required: true }) questionType: string = '';
+  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) formGroup!: FormGroup;
 
   constructor(private answerService: AnswerService) { }
 
@@ -24,7 +27,12 @@ export class UniqueComponent  implements OnInit {
   }
 
   setValue(event: any): void {
-    let value = event.detail.value
+    console.log("Set value for radio button: " + event.detail.value)
+    this.formGroup.get(`${this.question.id}`)?.setValue(event.detail.value);
+  }
+
+  getValue(): string {
+    return this.formGroup.get(`${this.question.id}`)?.value;
   }
 
 }

@@ -1,8 +1,9 @@
 <app-dataquest-header progressBar></app-dataquest-header>
 <ion-content class="ion-padding">
-
-  <app-type [question]="currentQuestion" *ngIf="getType() !== 'Tabla'"></app-type>
-  <app-table [question]="currentQuestion" *ngIf="getType() === 'Tabla'"></app-table>
+  <ng-container [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <app-type [question]="currentQuestion" [formGroup]="formGroup" *ngIf="getType() !== 'Tabla'"></app-type>
+    <app-table [question]="currentQuestion" [formGroup]="formGroup" *ngIf="getType() === 'Tabla'"></app-table>
+  </ng-container>
 </ion-content>
 <ion-footer>
   <ion-toolbar>
@@ -11,6 +12,9 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="nextQuestion()">Siguiente</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!formGroup.valid">Terminar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>

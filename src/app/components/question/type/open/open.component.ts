@@ -13,6 +13,8 @@ import { PercentageDataTypeComponent } from './percentage-data-type/percentage-d
 import { MonthDataTypeComponent } from './month-data-type/month-data-type.component';
 import { EmailDataTypeComponent } from './email-data-type/email-data-type.component';
 import { MoneyDataTypeComponent } from './money-data-type/money-data-type.component';
+import { Question } from 'src/app/models/question';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-open',
@@ -37,14 +39,15 @@ import { MoneyDataTypeComponent } from './money-data-type/money-data-type.compon
 })
 export class OpenComponent  implements OnInit {
 
-  @Input({ required: true }) questionDataType: string = '';
+  @Input({ required: true }) question!: Question
+  @Input({ required: true }) formGroup!: FormGroup
 
   constructor() { }
 
   ngOnInit() {}
 
   getDataType(): string {
-    return this.questionDataType;
+    return this.question.dataType;
   }
 
 }

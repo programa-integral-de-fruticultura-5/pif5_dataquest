@@ -4,7 +4,7 @@ export class Answer {
     public id: number,
     public order: number,
     public questionId: number,
-    public text: string,
+    public checked: boolean,
     public value: string
   ) {}
 

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
 import { IonModal, IonicModule } from '@ionic/angular';
 import { TypeaheadComponent } from 'src/app/components/typeahead/typeahead.component';
 import { Answer } from 'src/app/models/answer';
+import { Question } from 'src/app/models/question';
 import { AssociationService } from 'src/app/services/association/association.service';
 import { AnswerService } from 'src/app/services/detailed-form/question/answer/answer.service';
 import { ProducerService } from 'src/app/services/producer/producer.service';
@@ -18,6 +19,8 @@ import { ProducerService } from 'src/app/services/producer/producer.service';
 export class AutocompleteComponent  implements OnInit {
 
   @ViewChild('modal', { static: true }) modal!: IonModal;
+  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) formGroup!: FormGroup;
 
   selection!: any
   public answersData!: any[]
@@ -33,7 +36,7 @@ export class AutocompleteComponent  implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    this.selection = this.formGroup.get(`${this.question.id}`)?.value;
     this.answersData = this.getAnswers();
     this.producersData = this.getProducers();
     this.associationsData = this.getAssociations();
@@ -88,6 +91,7 @@ export class AutocompleteComponent  implements OnInit {
 
   selectionChanged(selection: string) {
     this.selection = selection;
+    this.formGroup.get(`${this.question.id}`)?.setValue(selection);
     this.modal.dismiss();
   }
 

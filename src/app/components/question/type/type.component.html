@@ -6,19 +6,26 @@
 
   <ion-card-content>
     <app-open
-      [questionDataType]="getDataType()"
+      [question]="question"
+      [formGroup]="formGroup"
       *ngIf="getType() === 'Abierta'"
     />
-    <app-autocomplete *ngIf="getType() === 'Autocomplete'" />
+    <app-autocomplete
+      [question]="question"
+      [formGroup]="formGroup"
+      *ngIf="getType() === 'Autocomplete'"
+    />
     <app-multiple
-      [questionType]="getType()"
+      [question]="question"
+      [formGroup]="formGroup"
       *ngIf="
         getType() === 'Múltiple respuesta' ||
         getType() === 'Múltiple respuesta con otro'
       "
     />
     <app-unique
-      [questionType]="getType()"
+      [question]="question"
+      [formGroup]="formGroup"
       *ngIf="
         getType() === 'Única respuesta' ||
         getType() === 'Única respuesta con otro' ||

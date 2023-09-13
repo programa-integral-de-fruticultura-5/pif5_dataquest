@@ -7,6 +7,7 @@ import { Question } from 'src/app/models/question';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { AnswerService } from 'src/app/services/detailed-form/question/answer/answer.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-type',
@@ -25,6 +26,7 @@ import { AnswerService } from 'src/app/services/detailed-form/question/answer/an
 export class TypeComponent implements OnInit {
 
   @Input({ required: true }) question!: Question
+  @Input({ required: true }) formGroup!: FormGroup
 
   constructor(private answerService: AnswerService) { }
 
@@ -40,7 +42,7 @@ export class TypeComponent implements OnInit {
     return this.question.type;
   }
 
-  getDataType(): string {
+  getDataType(): string { // TODO move this method to open component
     return this.question.dataType;
   }
 

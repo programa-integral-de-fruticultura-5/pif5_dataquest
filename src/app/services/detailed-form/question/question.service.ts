@@ -1,27 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Question } from 'src/app/models/question';
 import { AnswerService } from './answer/answer.service';
+import { FormGroup } from '@angular/forms';
+import { QuestionControlService } from '../control/question-control.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class QuestionService {
-
-  private filteredQuestions!: Question[]
-  private originalQuestions!: Question[]
-  private tableQuestions!: Question[]
+  private filteredQuestions!: Question[];
+  private originalQuestions!: Question[];
   private progress: number = 0;
 
-  constructor(private answerService: AnswerService) { }
+  constructor(
+    private answerService: AnswerService,
+    private questionControlService: QuestionControlService
+  ) {}
 
-  getQuestions(): Question[] {
-    let filteredQuestions: Question[] = this.filteredQuestions.filter(question => question.questionParentId === null);
-    return this.filteredQuestions.filter(question => question.questionParentId === null);
+  getFilteredQuestions(): Question[] {
+    let filteredQuestions: Question[] = this.filteredQuestions.filter(
+      (question) => question.questionParentId === null
+    );
+    return filteredQuestions;
+  }
+
+  getOriginalQuestions(): Question[] {
+    return this.originalQuestions;
   }
 
   setQuestions(questions: Question[]): void {
     this.originalQuestions = questions;
-    this.filteredQuestions = questions.filter(question => question.questionParentId === null);
+    this.filteredQuestions = questions.filter(
+      (question) => question.questionParentId === null
+    );
   }
 
   setAnswers(current: Question): void {
@@ -51,8 +62,9 @@ export class QuestionService {
 
   nextQuestion(current: Question): Question {
     if (current !== this.getLast()) {
-      let next: Question = this.filteredQuestions[this.getCurrentIndex(current) + 1]
-      this.setAnswers(next)
+      let next: Question =
+        this.filteredQuestions[this.getCurrentIndex(current) + 1];
+      this.setAnswers(next);
       this.updateProgress(next);
       return next;
     }
@@ -66,10 +78,11 @@ export class QuestionService {
 
   previousQuestion(current: Question): Question {
     if (current !== this.getFirst()) {
-      let previous: Question = this.filteredQuestions[this.getCurrentIndex(current) - 1]
-      this.setAnswers(previous)
+      let previous: Question =
+        this.filteredQuestions[this.getCurrentIndex(current) - 1];
+      this.setAnswers(previous);
       this.updateProgress(previous);
-      return previous
+      return previous;
     }
     return current;
   }
@@ -79,10 +92,13 @@ export class QuestionService {
   }
 
   updateProgress(currentQuestion: Question): void {
-    let currentPosition: number = this.getCurrentIndex(currentQuestion) + 1
-    let length: number = this.getFilteredLength()
-    let currentProgress: number = currentPosition / length
-    this.progress = currentProgress
+    let currentPosition: number = this.getCurrentIndex(currentQuestion) + 1;
+    let length: number = this.getFilteredLength();
+    let currentProgress: number = currentPosition / length;
+    this.progress = currentProgress;
   }
 
+  getFormGroup(): FormGroup {
+    return this.questionControlService.toFormGroup(this.originalQuestions);
+  }
 }

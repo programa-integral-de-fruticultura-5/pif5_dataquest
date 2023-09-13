@@ -3,6 +3,7 @@ import { Component, Input, SimpleChanges  } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { Question } from 'src/app/models/question';
 import { TypeComponent } from '../type.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-table',
@@ -17,7 +18,8 @@ import { TypeComponent } from '../type.component';
 })
 export class TableComponent {
 
-  @Input({required: true}) question!: Question;
+  @Input({required: true}) question!: any;
+  @Input({required: true}) formGroup!: FormGroup;
 
   constructor() { }
 

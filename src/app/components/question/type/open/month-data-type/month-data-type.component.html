@@ -1,2 +1,7 @@
-<ion-datetime presentation="month-year"></ion-datetime>
-
+<ng-container>
+  <ion-datetime
+    [value]="getValue()"
+    (ionChange)="onChange($event)"
+    presentation="month-year"
+  ></ion-datetime>
+</ng-container>

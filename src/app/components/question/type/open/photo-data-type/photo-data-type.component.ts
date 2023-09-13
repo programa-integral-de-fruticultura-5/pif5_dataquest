@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { Question } from 'src/app/models/question';
 import { PhotoService } from 'src/app/services/detailed-form/question/photo/photo.service';
 
 @Component({
@@ -10,6 +12,9 @@ import { PhotoService } from 'src/app/services/detailed-form/question/photo/phot
   imports: [ IonicModule ],
 })
 export class PhotoDataTypeComponent  implements OnInit {
+
+  @Input({ required: true }) question!: Question
+  @Input({ required: true }) formGroup!: FormGroup
 
   constructor(private photoService: PhotoService) { }
 

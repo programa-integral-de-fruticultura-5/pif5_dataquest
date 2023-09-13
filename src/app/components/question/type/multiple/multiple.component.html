@@ -1,11 +1,12 @@
-<ion-list>
-  <ion-item *ngFor="let answer of getAnswers()">
-    <ion-checkbox
-      (ionChange)="setValue($event)"
-      [value]="answer.value"
-      labelPlacement="end"
-      justify="start"
-      >{{ answer.value }}</ion-checkbox
-    >
-  </ion-item>
-</ion-list>
+<div [formGroup]="getFormGroup()">
+  <ion-list>
+    <ion-item *ngFor="let answer of getAnswers()">
+      <ion-checkbox
+        [formControlName]="answer.id"
+        labelPlacement="end"
+        justify="start"
+        >{{ answer.value }}</ion-checkbox
+      >
+    </ion-item>
+  </ion-list>
+</div>

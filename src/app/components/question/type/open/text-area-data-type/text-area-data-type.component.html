@@ -1,4 +1,9 @@
 <ion-item>
-  <ion-textarea placeholder="Escribe aquí tu respuesta" [autoGrow]="true" value="  Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus molestias nihil modi voluptas delectus maxime voluptate earum totam dicta quia, quam velit excepturi. Quaerat perspiciatis excepturi ipsam reprehenderit architecto cumque, quidem modi deleniti, nemo illum corrupti recusandae saepe, odit deserunt magnam iste sunt vero repellendus quae! Voluptatum qui temporibus dolore illum laboriosam ipsam modi voluptatem cumque consequatur illo accusamus cupiditate debitis placeat odio dolor, eaque ducimus obcaecati, culpa repudiandae quae nihil veniam pariatur consectetur numquam! Cumque aliquam tenetur commodi expedita unde sed delectus nihil neque? Sunt quidem consequuntur enim voluptatum perferendis minus, amet nisi eius molestias quisquam cumque nesciunt odit!"/>
-  <ion-icon name="text" slot="start"/>
+  <ion-textarea
+    placeholder="Escribe aquí tu respuesta"
+    [value]="getValue()"
+    (ionChange)="setValue($event)"
+    [autoGrow]="true"
+  />
+  <ion-icon name="text" slot="start" />
 </ion-item>

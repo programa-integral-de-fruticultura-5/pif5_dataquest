@@ -1,6 +1,8 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import SignaturePad from 'signature_pad';
 import { IonicModule } from '@ionic/angular';
+import { Question } from 'src/app/models/question';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-drawing-pad-data-type',
@@ -12,6 +14,8 @@ import { IonicModule } from '@ionic/angular';
 export class DrawingPadDataTypeComponent {
 
   private signaturePad!: SignaturePad;
+  @Input({ required: true }) question!: Question
+  @Input({ required: true }) formGroup!: FormGroup
 
   @ViewChild('canvas')
   canvas!: ElementRef;
@@ -48,6 +52,7 @@ export class DrawingPadDataTypeComponent {
   savePad() {
     const base64Data = this.signaturePad.toDataURL();
     this.signatureImg = base64Data;
+    this.formGroup.get(`${this.question.id}`)?.setValue(base64Data);
   }
 
   undoPad() {

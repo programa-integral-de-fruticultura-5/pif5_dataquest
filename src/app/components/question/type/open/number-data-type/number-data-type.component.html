@@ -1,4 +1,9 @@
 <ion-item>
-  <ion-input type="number" placeholder="Ingrese aquí"/>
-  <ion-icon name="keypad" slot="start"/>
+  <ion-input
+    type="number"
+    [value]="getValue()"
+    (ionChange)="setValue($event)"
+    placeholder="Ingrese aquí"
+  />
+  <ion-icon name="keypad" slot="start" />
 </ion-item>
