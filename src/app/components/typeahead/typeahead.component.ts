@@ -27,7 +27,7 @@ export class TypeaheadComponent {
 
   select(item: string) {
     this.workingSelectedValue = item;
-    console.log('select', this.workingSelectedValue);
+    this.confirmChanges();
   }
 
   trackItems(index: number, item: string) {

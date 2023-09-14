@@ -3,12 +3,12 @@
     <ion-buttons slot="start">
       <ion-button (click)="cancelChanges()">Cancelar</ion-button>
     </ion-buttons>
-    <ion-title>{{ title }}</ion-title>
+    <ion-title class="ion-text-center">{{ title }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="confirmChanges()">Hecho</ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar class="ion-padding">
     <ion-searchbar (ionInput)="searchbarInput($event)"></ion-searchbar>
   </ion-toolbar>
 </ion-header>

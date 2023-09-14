@@ -1,6 +1,6 @@
 <ion-list [inset]="true">
-  <ion-item [button]="true" [detail]="false" id="select-item">
-    <ion-label *ngIf="!selection">Selecciona uno</ion-label>
+  <ion-item button detail id="select-item" lines="full">
+    <ion-label slot="start" *ngIf="!selection">Selecciona uno</ion-label>
     <div slot="start" id="selected-item">{{ selection }}</div>
   </ion-item>
 </ion-list>
