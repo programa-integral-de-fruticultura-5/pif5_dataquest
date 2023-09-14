@@ -14,7 +14,7 @@
             <ion-label>Sección {{ i + 1 }}</ion-label>
           </ion-item>
           <app-type
-            [formGroup]="formGroup"
+            [formGroup]="getFormGroup(i)"
             *ngFor="let question of questions"
             [question]="question"
             slot="content"

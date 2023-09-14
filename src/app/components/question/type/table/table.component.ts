@@ -3,7 +3,7 @@ import { Component, Input, SimpleChanges  } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { Question } from 'src/app/models/question';
 import { TypeComponent } from '../type.component';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-table',
@@ -46,6 +46,11 @@ export class TableComponent {
 
   getCategory(): string {
     return this.question.question_category.name;
+  }
+
+  getFormGroup(index: number): FormGroup {
+    const formArray: FormArray = this.formGroup.controls[this.question.id] as FormArray;
+    return formArray.at(index) as FormGroup;
   }
 
 }

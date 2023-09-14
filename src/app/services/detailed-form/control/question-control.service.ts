@@ -1,25 +1,34 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Question } from 'src/app/models/question';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuestionControlService {
-  constructor() {}
+  constructor(private fb: FormBuilder) {}
 
   public toFormGroup(questions: Question[]): FormGroup {
     const group: any = {};
-    console.log('Question control service');
     questions.forEach((question) => {
-      console.log(question);
       group[question.id] = this.getFormControl(question);
     });
 
     return new FormGroup(group);
   }
 
-  private getFormControl(question: Question): FormControl | FormGroup {
+  private getFormControl(
+    question: Question
+  ): FormControl | FormGroup | FormArray {
     if (question.required === 1) {
       return this.assignFormControls(question, true);
     } else {
@@ -27,37 +36,47 @@ export class QuestionControlService {
     }
   }
 
-  private generateControlArray(question: Question): FormControl[] {
-    let array: FormControl[] = [];
-    array = question.answers
-      .filter((answer) => answer.checked)
-      .map((answer) => new FormControl(answer.value));
-    return array;
+  private generateFormArray(question: Question, required: boolean): FormArray {
+    const formArray: FormArray = new FormArray([] as FormGroup[]);
+    let group: { [key: string]: any } = {};
+    question.questionChildren[0].forEach((child) => {
+      group[child.id] = this.getFormControl(child);
+    });
+    formArray.push(new FormGroup(group, required ? this.requiredChildrenResponse() : null));
+    if (required)
+      formArray.setValidators(this.requiredTableResponse());
+    return formArray;
   }
 
   private assignFormControls(
     question: Question,
     required: boolean
-  ): FormControl | FormGroup {
-    switch (question.type) {
-      case 'Abierta':
+  ): FormControl | FormGroup | FormArray {
+    let type = question.type;
+
+      if (type === 'Abierta') {
         return new FormControl(
           question.answers[0].value || '',
           required ? Validators.required : null
         );
-      case 'Única respuesta' || 'Autocomplete':
+      }
+
+      if(type === 'Autocomplete' || type === 'Única respuesta' || type === 'Única respuesta con otro' || type === 'Única respuesta con select') {
         return new FormControl(
           question.answers.filter((answer) => answer.checked)[0]?.value || '',
           required ? Validators.required : null
         );
-      case 'Múltiple respuesta':
+      }
+
+      if (type === 'Múltiple respuesta' || type === 'Múltiple respuesta con otro') {
         return new FormGroup(
           this.generateFormGroup(question),
           required ? this.atLeastOneChecked() : null
         );
-      default:
-        return new FormControl('', required ? Validators.required : null);
-    }
+      }
+
+      return this.generateFormArray(question, required);
+
   }
 
   private generateFormGroup(question: Question): any {
@@ -81,5 +100,29 @@ export class QuestionControlService {
     };
   }
 
-}
+  private requiredChildrenResponse(): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      if (formGroup instanceof FormGroup) {
+        const invalidControls = Object.keys(formGroup.controls).filter((key) => !formGroup.controls[key].valid);
 
+        if (invalidControls.length > 0) {
+          return { requiredChildrenResponse: true };
+        }
+      }
+      return null;
+    };
+  }
+
+  private requiredTableResponse(): ValidatorFn {
+    return (formArray: AbstractControl): ValidationErrors | null => {
+      if (formArray instanceof FormArray) {
+        for (const formGroup of formArray.controls) {
+          if (formGroup instanceof FormGroup && !formGroup.valid) {
+            return { requiredTableResponse: true };
+          }
+        }
+      }
+      return null;
+    };
+  }
+}
