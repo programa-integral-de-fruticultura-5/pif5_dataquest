@@ -27,7 +27,6 @@ export class UniqueComponent  implements OnInit {
   }
 
   setValue(event: any): void {
-    console.log("Set value for radio button: " + event.detail.value)
     this.formGroup.get(`${this.question.id}`)?.setValue(event.detail.value);
   }
 
