@@ -1,3 +1,7 @@
-<ng-container [formGroup]="formGroup">
-  <ion-datetime [formControlName]="question.id" presentation="date"></ion-datetime>
+<ng-container>
+  <ion-datetime
+    [value]="getValue()"
+    (ionChange)="setValue($event)"
+    presentation="date"
+  ></ion-datetime>
 </ng-container>
