@@ -20,9 +20,8 @@ export class PhotoDataTypeComponent  implements OnInit {
 
   ngOnInit() { }
 
-  savePhoto() {
-    this.photoService.addNewToGallery().then((photo) => {
-      console.log(photo)
+  takePhoto() {
+    this.photoService.takePhoto().then((photo) => {
       this.formGroup.get(`${this.question.id}`)?.setValue(photo);
     })
   }
