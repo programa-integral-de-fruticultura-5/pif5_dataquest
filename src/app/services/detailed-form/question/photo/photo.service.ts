@@ -10,12 +10,16 @@ export class PhotoService {
 
   constructor() { }
 
-  public async addNewToGallery() {
+  public async addNewToGallery(): Promise<string> {
     // Take a photo
     const capturedPhoto = await Camera.getPhoto({
-      resultType: CameraResultType.Uri,
+      resultType: CameraResultType.Base64,
       source: CameraSource.Camera,
-      quality: 100
+      quality: 50
     });
+
+    const photo = capturedPhoto.base64String!;
+
+    return photo;
   }
 }

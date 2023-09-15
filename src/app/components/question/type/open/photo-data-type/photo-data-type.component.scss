@@ -1,0 +1,14 @@
+ion-content {
+  height: 70vh;
+}
+
+ion-img::part(image) {
+  border-radius: 5%;
+}
+
+ion-img {
+  width: 100%;
+  height: 85%;
+  background-color: lightgray;
+  border-radius: 5%;
+}

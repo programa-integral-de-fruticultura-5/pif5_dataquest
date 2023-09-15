@@ -18,10 +18,18 @@ export class PhotoDataTypeComponent  implements OnInit {
 
   constructor(private photoService: PhotoService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  addPhotoToGallery() {
-    this.photoService.addNewToGallery();
+  savePhoto() {
+    this.photoService.addNewToGallery().then((photo) => {
+      console.log(photo)
+      this.formGroup.get(`${this.question.id}`)?.setValue(photo);
+    })
   }
 
+  getPhoto(): any {
+    let photoBase64 = this.formGroup.get(`${this.question.id}`)?.value;
+    let photo = `data:image/jpeg;base64,${photoBase64}`;
+    return photo;
+  }
 }
