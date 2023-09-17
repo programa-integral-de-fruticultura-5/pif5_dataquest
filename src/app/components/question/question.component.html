@@ -7,14 +7,20 @@
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="previousQuestion()">Anterior</ion-button>
+    <ion-buttons slot="start" *ngIf="!isFirstQuestion()">
+      <ion-button (click)="previousQuestion()">
+        <ion-icon name="chevron-back-circle"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button (click)="nextQuestion()">Siguiente</ion-button>
+    <ion-buttons slot="primary" *ngIf="formGroup.valid">
+      <ion-button (click)="onSubmit()">
+        <ion-icon name="save"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button [disabled]="!formGroup.valid">Terminar</ion-button>
+    <ion-buttons slot="end" *ngIf="!isLastQuestion()">
+      <ion-button (click)="nextQuestion()">
+        <ion-icon name="chevron-forward-circle"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>

@@ -1,14 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { QuestionService } from 'src/app/services/detailed-form/question/question.service';
-import { OpenComponent } from './type/open/open.component';
 import { Question } from 'src/app/models/question';
 import { DataquestHeaderComponent } from '../header/dataquest-header/dataquest-header.component';
 import { CommonModule } from '@angular/common';
-import { AutocompleteComponent } from './type/autocomplete/autocomplete.component';
-import { MultipleComponent } from './type/multiple/multiple.component';
 import { TableComponent } from './type/table/table.component';
-import { UniqueComponent } from './type/unique/unique.component';
 import { TypeComponent } from './type/type.component';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -64,6 +60,18 @@ export class QuestionComponent {
 
   isValid() {
     return this.formGroup.controls[this.currentQuestion.id].valid;
+  }
+
+  isLastQuestion(): boolean {
+    let question: Question = this.currentQuestion
+    let lastQuestion: Question = this.questionService.getLast()
+    return question.id === lastQuestion.id
+  }
+
+  isFirstQuestion(): boolean {
+    let question: Question = this.currentQuestion
+    let firstQuestion: Question = this.questionService.getFirst()
+    return question.id === firstQuestion.id
   }
 
 }
