@@ -9,36 +9,48 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './drawing-pad-data-type.component.html',
   styleUrls: ['./drawing-pad-data-type.component.scss'],
   standalone: true,
-  imports: [ IonicModule ]
+  imports: [IonicModule],
 })
 export class DrawingPadDataTypeComponent {
-
   private signaturePad!: SignaturePad;
-  @Input({ required: true }) question!: Question
-  @Input({ required: true }) formGroup!: FormGroup
+  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) formGroup!: FormGroup;
 
   @ViewChild('canvas')
   canvas!: ElementRef;
 
   signatureImg!: string;
 
-  constructor() { }
+  constructor() {}
 
   ngAfterViewInit() {
     this.signaturePad = new SignaturePad(this.canvas.nativeElement);
-    this.savePad();
-    this.signaturePad.throttle = 0;
-    this.signaturePad.minDistance = 0;
+    window.addEventListener('resize', () => this.resizeCanvas());
+    this.resizeCanvas();
+  }
+
+  resizeCanvas() {
     this.canvas.nativeElement.style.width = '100%';
     this.canvas.nativeElement.style.height = '100%';
-    this.canvas.nativeElement.width = this.canvas.nativeElement.offsetWidth;
-    this.canvas.nativeElement.height = this.canvas.nativeElement.offsetHeight;
+    var width = this.canvas.nativeElement.offsetWidth;
+    var height = this.canvas.nativeElement.offsetHeight;
+    var ratio = Math.max(window.devicePixelRatio || 1, 1);
+    this.canvas.nativeElement.width = width * ratio;
+    this.canvas.nativeElement.height = height * ratio;
+    this.canvas.nativeElement.getContext('2d').scale(ratio, ratio);
+    this.setSignature();
+  }
+
+  setSignature() {
+    this.signaturePad.clear();
+    let signature = this.formGroup.get(`${this.question.id}`)?.value;
+    this.signaturePad.fromDataURL(signature);
+    this.signatureImg = signature;
   }
 
   startDrawing(event: Event) {
     console.log(event);
     // works in device not in browser
-
   }
 
   moved(event: Event) {
@@ -50,7 +62,8 @@ export class DrawingPadDataTypeComponent {
   }
 
   savePad() {
-    const base64Data = this.signaturePad.toDataURL();
+    const base64Data = this.signaturePad.toDataURL('image/png', 0.5);
+    console.log(base64Data);
     this.signatureImg = base64Data;
     this.formGroup.get(`${this.question.id}`)?.setValue(base64Data);
   }
