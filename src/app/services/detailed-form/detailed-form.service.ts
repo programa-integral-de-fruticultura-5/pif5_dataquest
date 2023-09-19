@@ -41,5 +41,8 @@ export class DetailedFormService {
     return this.selectedForm.questions.length;
   }
 
+  public startDraft(): void {
+    this.selectedForm.draft = true;
+  }
 
 }

@@ -19,8 +19,6 @@ export class DetailedFormComponent {
 
   component = QuestionComponent
 
-  value: boolean = false;
-
   constructor(
     private detailedFormService: DetailedFormService,
     private alertController: AlertController
@@ -80,7 +78,8 @@ export class DetailedFormComponent {
     return this.detailedFormService.getTotalQuestions();
   }
 
-  startForm(): boolean {
-    return !this.value;
+  startDraft(): void {
+    console.log('start draft')
+    this.detailedFormService.startDraft()
   }
 }
