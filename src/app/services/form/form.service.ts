@@ -28,16 +28,21 @@ export class FormService {
 
         // Iterate through each form and initialize questionChildren arrays
         forms.forEach((form: Form) => {
-          form.questions.forEach((question: Question) => {
-            if (question.type === 'Tabla') {
-              let children: Question[][] = this.getQuestionChildren(question, form);
-              question.questionChildren = children;
-            }
-          });
-        });
 
-        this.forms = forms;
-        console.log(this.forms)
+          let foundForm: Form | undefined = this.forms.find((f: Form) => f.id === form.id)
+          if (!foundForm) {
+            form.draft = false;
+
+            form.questions.forEach((question: Question) => {
+              if (question.type === 'Tabla') {
+                let children: Question[][] = this.getQuestionChildren(question, form);
+                question.questionChildren = children;
+              }
+            })
+
+            this.forms.push(form);
+          }
+        })
       },
       (err) => {
         console.log(err);
@@ -67,6 +72,10 @@ export class FormService {
 
   public getForms(): Form[] {
     return this.forms.filter((form) => !form.draft)
+  }
+
+  public getDrafts(): Form[] {
+    return this.forms.filter((form) => form.draft)
   }
 
 }
