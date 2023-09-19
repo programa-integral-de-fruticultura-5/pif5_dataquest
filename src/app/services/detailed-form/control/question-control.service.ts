@@ -38,11 +38,13 @@ export class QuestionControlService {
 
   private generateFormArray(question: Question, required: boolean): FormArray {
     const formArray: FormArray = new FormArray([] as FormGroup[]);
-    let group: { [key: string]: any } = {};
-    question.questionChildren[0].forEach((child) => {
-      group[child.id] = this.getFormControl(child);
-    });
-    formArray.push(new FormGroup(group, required ? this.requiredChildrenResponse() : null));
+    question.questionChildren.forEach((section) => {
+      let group: { [key: string]: any } = {};
+      section.forEach((child) => {
+        group[child.id] = this.getFormControl(child);
+      });
+      formArray.push(new FormGroup(group, required ? this.requiredChildrenResponse() : null));
+    })
     if (required)
       formArray.setValidators(this.requiredTableResponse());
     return formArray;
