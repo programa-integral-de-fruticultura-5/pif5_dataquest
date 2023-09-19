@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { TabsPage } from './home.page';
+import { HomePage } from './home.page';
 
 export const routes: Routes = [
   {
     path: '',
-    component: TabsPage,
+    component: HomePage,
     children: [
       {
         path: 'forms',
@@ -12,9 +12,9 @@ export const routes: Routes = [
           import('../forms/forms.page').then((m) => m.FormsPage),
       },
       {
-        path: 'tab2',
+        path: 'drafts',
         loadComponent: () =>
-          import('../tab2/tab2.page').then((m) => m.Tab2Page),
+          import('../drafts/drafts.page').then((m) => m.DraftsPage),
       },
       {
         path: 'tab3',
