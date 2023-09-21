@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
 import { environment } from 'src/environments/environment';
+import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,9 @@ export class ApiService {
     return this.httpClient.post<T>(`/api/${endpoint}/`, resource);
   } */
 
-  public post (endpoint: string, resource?: { email: string; password: string; }): Promise<HttpResponse> {
-    const token = window.sessionStorage.getItem('TOKEN_KEY');
+  public async post (endpoint: string, resource?: { email: string; password: string; }): Promise<HttpResponse> {
+    const result = await Preferences.get({ key: 'TOKEN_KEY' });
+    const token = result.value
     const options = {
       url: `${this.url}/api/${endpoint}`,
       headers: {
