@@ -1,47 +1,65 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
-import { Observable } from 'rxjs';
 import { ApiService } from '../api/api.service';
 import { HttpResponse } from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
-const TOKEN_KEY = "TOKEN_KEY";
-const ENDPOINT = "auth/login"
+const TOKEN_KEY = 'TOKEN_KEY';
+const ENDPOINT = 'auth/login';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   constructor(
     private router: Router,
-    private api: ApiService
-  ) { }
+    private api: ApiService,
+    private jwtHelperService: JwtHelperService
+  ) {}
 
-  public saveToken(token: string): void {
-    window.sessionStorage.removeItem(TOKEN_KEY);
-    window.sessionStorage.setItem(TOKEN_KEY, token);
+  public saveToken(token: string) {
+    this.removeToken();
+    const options = { key: TOKEN_KEY, value: token };
+    Preferences.set(options);
   }
 
-  public getToken(): string | null {
-    return window.sessionStorage.getItem(TOKEN_KEY);
+  public async getToken(): Promise<string | null> {
+    const token = await Preferences.get({ key: TOKEN_KEY });
+    return token.value || null;
   }
 
-  public decodeToken(): string | null {
-    const token = this.getToken();
+  public removeToken() {
+    Preferences.remove({ key: TOKEN_KEY });
+  }
+
+  public async decodeToken(token: string): Promise<boolean> {
     if (token) {
       return jwt_decode(token);
     }
-    return null;
+    return false;
   }
 
-  public login(credentials: { email: string, password: string }): Promise<HttpResponse> {
-    return this.api.post(ENDPOINT, credentials)
+  public login(credentials: {
+    email: string;
+    password: string;
+  }): Promise<HttpResponse> {
+    return this.api.post(ENDPOINT, credentials);
   }
 
   public logout(): void {
-    window.sessionStorage.clear();
+    this.removeToken();
     this.router.navigate(['/login']);
   }
 
+  public async isLogged(): Promise<boolean> {
+    const token = (await this.getToken()) as string;
+    const decodedToken = await this.decodeToken(token);
+    return decodedToken && !this.isTokenExpired(token);
+  }
+
+  private isTokenExpired(token: string): boolean {
+    return this.jwtHelperService.isTokenExpired(token);
+  }
 }
