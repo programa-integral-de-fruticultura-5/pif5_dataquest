@@ -3,51 +3,94 @@ import { ApiService } from '../api/api.service';
 import { Form } from 'src/app/models/form';
 import { HttpResponse } from '@capacitor/core';
 import { Question } from 'src/app/models/question';
+import { StorageService } from '../storage/storage.service';
+import { Network } from '@capacitor/network';
 
 const ENDPOINT = 'form-detail';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FormService {
-
   private forms: Form[];
 
   constructor(
-    private apiService: ApiService
+    private apiService: ApiService,
+    private storageService: StorageService
   ) {
     this.forms = [];
+    this.requestForms();
+    this.enableListner();
   }
 
-  public sendRequest(): void {
+  private enableListner() {
+    Network.addListener('networkStatusChange', (status) => {
+      let connectionType = status.connectionType;
+      if (connectionType === 'wifi' || connectionType === 'cellular') {
+        this.requestForms();
+      }
+    });
+  }
+
+  public async requestForms(): Promise<void> {
+    const { connected } = await Network.getStatus();
+    if (connected) {
+      this.getLocalForms();
+      this.getRemoteForms();
+    } else {
+      this.getLocalForms();
+    }
+  }
+
+  private getLocalForms(): void {
+    this.storageService.get('forms')?.then((forms) => {
+      if (forms) {
+        this.forms = forms;
+      }
+    });
+  }
+
+  private setLocalForms(): void {
+    this.storageService.set('forms', this.forms);
+  }
+
+  private getRemoteForms(): void {
     var response: Promise<HttpResponse> = this.apiService.post(ENDPOINT);
 
     response.then(
       (formsResponse) => {
-        const forms = JSON.parse(formsResponse.data);
-
-        // Iterate through each form and initialize questionChildren arrays
-        forms.forEach((form: Form) => {
-
-          let foundForm: Form | undefined = this.forms.find((f: Form) => f.id === form.id)
-          if (!foundForm) {
-            form.draft = false;
-
-            form.questions.forEach((question: Question) => {
-              if (question.type === 'Tabla') {
-                let children: Question[][] = this.getQuestionChildren(question, form);
-                question.questionChildren = children;
-              }
-            })
-
-            this.forms.push(form);
-          }
-        })
+        const forms: Form[] = JSON.parse(formsResponse.data);
+        this.processForms(forms);
+        this.setLocalForms();
       },
       (err) => {
-        console.log(err);
+        throw new Error(err);
       }
     );
+  }
+
+  private processForms(forms: Form[]): void {
+    // Iterate through each form and initialize questionChildren arrays
+    forms.forEach((form: Form) => {
+      let foundForm: Form | undefined = this.forms.find(
+        (f: Form) => f.id === form.id
+      );
+      if (!foundForm) {
+        form.draft = false;
+
+        form.questions.forEach((question: Question) => {
+          if (question.type === 'Tabla') {
+            let children: Question[][] = this.getQuestionChildren(
+              question,
+              form
+            );
+            question.questionChildren = children;
+          }
+        });
+
+        this.forms.push(form);
+      }
+    });
   }
 
   private getQuestionChildren(question: Question, form: Form): Question[][] {
@@ -67,15 +110,17 @@ export class FormService {
     children.push(base);
 
     return children;
-
   }
 
   public getForms(): Form[] {
-    return this.forms.filter((form) => !form.draft)
+    return this.forms.filter((form) => !form.draft);
   }
 
   public getDrafts(): Form[] {
-    return this.forms.filter((form) => form.draft)
+    return this.forms.filter((form) => form.draft);
   }
 
+  public save(): void {
+    this.setLocalForms();
+  }
 }
