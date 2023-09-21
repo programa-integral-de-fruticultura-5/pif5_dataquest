@@ -1,31 +1,21 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import jwt_decode from 'jwt-decode';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard {
+  constructor(public authService: AuthService, public router: Router) {}
 
-  constructor(
-    public authService: AuthService,
-    public router: Router,
-    private jwtHelper: JwtHelperService
-  ) { }
+  async canActivate() {
 
-  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    const Logged = await this.authService.isLogged();
 
-    const decodedToken = this.authService.decodeToken();
-
-    if (!decodedToken || this.jwtHelper.isTokenExpired(this.authService.getToken())) {
-      this.authService.logout();
-      this.router.navigate(['/login']);
+    if (Logged) {
+      this.router.navigate(['/home']);
     }
 
     return true;
   }
-
 }
