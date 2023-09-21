@@ -56,7 +56,7 @@ export class FormListComponent implements OnInit {
   }
 
   private requestData() {
-    this.formsService.sendRequest();
+    this.formsService.requestForms();
     this.producersService.sendRequest();
     this.associationService.sendRequest();
   }

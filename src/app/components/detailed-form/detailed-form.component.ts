@@ -21,6 +21,7 @@ export class DetailedFormComponent {
 
   constructor(
     private detailedFormService: DetailedFormService,
+    private formService: FormService,
     private alertController: AlertController
   ) { }
 
@@ -79,7 +80,7 @@ export class DetailedFormComponent {
   }
 
   startDraft(): void {
-    console.log('start draft')
     this.detailedFormService.startDraft()
+    this.formService.save()
   }
 }
