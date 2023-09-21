@@ -85,7 +85,7 @@ export class LoginPage implements OnInit {
   }
 
   private requestForms(): void {
-    this.formService.sendRequest();
+    this.formService.requestForms();
   }
 
   private requestProducers(): void {
