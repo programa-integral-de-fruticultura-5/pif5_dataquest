@@ -20,7 +20,6 @@ export class MonthDataTypeComponent  implements OnInit {
   ngOnInit() {}
 
   onChange(event: any) {
-    console.log(event.detail.value)
     this.formGroup.controls[this.question.id].setValue(event.detail.value)
   }
 
