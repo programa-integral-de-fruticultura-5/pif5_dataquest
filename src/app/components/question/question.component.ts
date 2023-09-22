@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { TableComponent } from './type/table/table.component';
 import { TypeComponent } from './type/type.component';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Form } from 'src/app/models/form';
+import { AnswerRelationService } from 'src/app/services/detailed-form/question/answer-relation/answer-relation.service';
 
 @Component({
   selector: 'app-question',
@@ -19,38 +19,40 @@ import { Form } from 'src/app/models/form';
     TypeComponent,
     TableComponent,
     DataquestHeaderComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   standalone: true,
 })
 export class QuestionComponent {
+  currentQuestion!: Question;
+  formGroup!: FormGroup;
 
-  currentQuestion!: Question
-  formGroup!: FormGroup
-
-  constructor(private questionService: QuestionService) { }
+  constructor(
+    private questionService: QuestionService,
+    private answerRelationService: AnswerRelationService
+  ) {}
 
   ngOnInit() {
-    this.currentQuestion = this.questionService.getFirst()
-    this.formGroup = this.questionService.getFormGroup()
+    this.currentQuestion = this.questionService.getFirst();
+    this.formGroup = this.questionService.getFormGroup();
   }
 
   nextQuestion(): void {
     if (this.isValid()) {
-      this.saveResponse(this.currentQuestion, this.formGroup)
-      this.currentQuestion = this.questionService.nextQuestion(this.currentQuestion)
+      this.saveResponse(this.currentQuestion, this.formGroup);
+      this.currentQuestion = this.getNextQuestionFrom(this.currentQuestion);
     } else {
-      console.log('invalid')
+      console.log("invalid");
+      let array: FormArray = this.formGroup.controls[this.currentQuestion.id] as FormArray;
+      console.log(array.at(0));
     }
   }
 
   previousQuestion(): void {
-    this.currentQuestion = this.questionService.previousQuestion(this.currentQuestion)
+    this.currentQuestion = this.getPreviousQuestionFrom(this.currentQuestion);
   }
 
-  onSubmit() {
-
-  }
+  onSubmit() {}
 
   getCategory(): string {
     return this.currentQuestion.question_category.name;
@@ -65,67 +67,94 @@ export class QuestionComponent {
   }
 
   isLastQuestion(): boolean {
-    let question: Question = this.currentQuestion
-    let lastQuestion: Question = this.questionService.getLast()
-    return question.id === lastQuestion.id
+    let question: Question = this.currentQuestion;
+    let lastQuestion: Question = this.questionService.getLast();
+    return question.id === lastQuestion.id;
   }
 
   isFirstQuestion(): boolean {
-    let question: Question = this.currentQuestion
-    let firstQuestion: Question = this.questionService.getFirst()
-    return question.id === firstQuestion.id
+    let question: Question = this.currentQuestion;
+    let firstQuestion: Question = this.questionService.getFirst();
+    return question.id === firstQuestion.id;
   }
 
   private saveResponse(question: Question, formGroup: FormGroup): void {
-    let type = question.type;
-
-      if (type === 'Abierta') {
+    switch (question.type) {
+      case 'Abierta':
         this.saveOpenResponse(question, formGroup);
-      }
-
-      if(type === 'Autocomplete' || type === 'Única respuesta' || type === 'Única respuesta con otro' || type === 'Única respuesta con select') {
-        this.saveUniqueResponse(question, formGroup);
-      }
-
-      if (type === 'Múltiple respuesta' || type === 'Múltiple respuesta con otro') {
-        this.saveMultipleResponse(question, formGroup);
-      }
-
-      if (type === 'Tabla') {
+        break;
+      case 'Tabla':
         this.saveTableResponse(question, formGroup);
-      }
-
+        break;
+      default:
+        const questionFormGroup: FormGroup = formGroup.controls[
+          question.id
+        ] as FormGroup;
+        this.saveSelection(question, questionFormGroup);
+    }
   }
 
   private saveTableResponse(question: Question, formGroup: FormGroup) {
-    let questionFormArray: FormArray = formGroup.controls[question.id] as FormArray;
+    let questionFormArray: FormArray = formGroup.controls[
+      question.id
+    ] as FormArray;
     this.currentQuestion.questionChildren.forEach((section, index) => {
-      let sectionFormGroup: FormGroup = questionFormArray.at(index) as FormGroup;
+      let sectionFormGroup: FormGroup = questionFormArray.at(
+        index
+      ) as FormGroup;
       section.forEach((child) => {
         this.saveResponse(child, sectionFormGroup);
       });
     });
   }
 
-  private saveMultipleResponse(question: Question, formGroup: FormGroup) {
-    let response = formGroup.controls[this.currentQuestion.id].value
-    let answers = question.answers
-    answers.forEach(answer => {
-      answer.checked = response[answer.id]
-    })
-  }
-
-  private saveUniqueResponse(question: Question, formGroup: FormGroup) {
-    let response = formGroup.controls[this.currentQuestion.id].value
-    let answers = question.answers
-    answers.find(answer => answer.value === response)!.checked = true
+  private saveSelection(question: Question, answersFormGroup: FormGroup) {
+    question.answers.forEach((answer) => {
+      const value: boolean =
+        answersFormGroup.controls[answer.id.toString()].value;
+      answer.checked = value;
+    });
   }
 
   private saveOpenResponse(question: Question, formGroup: FormGroup) {
-    let response = formGroup.controls[this.currentQuestion.id].value
-    let value = question.answers[0].value
-    value = response
+    let formResponse = formGroup.controls[question.id].value;
+    let answer = question.answers[0];
+    answer.value = formResponse;
   }
 
+  private getNextQuestionFrom(question: Question): Question {
+    const nextQuestion: Question = this.questionService.nextQuestion(question);
+    const formGroup: FormGroup = this.formGroup;
+    const checkedAnswersRelation: boolean =
+      this.answerRelationService.checkAnswerRelation(nextQuestion, formGroup);
 
+    if (checkedAnswersRelation) {
+      this.enableQuestion(nextQuestion, formGroup);
+      return nextQuestion;
+    } else {
+      this.disableQuestion(nextQuestion, formGroup);
+      return this.getNextQuestionFrom(nextQuestion);
+    }
+  }
+
+  private getPreviousQuestionFrom(question: Question): Question {
+    const previousQuestion: Question =
+      this.questionService.previousQuestion(question);
+    const id: string = previousQuestion.id.toString();
+    const disabled: boolean = this.formGroup.get(id)!.disabled;
+
+    if (disabled) {
+      return this.getPreviousQuestionFrom(previousQuestion);
+    } else {
+      return previousQuestion;
+    }
+  }
+
+  private enableQuestion(question: Question, formGroup: FormGroup): void {
+    this.answerRelationService.enableQuestion(question, formGroup);
+  }
+
+  private disableQuestion(question: Question, formGroup: FormGroup): void {
+    this.answerRelationService.disableQuestion(question, formGroup);
+  }
 }

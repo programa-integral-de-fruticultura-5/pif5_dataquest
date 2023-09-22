@@ -13,17 +13,25 @@
           <ion-item slot="header" color="light">
             <ion-label>Sección {{ i + 1 }}</ion-label>
           </ion-item>
-          <app-type
-            [formGroup]="getFormGroup(i)"
-            *ngFor="let question of questions"
-            [question]="question"
-            slot="content"
-          ></app-type>
+          <ng-container *ngFor="let question of questions">
+            <app-type
+              *ngIf="showQuestion(question, i)"
+              [formGroup]="getFormGroup(i)"
+              [question]="question"
+              slot="content"
+            ></app-type>
+          </ng-container>
         </ion-accordion>
       </ion-accordion-group>
     </ion-card-content>
   </ion-card>
-  <ion-fab [hidden]="question.extends === 0" slot="fixed" vertical="bottom" horizontal="end" size="small">
+  <ion-fab
+    [hidden]="question.extends === 0"
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end"
+    size="small"
+  >
     <ion-fab-button>
       <ion-icon name="list"></ion-icon>
     </ion-fab-button>
