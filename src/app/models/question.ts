@@ -1,5 +1,6 @@
-import { Answer } from "./answer";
-import { QuestionCategory } from "./question-category";
+import { Answer } from './answer';
+import { AnswerRelation } from './answerRelation';
+import { QuestionCategory } from './questionCategory';
 
 export class Question {
   constructor(
@@ -14,7 +15,7 @@ export class Question {
     public questionParentId: number,
     public answers: Array<Answer>,
     public question_category: QuestionCategory,
-    public answerRelation: Array<{ type: string, questionId: number, anserId: number }>,
+    public answerRelation: Array<AnswerRelation>,
     public questionChildren: Array<Array<Question>>,
     public user_type_restriction: string,
     public min?: number,
