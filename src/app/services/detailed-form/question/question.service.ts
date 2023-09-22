@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Question } from 'src/app/models/question';
-import { AnswerService } from './answer/answer.service';
 import { FormGroup } from '@angular/forms';
 import { QuestionControlService } from '../control/question-control.service';
 
@@ -13,7 +12,6 @@ export class QuestionService {
   private progress: number = 0;
 
   constructor(
-    private answerService: AnswerService,
     private questionControlService: QuestionControlService
   ) {}
 
@@ -35,10 +33,6 @@ export class QuestionService {
     );
   }
 
-  setAnswers(current: Question): void {
-    this.answerService.setAnswers(current.answers);
-  }
-
   getOriginalLength(): number {
     return this.originalQuestions.length;
   }
@@ -49,14 +43,12 @@ export class QuestionService {
 
   getFirst(): Question {
     let firstQuestion: Question = this.filteredQuestions[0];
-    this.setAnswers(firstQuestion);
     return firstQuestion;
   }
 
   getLast(): Question {
     let lastIndex: number = this.filteredQuestions.length - 1;
     let lastQuestion: Question = this.filteredQuestions[lastIndex];
-    this.setAnswers(lastQuestion);
     return lastQuestion;
   }
 
@@ -64,7 +56,6 @@ export class QuestionService {
     if (current !== this.getLast()) {
       let next: Question =
         this.filteredQuestions[this.getCurrentIndex(current) + 1];
-      this.setAnswers(next);
       this.updateProgress(next);
       return next;
     }
@@ -80,7 +71,6 @@ export class QuestionService {
     if (current !== this.getFirst()) {
       let previous: Question =
         this.filteredQuestions[this.getCurrentIndex(current) - 1];
-      this.setAnswers(previous);
       this.updateProgress(previous);
       return previous;
     }
