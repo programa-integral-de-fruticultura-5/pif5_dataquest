@@ -15,10 +15,10 @@ import { Question } from 'src/app/models/question';
   providedIn: 'root',
 })
 export class QuestionControlService {
-  constructor(private fb: FormBuilder) {}
+  constructor() {}
 
   public toFormGroup(questions: Question[]): FormGroup {
-    const group: any = {};
+    const group: { [key: string]: FormControl | FormGroup | FormArray } = {};
     questions.forEach((question) => {
       group[question.id] = this.getFormControl(question);
     });
@@ -36,57 +36,65 @@ export class QuestionControlService {
     }
   }
 
-  private generateFormArray(question: Question, required: boolean): FormArray {
-    const formArray: FormArray = new FormArray([] as FormGroup[]);
-    question.questionChildren.forEach((section) => {
-      let group: { [key: string]: any } = {};
-      section.forEach((child) => {
-        group[child.id] = this.getFormControl(child);
-      });
-      formArray.push(new FormGroup(group, required ? this.requiredChildrenResponse() : null));
-    })
-    if (required)
-      formArray.setValidators(this.requiredTableResponse());
-    return formArray;
-  }
-
   private assignFormControls(
     question: Question,
     required: boolean
-  ): FormControl | FormGroup | FormArray {
-    let type = question.type;
-
-      if (type === 'Abierta') {
-        return new FormControl(
-          question.answers[0].value || '',
-          required ? Validators.required : null
-        );
-      }
-
-      if(type === 'Autocomplete' || type === 'Única respuesta' || type === 'Única respuesta con otro' || type === 'Única respuesta con select') {
-        return new FormControl(
-          question.answers.filter((answer) => answer.checked)[0]?.value || '',
-          required ? Validators.required : null
-        );
-      }
-
-      if (type === 'Múltiple respuesta' || type === 'Múltiple respuesta con otro') {
-        return new FormGroup(
-          this.generateFormGroup(question),
-          required ? this.atLeastOneChecked() : null
-        );
-      }
-
-      return this.generateFormArray(question, required);
-
+  ): FormControl | FormArray | FormGroup {
+    switch (question.type) {
+      case 'Abierta':
+        return this.generateFormControl(question, required);
+      case 'Tabla':
+        return this.generateFormArray(question, required);
+      default:
+        return this.generateFormGroup(question, required);
+    }
   }
 
-  private generateFormGroup(question: Question): any {
-    const group: any = {};
+  private generateFormControl(
+    question: Question,
+    required: boolean
+  ): FormControl {
+    return new FormControl(
+      question.answers[0].value || '',
+      required ? Validators.required : null
+    );
+  }
+
+  private generateFormGroup(question: Question, required: boolean): any {
+    const group: { [key: string]: FormControl } = {};
     question.answers.forEach((answer) => {
       group[answer.id] = new FormControl(answer.checked);
     });
-    return group;
+
+    const formGroup: FormGroup = new FormGroup(
+      group,
+      required ? this.atLeastOneChecked() : null
+    );
+    return formGroup;
+  }
+
+  private generateFormArray(question: Question, required: boolean): FormArray {
+    const array: FormGroup[] = [];
+    question.questionChildren.forEach((section) => {
+      const group: { [key: string]: FormControl | FormGroup | FormArray } = {};
+      section.forEach((child) => {
+        group[child.id] = this.getFormControl(child);
+      });
+
+      const formGroup: FormGroup = new FormGroup(
+        group,
+        required ? this.requiredChildrenResponse() : null
+      );
+
+      array.push(formGroup);
+    });
+
+    const formArray: FormArray = new FormArray(
+      array,
+      required ? this.requiredTableResponse() : null
+    );
+
+    return formArray;
   }
 
   private atLeastOneChecked(): ValidatorFn {
@@ -105,7 +113,9 @@ export class QuestionControlService {
   private requiredChildrenResponse(): ValidatorFn {
     return (formGroup: AbstractControl): ValidationErrors | null => {
       if (formGroup instanceof FormGroup) {
-        const invalidControls = Object.keys(formGroup.controls).filter((key) => !formGroup.controls[key].valid);
+        const invalidControls = Object.keys(formGroup.controls).filter(
+          (key) => formGroup.controls[key].invalid
+        );
 
         if (invalidControls.length > 0) {
           return { requiredChildrenResponse: true };
