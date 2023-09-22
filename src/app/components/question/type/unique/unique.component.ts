@@ -1,37 +1,73 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Answer } from 'src/app/models/answer';
 import { Question } from 'src/app/models/question';
-import { AnswerService } from 'src/app/services/detailed-form/question/answer/answer.service';
 
 @Component({
   selector: 'app-unique',
   templateUrl: './unique.component.html',
   styleUrls: ['./unique.component.scss'],
   standalone: true,
-  imports: [ CommonModule, IonicModule, ReactiveFormsModule ]
+  imports: [CommonModule, IonicModule, ReactiveFormsModule],
 })
-export class UniqueComponent  implements OnInit {
-
+export class UniqueComponent implements OnInit {
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
 
-  constructor(private answerService: AnswerService) { }
+  constructor() {}
 
   ngOnInit() {}
 
   getAnswers(): Answer[] {
-    return this.answerService.getAnswers();
+    return this.question.answers;
   }
 
   setValue(event: any): void {
-    this.formGroup.get(`${this.question.id}`)?.setValue(event.detail.value);
+    const formGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+
+    const value: string = event.detail.value;
+
+    this.setCheckedValue(formGroup, value);
   }
 
   getValue(): string {
-    return this.formGroup.get(`${this.question.id}`)?.value;
+    const answersFormGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+
+    const id: string = this.getCheckedAnswerId(answersFormGroup);
+    return id;
   }
 
+  private getCheckedAnswerId(answersFormGroup: FormGroup): string {
+    let id: string = '';
+
+    for (const key in answersFormGroup.controls) {
+      if (answersFormGroup.controls[key].value) {
+        id = key;
+      }
+    }
+
+    return id;
+  }
+
+  private setCheckedValue(answersFormGroup: FormGroup, id: string): void {
+    for (const key in answersFormGroup.controls) {
+      if (key === id) {
+        answersFormGroup.controls[key].setValue(true);
+      } else {
+        answersFormGroup.controls[key].setValue(false);
+      }
+    }
+  }
 }

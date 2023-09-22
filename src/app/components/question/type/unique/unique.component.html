@@ -1,6 +1,6 @@
 <ion-radio-group [value]="getValue()" (ionChange)="setValue($event)">
   <ion-item *ngFor="let answer of getAnswers()">
-    <ion-radio [value]="answer.value" labelPlacement="end" justify="start">{{
+    <ion-radio [value]="answer.id.toString()" labelPlacement="end" justify="start">{{
       answer.value
     }}</ion-radio>
   </ion-item>
