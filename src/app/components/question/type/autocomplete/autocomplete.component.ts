@@ -6,7 +6,6 @@ import { TypeaheadComponent } from 'src/app/components/typeahead/typeahead.compo
 import { Answer } from 'src/app/models/answer';
 import { Question } from 'src/app/models/question';
 import { AssociationService } from 'src/app/services/association/association.service';
-import { AnswerService } from 'src/app/services/detailed-form/question/answer/answer.service';
 import { ProducerService } from 'src/app/services/producer/producer.service';
 
 @Component({
@@ -31,8 +30,7 @@ export class AutocompleteComponent  implements OnInit {
 
   constructor(
     private producersService: ProducerService,
-    private associationService: AssociationService,
-    private answerService: AnswerService
+    private associationService: AssociationService
   ) { }
 
   ngOnInit() {
@@ -74,7 +72,7 @@ export class AutocompleteComponent  implements OnInit {
   }
 
   getAnswers() {
-    return this.answerService.getAnswers();
+    return this.question.answers;
   }
 
   getProducers()  {

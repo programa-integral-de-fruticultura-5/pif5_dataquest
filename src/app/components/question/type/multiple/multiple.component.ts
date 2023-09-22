@@ -5,7 +5,6 @@ import { IonicModule } from '@ionic/angular';
 import { Answer } from 'src/app/models/answer';
 import { Form } from 'src/app/models/form';
 import { Question } from 'src/app/models/question';
-import { AnswerService } from 'src/app/services/detailed-form/question/answer/answer.service';
 
 @Component({
   selector: 'app-multiple',
@@ -19,33 +18,16 @@ export class MultipleComponent implements OnInit {
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
 
-  constructor(private answerService: AnswerService) { }
+  constructor() { }
 
   ngOnInit() {}
 
   getAnswers(): Answer[] {
-    return this.answerService.getAnswers();
+    return this.question.answers;
   }
 
   getFormGroup() {
     return this.formGroup.get(`${this.question.id}`) as FormGroup;
   }
 
-  onCheckboxChange(event: any): void {
-    const checkedArray: FormArray = this.formGroup.get(`${this.question.id}`) as FormArray;
-    if (event.detail.checked) {
-      checkedArray.push(new FormControl(event.detail.value));
-    } else {
-      let i: number = 0;
-      checkedArray.controls.forEach((item: AbstractControl) => {
-        if (item.value == event.detail.value) {
-          checkedArray.removeAt(i);
-          return;
-        }
-        i++;
-      });
-    }
-
-    console.log(this.formGroup.get(`${this.question.id}`)?.value);
-  }
 }
