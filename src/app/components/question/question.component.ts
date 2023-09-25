@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { QuestionService } from 'src/app/services/detailed-form/question/question.service';
 import { Question } from 'src/app/models/question';
 import { DataquestHeaderComponent } from '../header/dataquest-header/dataquest-header.component';
@@ -29,6 +29,7 @@ export class QuestionComponent {
 
   constructor(
     private questionService: QuestionService,
+    private alertController: AlertController,
     private answerRelationService: AnswerRelationService
   ) {}
 
@@ -42,14 +43,28 @@ export class QuestionComponent {
       this.saveResponse(this.currentQuestion, this.formGroup);
       this.currentQuestion = this.getNextQuestionFrom(this.currentQuestion);
     } else {
-      console.log("invalid");
-      let array: FormArray = this.formGroup.controls[this.currentQuestion.id] as FormArray;
-      console.log(array.at(0));
+      const type: string = this.currentQuestion.type;
+      const isTable: boolean = type === 'Tabla';
+      this.presentAlert(isTable);
     }
   }
 
   previousQuestion(): void {
     this.currentQuestion = this.getPreviousQuestionFrom(this.currentQuestion);
+  }
+
+  async presentAlert(isTable: boolean) {
+    const tableMessage: string =
+      'Por favor, responda todas las preguntas de las secciones para continuar.';
+    const genericMessage: string =
+      'Por favor, responda la pregunta para continuar.';
+    const alert = await this.alertController.create({
+      header: 'Pregunta requerida',
+      message: isTable ? tableMessage : genericMessage,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
   onSubmit() {}
