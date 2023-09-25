@@ -13,61 +13,69 @@ import { ProducerService } from 'src/app/services/producer/producer.service';
   templateUrl: './autocomplete.component.html',
   styleUrls: ['./autocomplete.component.scss'],
   standalone: true,
-  imports: [ CommonModule, IonicModule, TypeaheadComponent ],
+  imports: [CommonModule, IonicModule, TypeaheadComponent],
 })
-export class AutocompleteComponent  implements OnInit {
-
+export class AutocompleteComponent implements OnInit {
   @ViewChild('modal', { static: true }) modal!: IonModal;
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
 
-  selection!: any
-  public answersData!: any[]
-  public producersData!: any[]
-  public associationsData!: any[]
-  public data!: any[]
-// private results!: any[];
+  selection!: any;
+  public answersData!: any[];
+  public producersData!: any[];
+  public associationsData!: any[];
+  public data!: any[];
+  // private results!: any[];
 
   constructor(
     private producersService: ProducerService,
     private associationService: AssociationService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.selection = this.formGroup.get(`${this.question.id}`)?.value;
+    this.selection = this.getQuestionValue();
     this.answersData = this.getAnswers();
     this.producersData = this.getProducers();
     this.associationsData = this.getAssociations();
-    this.data = this.getData()
-    // this.results = Array.from(this.data);
-
+    this.data = this.getData();
   }
 
-/*   private searchProducer(event: any) {
-    const query = event.target.value.toLowerCase();
-    this.results = this.producersData.filter((d) => d.identification.toLowerCase().indexOf(query) > -1);
+  private getQuestionValue(): string {
+    const autocompleteTypeAnswers: FormGroup = this.formGroup.get(`${this.question.id}`) as FormGroup;
+    let value: string = '';
+    if (this.question.type === 'Autocomplete') {
+      value = this.getSelectedValue(autocompleteTypeAnswers);
+    } else {
+      value = this.formGroup.get(`${this.question.id}`)?.value;
+    }
+    return value;
   }
 
-  private searchAssociation(event: any) {
-    const query = event.target.value.toLowerCase();
-    this.results = this.associationsData.filter((d) => d.identification.toLowerCase().indexOf(query) > -1);
-  } */
+  private getSelectedValue(answersFormGroup: FormGroup): string {
+    let selectedValue: string = '';
+    for (const key in answersFormGroup.controls) {
+      if (answersFormGroup.controls[key].value) {
+        selectedValue = this.question.answers.find(
+          (answer) => answer.id.toString() === key
+        )?.value as string;
+      }
+    }
+    return selectedValue;
+  }
 
   private hasAnswers(): boolean {
-    return this.answersData.length > 1
+    return this.answersData.length > 1;
   }
-
-/*   private getValue(result: any): string {
-    return this.hasAnswers() ? result.value : result.identification;
-  } */
 
   private getData(): string[] {
     if (this.hasAnswers()) {
-      let stringAnswers = this.answersData.map((answer) => answer.value)
-      return stringAnswers
-    }else{
-      let stringProducers = this.producersData.map((producer) => producer.identification)
-      return stringProducers
+      let stringAnswers = this.answersData.map((answer) => answer.value);
+      return stringAnswers;
+    } else {
+      let stringProducers = this.producersData.map(
+        (producer) => producer.identification
+      );
+      return stringProducers;
     }
   }
 
@@ -75,7 +83,7 @@ export class AutocompleteComponent  implements OnInit {
     return this.question.answers;
   }
 
-  getProducers()  {
+  getProducers() {
     return this.producersService.getProducers();
   }
 
@@ -83,14 +91,44 @@ export class AutocompleteComponent  implements OnInit {
     return this.associationService.getAssociations();
   }
 
-/*   getResults() {
+  /*   getResults() {
     return this.results;
   } */
 
   selectionChanged(selection: string) {
     this.selection = selection;
-    this.formGroup.get(`${this.question.id}`)?.setValue(selection);
+    const formGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+    const answerId: string = this.getAnswerId(selection);
+
+    const type: string = this.question.type;
+    if (type === 'Autocomplete') {
+      console.log("Autocomplete")
+      this.setCheckedValue(formGroup, answerId);
+    } else {
+      this.formGroup.get(`${this.question.id}`)?.setValue(selection);
+    }
     this.modal.dismiss();
   }
 
+  private setCheckedValue(answersFormGroup: FormGroup, id: string): void {
+    for (const key in answersFormGroup.controls) {
+      if (key === id) {
+        answersFormGroup.controls[key].setValue(true);
+      } else {
+        answersFormGroup.controls[key].setValue(false);
+      }
+    }
+  }
+
+  private getAnswerId(value: string): string {
+    let id: string = '';
+    this.answersData.find((answer) => {
+      if (answer.value === value) {
+        id = answer.id.toString();
+      }
+    });
+    return id;
+  }
 }

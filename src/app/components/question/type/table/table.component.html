@@ -7,17 +7,17 @@
     <ion-card-content>
       <ion-accordion-group [multiple]="true" [value]="0">
         <ion-accordion
-          *ngFor="let questions of getQuestionChildren(); index as i"
+          *ngFor="let questionsSection of getQuestionChildren(); index as i"
           [value]="i"
         >
           <ion-item slot="header" color="light">
             <ion-label>Sección {{ i + 1 }}</ion-label>
           </ion-item>
-          <ng-container *ngFor="let question of questions">
+          <ng-container *ngFor="let questionChild of questionsSection">
             <app-type
-              *ngIf="showQuestion(question, i)"
+              *ngIf="showQuestion(questionChild, i)"
               [formGroup]="getFormGroup(i)"
-              [question]="question"
+              [question]="questionChild"
               slot="content"
             ></app-type>
           </ng-container>
