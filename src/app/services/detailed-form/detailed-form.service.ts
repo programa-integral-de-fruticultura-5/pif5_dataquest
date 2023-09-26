@@ -47,7 +47,6 @@ export class DetailedFormService {
 
   public startDraft(): void {
     this.draftService.pushDraft(this.selectedForm);
-    this.formService.save()
   }
 
   public saveSurvey(): void {
