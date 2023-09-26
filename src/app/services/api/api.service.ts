@@ -28,7 +28,7 @@ export class ApiService {
     return this.httpClient.post<T>(`/api/${endpoint}/`, resource);
   } */
 
-  public async post (endpoint: string, resource?: { email: string; password: string; }): Promise<HttpResponse> {
+  public async post (endpoint: string, resource?: any): Promise<HttpResponse> {
     const result = await Preferences.get({ key: 'TOKEN_KEY' });
     const token = result.value
     const options = {

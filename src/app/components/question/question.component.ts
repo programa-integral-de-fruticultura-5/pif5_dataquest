@@ -10,6 +10,7 @@ import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AnswerRelationService } from 'src/app/services/detailed-form/question/answer-relation/answer-relation.service';
 import { DraftService } from 'src/app/services/draft/draft.service';
 import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
+import { SurveyService } from 'src/app/services/survey/survey.service';
 
 @Component({
   selector: 'app-question',
@@ -43,7 +44,7 @@ export class QuestionComponent {
   }
 
   nextQuestion(): void {
-    if (this.isValid()) {
+    if (this.isQuestionValid()) {
       if (this.isFirstQuestion()) {
         this.detailedFormService.startDraft();
       }
@@ -74,7 +75,15 @@ export class QuestionComponent {
     await alert.present();
   }
 
-  onSubmit() {}
+  onSubmit() {
+
+    if (this.isValid()) {
+      this.saveResponse(this.currentQuestion, this.formGroup);
+      this.detailedFormService.saveSurvey();
+    } else {
+      this.presentAlert(false);
+    }
+  }
 
   getCategory(): string {
     return this.currentQuestion.question_category.name;
@@ -84,8 +93,12 @@ export class QuestionComponent {
     return this.currentQuestion.type;
   }
 
-  isValid() {
+  private isQuestionValid() {
     return this.formGroup.controls[this.currentQuestion.id].valid;
+  }
+
+  private isValid() {
+    return this.formGroup.valid;
   }
 
   isLastQuestion(): boolean {

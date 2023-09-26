@@ -1,5 +1,6 @@
 import { Component, EnvironmentInjector, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
+import { SurveyService } from 'src/app/services/survey/survey.service';
 
 @Component({
   selector: 'app-home',
@@ -11,5 +12,9 @@ import { IonicModule } from '@ionic/angular';
 export class HomePage {
   public environmentInjector = inject(EnvironmentInjector);
 
-  constructor() {}
+  constructor(private surveyService: SurveyService) {}
+
+  uploadSurveys() {
+    this.surveyService.syncSurveys();
+  }
 }

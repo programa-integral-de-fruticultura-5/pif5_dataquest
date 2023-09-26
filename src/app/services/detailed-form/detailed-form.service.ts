@@ -4,6 +4,7 @@ import { FormService } from '../form/form.service';
 import { Geolocation, Position } from '@capacitor/geolocation';
 import { QuestionService } from './question/question.service';
 import { DraftService } from '../draft/draft.service';
+import { SurveyService } from '../survey/survey.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class DetailedFormService {
   constructor(
     private formService: FormService,
     private draftService: DraftService,
+    private surveyService: SurveyService,
     private questionService: QuestionService
   ) { }
 
@@ -46,5 +48,12 @@ export class DetailedFormService {
   public startDraft(): void {
     this.draftService.pushDraft(this.selectedForm);
     this.formService.save()
+  }
+
+  public saveSurvey(): void {
+    const removedDraft: Form = this.draftService.removeDraft(this.selectedForm);
+    this.surveyService.pushSurvey(removedDraft);
+    this.draftService.saveDrafts();
+    this.surveyService.saveSurveys();
   }
 }

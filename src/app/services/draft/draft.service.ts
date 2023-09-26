@@ -18,6 +18,14 @@ export class DraftService {
     this.drafts.push(copy);
   }
 
+  public removeDraft(draft: Form): Form {
+    const index = this.drafts.indexOf(draft);
+    if (index > -1) {
+      return this.drafts.splice(index, 1)[0];
+    }
+    return draft;
+  }
+
   public loadDrafts(): void {
     this.storageService.get('drafts')?.then((drafts) => {
       if (drafts) {
