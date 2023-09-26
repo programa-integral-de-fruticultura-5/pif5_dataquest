@@ -49,6 +49,7 @@ export class QuestionComponent {
         this.detailedFormService.startDraft();
       }
       this.saveResponse(this.currentQuestion, this.formGroup);
+      this.draftService.saveDrafts();
       this.currentQuestion = this.getNextQuestionFrom(this.currentQuestion);
     } else {
       const type: string = this.currentQuestion.type;
@@ -127,7 +128,6 @@ export class QuestionComponent {
         ] as FormGroup;
         this.saveSelection(question, questionFormGroup);
     }
-    this.draftService.saveDrafts();
   }
 
   private saveTableResponse(question: Question, formGroup: FormGroup) {
