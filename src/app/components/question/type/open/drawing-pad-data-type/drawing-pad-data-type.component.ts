@@ -44,8 +44,10 @@ export class DrawingPadDataTypeComponent {
   setSignature() {
     this.signaturePad.clear();
     let signature = this.formGroup.get(`${this.question.id}`)?.value;
-    this.signaturePad.fromDataURL(signature);
-    this.signatureImg = signature;
+    if (signature) {
+      this.signaturePad.fromDataURL(signature)
+      this.signatureImg = signature;
+    }
   }
 
   startDrawing(event: Event) {
