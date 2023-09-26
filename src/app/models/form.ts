@@ -13,7 +13,6 @@ export class Form {
     public altitud: number,
     public dateInit: string,
     public dateEnd: string,
-    public draft: boolean,
     public fatherId: any,
     public fatherName: string,
     public questions: Array<Question>,

@@ -8,6 +8,8 @@ import { TableComponent } from './type/table/table.component';
 import { TypeComponent } from './type/type.component';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AnswerRelationService } from 'src/app/services/detailed-form/question/answer-relation/answer-relation.service';
+import { DraftService } from 'src/app/services/draft/draft.service';
+import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
 
 @Component({
   selector: 'app-question',
@@ -28,6 +30,8 @@ export class QuestionComponent {
   formGroup!: FormGroup;
 
   constructor(
+    private draftService: DraftService,
+    private detailedFormService: DetailedFormService,
     private questionService: QuestionService,
     private alertController: AlertController,
     private answerRelationService: AnswerRelationService
@@ -40,6 +44,9 @@ export class QuestionComponent {
 
   nextQuestion(): void {
     if (this.isValid()) {
+      if (this.isFirstQuestion()) {
+        this.detailedFormService.startDraft();
+      }
       this.saveResponse(this.currentQuestion, this.formGroup);
       this.currentQuestion = this.getNextQuestionFrom(this.currentQuestion);
     } else {
@@ -107,6 +114,7 @@ export class QuestionComponent {
         ] as FormGroup;
         this.saveSelection(question, questionFormGroup);
     }
+    this.draftService.saveDrafts();
   }
 
   private saveTableResponse(question: Question, formGroup: FormGroup) {

@@ -76,8 +76,6 @@ export class FormService {
         (f: Form) => f.id === form.id
       );
       if (!foundForm) {
-        form.draft = false;
-
         form.questions.forEach((question: Question) => {
           if (question.type === 'Tabla') {
             let children: Question[][] = this.getQuestionChildren(
@@ -113,11 +111,7 @@ export class FormService {
   }
 
   public getForms(): Form[] {
-    return this.forms.filter((form) => !form.draft);
-  }
-
-  public getDrafts(): Form[] {
-    return this.forms.filter((form) => form.draft);
+    return this.forms;
   }
 
   public save(): void {

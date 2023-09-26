@@ -78,9 +78,4 @@ export class DetailedFormComponent {
   getTotalQuestions(): number {
     return this.detailedFormService.getTotalQuestions();
   }
-
-  startDraft(): void {
-    this.detailedFormService.startDraft()
-    this.formService.save()
-  }
 }

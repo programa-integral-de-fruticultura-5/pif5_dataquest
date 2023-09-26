@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, booleanAttribute } from '@angular/core';
 import { Router } from '@angular/router';
 import { Platform, AlertController, IonicModule } from '@ionic/angular';
 import { Form } from 'src/app/models/form';
 import { AssociationService } from 'src/app/services/association/association.service';
 import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
+import { DraftService } from 'src/app/services/draft/draft.service';
 import { FormService } from 'src/app/services/form/form.service';
 import { ProducerService } from 'src/app/services/producer/producer.service';
 
@@ -18,9 +19,11 @@ import { ProducerService } from 'src/app/services/producer/producer.service';
 export class FormListComponent implements OnInit {
 
   @Input({ required: true }) forms!: Form[];
+  @Input({ transform: booleanAttribute }) showId: boolean = false;
 
   constructor(
     private formsService: FormService,
+    private draftService: DraftService,
     private producersService: ProducerService,
     private associationService: AssociationService,
     private detailedFormService: DetailedFormService,
@@ -57,6 +60,7 @@ export class FormListComponent implements OnInit {
 
   private requestData() {
     this.formsService.requestForms();
+    this.draftService.loadDrafts();
     this.producersService.sendRequest();
     this.associationService.sendRequest();
   }
