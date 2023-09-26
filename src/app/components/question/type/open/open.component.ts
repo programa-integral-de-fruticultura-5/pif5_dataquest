@@ -15,6 +15,7 @@ import { EmailDataTypeComponent } from './email-data-type/email-data-type.compon
 import { MoneyDataTypeComponent } from './money-data-type/money-data-type.component';
 import { Question } from 'src/app/models/question';
 import { FormGroup } from '@angular/forms';
+import { PhoneDataTypeComponent } from './phone-data-type/phone-data-type.component';
 
 @Component({
   selector: 'app-open',
@@ -33,7 +34,8 @@ import { FormGroup } from '@angular/forms';
     PercentageDataTypeComponent,
     MonthDataTypeComponent,
     EmailDataTypeComponent,
-    MoneyDataTypeComponent
+    MoneyDataTypeComponent,
+    PhoneDataTypeComponent
   ],
   standalone: true,
 })
