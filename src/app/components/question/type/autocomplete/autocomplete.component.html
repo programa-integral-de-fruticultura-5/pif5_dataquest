@@ -1,6 +1,6 @@
 <ion-list [inset]="true">
   <ion-item button detail id="select-item" lines="full">
-    <ion-label slot="start" *ngIf="!selection">Selecciona uno</ion-label>
+    <ion-label slot="start" *ngIf="!selection">{{ title }}</ion-label>
     <div slot="start" id="selected-item" *ngIf="selection">{{ selection }}</div>
   </ion-item>
 </ion-list>
@@ -11,6 +11,7 @@
       class="ion-page"
       [items]="data"
       [selectedItem]="selection"
+      [title]="title"
       (selectionChange)="selectionChanged($event)"
       (selectionCancel)="modal.dismiss()"
     ></app-typeahead>

@@ -19,6 +19,7 @@ export class AutocompleteComponent implements OnInit {
   @ViewChild('modal', { static: true }) modal!: IonModal;
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
+  @Input() title = 'Selecciona uno';
 
   selection!: any;
   public answersData!: any[];
@@ -41,10 +42,10 @@ export class AutocompleteComponent implements OnInit {
   }
 
   private getQuestionValue(): string {
-    const autocompleteTypeAnswers: FormGroup = this.formGroup.get(`${this.question.id}`) as FormGroup;
+    const answers: FormGroup = this.formGroup.get(`${this.question.id}`) as FormGroup;
     let value: string = '';
-    if (this.question.type === 'Autocomplete') {
-      value = this.getSelectedValue(autocompleteTypeAnswers);
+    if (this.question.type === 'Autocomplete' || this.question.type === 'Única respuesta con select') {
+      value = this.getSelectedValue(answers);
     } else {
       value = this.formGroup.get(`${this.question.id}`)?.value;
     }
@@ -103,7 +104,7 @@ export class AutocompleteComponent implements OnInit {
     const answerId: string = this.getAnswerId(selection);
 
     const type: string = this.question.type;
-    if (type === 'Autocomplete') {
+    if (type === 'Autocomplete' || type === 'Única respuesta con select') {
       console.log("Autocomplete")
       this.setCheckedValue(formGroup, answerId);
     } else {
