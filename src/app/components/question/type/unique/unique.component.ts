@@ -10,13 +10,14 @@ import {
 import { IonicModule } from '@ionic/angular';
 import { Answer } from 'src/app/models/answer';
 import { Question } from 'src/app/models/question';
+import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 
 @Component({
   selector: 'app-unique',
   templateUrl: './unique.component.html',
   styleUrls: ['./unique.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ReactiveFormsModule],
+  imports: [CommonModule, IonicModule, ReactiveFormsModule, AutocompleteComponent],
 })
 export class UniqueComponent implements OnInit {
   @Input({ required: true }) question!: Question;

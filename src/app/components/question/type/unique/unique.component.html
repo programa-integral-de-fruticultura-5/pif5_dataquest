@@ -1,7 +1,17 @@
 <ion-radio-group [value]="getValue()" (ionChange)="setValue($event)">
   <ion-item *ngFor="let answer of getAnswers()">
-    <ion-radio [value]="answer.id.toString()" labelPlacement="end" justify="start">{{
-      answer.value
-    }}</ion-radio>
+    <ion-radio
+      [value]="answer.id.toString()"
+      labelPlacement="end"
+      justify="start"
+      >{{ answer.value }}</ion-radio
+    >
   </ion-item>
 </ion-radio-group>
+
+<app-autocomplete
+  *ngIf="question.type === 'Única respuesta con select'"
+  [title]="'Residencia'"
+  [question]="question"
+  [formGroup]="formGroup"
+></app-autocomplete>
