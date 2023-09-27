@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule, NavController } from '@ionic/angular';
 import { QuestionService } from 'src/app/services/detailed-form/question/question.service';
 import { Question } from 'src/app/models/question';
 import { DataquestHeaderComponent } from '../header/dataquest-header/dataquest-header.component';
@@ -34,6 +34,7 @@ export class QuestionComponent {
     private draftService: DraftService,
     private detailedFormService: DetailedFormService,
     private questionService: QuestionService,
+    private navCtrl: NavController,
     private alertController: AlertController,
     private answerRelationService: AnswerRelationService
   ) {}
@@ -81,6 +82,7 @@ export class QuestionComponent {
     if (this.isValid()) {
       this.saveResponse(this.currentQuestion, this.formGroup);
       this.detailedFormService.saveSurvey();
+      this.navCtrl.pop()
     } else {
       this.presentAlert(false);
     }
