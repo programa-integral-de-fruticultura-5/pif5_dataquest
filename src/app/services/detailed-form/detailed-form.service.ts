@@ -46,7 +46,8 @@ export class DetailedFormService {
   }
 
   public startDraft(): void {
-    this.draftService.pushDraft(this.selectedForm);
+    const copy: Form = { ...this.selectedForm };
+    this.draftService.pushDraft(copy);
   }
 
   public saveSurvey(): void {

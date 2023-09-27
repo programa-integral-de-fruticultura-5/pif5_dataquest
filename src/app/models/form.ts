@@ -3,6 +3,7 @@ import { Question } from "./question";
 export class Form {
   constructor(
     public id: number,
+    public uuid: string,
     public name: string,
     public fechaDescarga: string,
     public fechaInicial: string,
