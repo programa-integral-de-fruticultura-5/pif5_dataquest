@@ -47,20 +47,9 @@ export class SurveyService {
     const { connected } = await Network.getStatus();
     if (connected) {
       this.surveys.forEach((survey) => {
-        this.apiService.post(ENDPOINT, survey).then((res) => {
-          if (res.status === 200) {
-            this.changeSyncStatus(survey, true);
-          }
-        }).catch(async (err) => {
-          const serverAlert = await this.alertController.create({
-            header: 'Problema con el servidor',
-            subHeader: 'Error ' + err.status,
-            message:
-              'No se pudo establecer una conexión con el servidor. Por favor, intenta más tarde.',
-            buttons: ['OK'],
-          })
-          serverAlert.present();
-        });
+        if (!survey.sync) {
+          this.uploadSurvey(survey)
+        }
       })
       this.saveSurveys()
     } else {
@@ -77,5 +66,31 @@ export class SurveyService {
   private changeSyncStatus(survey: Form, status: boolean): void {
     const index = this.surveys.indexOf(survey);
     this.surveys[index].sync = status;
+  }
+
+  private uploadSurvey(survey: Form): void {
+    this.apiService.post(ENDPOINT, survey).then( (res) => {
+      if (res.status === 200) {
+        this.changeSyncStatus(survey, true);
+      }/*  else {
+        const serverResponseAlert = await this.alertController.create({
+          header: 'Error en el servidor',
+          subHeader: 'Error ' + res.status,
+          message:
+            'El servidor no pudo procesar la solicitud. Por favor, intenta más tarde.',
+          buttons: ['OK'],
+        });
+        serverResponseAlert.present()
+      } */
+    })/* .catch(async (err) => {
+      const serverAlert = await this.alertController.create({
+        header: 'Problema con el servidor',
+        subHeader: 'Error ' + err.status,
+        message:
+          'No se pudo establecer una conexión con el servidor. Por favor, intenta más tarde.',
+        buttons: ['OK'],
+      })
+      serverAlert.present();
+    }); */
   }
 }
