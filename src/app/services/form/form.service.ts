@@ -85,7 +85,13 @@ export class FormService {
             question.questionChildren = children;
           }
         });
-
+        const options: Intl.DateTimeFormatOptions = {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        };
+        const currentDate: Date = new Date();
+        form.fechaDescarga = currentDate.toLocaleDateString('es-ES', options); // Convert Date to string
         this.forms.push(form);
       }
     });
@@ -111,7 +117,13 @@ export class FormService {
   }
 
   public getForms(): Form[] {
-    return this.forms;
+    return this.forms.filter((form: Form) => {
+      const dateInit: Date = new Date(form.dateInit);
+      const dateEnd: Date = new Date(form.dateEnd);
+      const today: Date = new Date();
+
+      return dateInit <= today && dateEnd >= today;
+    });
   }
 
   public save(): void {
