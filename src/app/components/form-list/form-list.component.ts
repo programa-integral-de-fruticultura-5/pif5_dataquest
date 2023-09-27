@@ -8,6 +8,7 @@ import { DetailedFormService } from 'src/app/services/detailed-form/detailed-for
 import { DraftService } from 'src/app/services/draft/draft.service';
 import { FormService } from 'src/app/services/form/form.service';
 import { ProducerService } from 'src/app/services/producer/producer.service';
+import { SurveyService } from 'src/app/services/survey/survey.service';
 
 @Component({
   selector: 'app-form-list',
@@ -24,6 +25,7 @@ export class FormListComponent implements OnInit {
   constructor(
     private formsService: FormService,
     private draftService: DraftService,
+    private surveyService: SurveyService,
     private producersService: ProducerService,
     private associationService: AssociationService,
     private detailedFormService: DetailedFormService,
@@ -61,6 +63,7 @@ export class FormListComponent implements OnInit {
   private requestData() {
     this.formsService.requestForms();
     this.draftService.loadDrafts();
+    this.surveyService.loadSurveys();
     this.producersService.sendRequest();
     this.associationService.sendRequest();
   }

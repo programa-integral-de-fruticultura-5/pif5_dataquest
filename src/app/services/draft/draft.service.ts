@@ -59,7 +59,7 @@ export class DraftService {
     dateThreshold.setDate(dateThreshold.getDate() - 7);
     this.drafts = this.drafts.filter((draft) => {
       const date = new Date(draft.fechaUltimoCambio);
-      return date < dateThreshold;
+      return date >= dateThreshold;
     });
   }
 
