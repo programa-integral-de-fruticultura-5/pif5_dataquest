@@ -20,7 +20,9 @@ import { SurveyService } from 'src/app/services/survey/survey.service';
 export class FormListComponent implements OnInit {
 
   @Input({ required: true }) forms!: Form[];
-  @Input({ transform: booleanAttribute }) showId: boolean = false;
+  @Input({ transform: booleanAttribute }) form: boolean = false;
+  @Input({ transform: booleanAttribute }) draft: boolean = false;
+  @Input({ transform: booleanAttribute }) survey: boolean = false;
 
   constructor(
     private formsService: FormService,
@@ -38,9 +40,9 @@ export class FormListComponent implements OnInit {
     this.requestData();
   }
 
-  async navigate(form: Form) {
+  async navigate(formToSend: Form) {
     if (this.platform.is('mobile')) {
-      this.detailedFormService.setForm(form);
+      this.detailedFormService.setForm(formToSend, this.form, this.draft, this.survey);
       this.router.navigate(['detail']);
     } else {
       const alert = await this.alertController.create({

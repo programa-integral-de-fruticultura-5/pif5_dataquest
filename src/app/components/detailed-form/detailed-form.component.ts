@@ -34,8 +34,29 @@ export class DetailedFormComponent {
     return this.detailedFormService.getForm();
   }
 
+  isForm(): boolean {
+    return this.detailedFormService.isForm();
+  }
+
+  isDraft(): boolean {
+    return this.detailedFormService.isDraft();
+  }
+
+  isSurvey(): boolean {
+    return this.detailedFormService.isSurvey();
+  }
+
   startForm(): void {
     this.getLocation();
+    this.detailedFormService.startDraft();
+  }
+
+  viewSurvey(): void {
+
+  }
+
+  resumeDraft(): void {
+
   }
 
   private async getLocation(): Promise<void> {
@@ -67,7 +88,7 @@ export class DetailedFormComponent {
       const position = await Geolocation.getCurrentPosition();
 
       if (position) {
-        console.log(position.coords)
+        console.log(position.coords);
         this.getForm().position =
           position.coords.latitude + ',' + position.coords.longitude;
         this.getForm().altitud = position.coords.altitude ?? 0;

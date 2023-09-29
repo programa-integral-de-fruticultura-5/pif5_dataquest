@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Form } from 'src/app/models/form';
 import { FormService } from '../form/form.service';
 import { Geolocation, Position } from '@capacitor/geolocation';
+import { v4 as uuidv4 } from 'uuid';
 import { QuestionService } from './question/question.service';
 import { DraftService } from '../draft/draft.service';
 import { SurveyService } from '../survey/survey.service';
@@ -12,6 +13,9 @@ import { SurveyService } from '../survey/survey.service';
 export class DetailedFormService {
 
   private selectedForm!: Form;
+  private form!: boolean;
+  private draft!: boolean;
+  private survey!: boolean;
 
   constructor(
     private formService: FormService,
@@ -24,8 +28,23 @@ export class DetailedFormService {
     return this.selectedForm;
   }
 
-  public setForm(form: Form): void {
+  public isForm(): boolean {
+    return this.form;
+  }
+
+  public isDraft(): boolean {
+    return this.draft;
+  }
+
+  public isSurvey(): boolean {
+    return this.survey;
+  }
+
+  public setForm(form: Form, formType: boolean, draftType: boolean, surveyType: boolean): void {
     this.selectedForm = form;
+    this.form = formType;
+    this.draft = draftType;
+    this.survey = surveyType;
     this.setQuestions();
   }
 
@@ -46,7 +65,8 @@ export class DetailedFormService {
   }
 
   public startDraft(): void {
-    const copy: Form = { ...this.selectedForm };
+    const copy: Form = JSON.parse(JSON.stringify(this.selectedForm));
+    copy.uuid = uuidv4();
     this.draftService.pushDraft(copy);
   }
 

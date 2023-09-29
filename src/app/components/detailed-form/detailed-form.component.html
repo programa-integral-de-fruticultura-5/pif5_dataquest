@@ -12,7 +12,9 @@
       {{getForm().description}}
     </ion-card-content>
     <ion-nav-link router-direction="forward" [component]="component">
-      <ion-button fill="clear" (click)="startForm()">Comenzar formulario</ion-button>
+      <ion-button fill="clear" *ngIf="isForm()" (click)="startForm()">Comenzar formulario</ion-button>
+      <ion-button fill="clear" *ngIf="isSurvey()" (click)="viewSurvey()">Ver encuesta</ion-button>
+      <ion-button fill="clear" *ngIf="isDraft()" (click)="resumeDraft()">Reanudar borrador</ion-button>
     </ion-nav-link>
   </ion-card>
 </ion-content>
