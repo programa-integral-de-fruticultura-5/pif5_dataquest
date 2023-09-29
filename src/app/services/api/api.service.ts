@@ -37,7 +37,7 @@ export class ApiService {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      data: resource
+      data: JSON.stringify(resource)
     }
 
     return CapacitorHttp.post(options);

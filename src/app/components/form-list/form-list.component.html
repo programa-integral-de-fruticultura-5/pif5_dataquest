@@ -5,12 +5,17 @@
 
   <ion-card button="true" *ngFor="let form of forms" (click)="navigate(form)">
     <ion-card-header>
-      <ion-card-title>{{form.name}}</ion-card-title>
-      <ion-card-subtitle>Finaliza el {{form.dateEnd}}</ion-card-subtitle>
-      <ion-card-subtitle *ngIf="showId">{{ form.questions[0].answers[0].value }}</ion-card-subtitle>
+      <ion-card-subtitle id="uuid" color="danger"
+        *ngIf="draft || survey"
+      ># {{form.uuid}}</ion-card-subtitle>
+      <ion-card-title>{{ form.name }}</ion-card-title>
+      <ion-card-subtitle>Finaliza el {{ form.dateEnd }}</ion-card-subtitle>
+      <ion-card-subtitle *ngIf="draft || survey">{{
+        form.questions[0].answers[0].value
+      }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      {{form.description}}
+      {{ form.description }}
     </ion-card-content>
   </ion-card>
 </ion-content>

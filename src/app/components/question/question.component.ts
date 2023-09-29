@@ -46,9 +46,6 @@ export class QuestionComponent {
 
   nextQuestion(): void {
     if (this.isQuestionValid()) {
-      if (this.isFirstQuestion()) {
-        this.detailedFormService.startDraft();
-      }
       this.saveResponse(this.currentQuestion, this.formGroup);
       this.draftService.saveDrafts();
       this.currentQuestion = this.getNextQuestionFrom(this.currentQuestion);
