@@ -66,7 +66,7 @@ export class FormListComponent implements OnInit {
     this.formsService.requestForms();
     this.draftService.loadDrafts();
     this.surveyService.loadSurveys();
-    this.producersService.sendRequest();
-    this.associationService.sendRequest();
+    this.producersService.requestProducers();
+    this.associationService.requestAssociations();
   }
 }
