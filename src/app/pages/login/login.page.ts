@@ -66,7 +66,15 @@ export class LoginPage implements OnInit {
             await alert.present();
           }
         }
-      )
+      ).catch( async (err) => {
+        await this.loadingController.dismiss();
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'No se pudo iniciar sesión, por favor, verifique su conexión a internet e intente nuevamente',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      });
     } else {
       await this.loadingController.dismiss();
       const alert = await this.alertController.create({
