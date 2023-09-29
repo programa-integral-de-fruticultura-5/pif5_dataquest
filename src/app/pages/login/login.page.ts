@@ -97,10 +97,10 @@ export class LoginPage implements OnInit {
   }
 
   private requestProducers(): void {
-    this.producerService.sendRequest();
+    this.producerService.requestProducers();
   }
 
   private requestAssociations(): void {
-    this.associationService.sendRequest();
+    this.associationService.requestAssociations();
   }
 }

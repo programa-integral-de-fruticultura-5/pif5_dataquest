@@ -74,7 +74,7 @@ export class AutocompleteComponent implements OnInit {
       return stringAnswers;
     } else {
       let stringProducers = this.producersData.map(
-        (producer) => producer.identification
+        (producer) => producer.id
       );
       return stringProducers;
     }

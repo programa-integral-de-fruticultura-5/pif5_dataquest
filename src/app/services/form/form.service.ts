@@ -125,8 +125,4 @@ export class FormService {
       return dateInit <= today && dateEnd >= today;
     });
   }
-
-  public save(): void {
-    this.setLocalForms();
-  }
 }
