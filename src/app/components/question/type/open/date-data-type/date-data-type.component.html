@@ -3,5 +3,7 @@
     [value]="getValue()"
     (ionChange)="setValue($event)"
     presentation="date"
+    [min]="getMaxToMinDate()"
+    [max]="getMinToMaxDate()"
   ></ion-datetime>
 </ng-container>
