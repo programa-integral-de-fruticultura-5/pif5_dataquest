@@ -1,9 +1,12 @@
-<ion-item>
+<ion-item [formGroup]="formGroup">
   <ion-input
     type="number"
     [value]="getValue()"
     (ionChange)="setValue($event)"
     placeholder="Ingrese aquí"
+    helperText="Ingrese un número entre {{question.min}} y {{question.max}}"
+    errorText="Fuera del rango permitido"
+    [formControlName]="question.id"
   />
   <ion-icon name="keypad" slot="start" />
 </ion-item>

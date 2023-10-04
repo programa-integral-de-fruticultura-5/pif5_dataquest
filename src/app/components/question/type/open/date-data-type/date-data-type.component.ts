@@ -9,41 +9,46 @@ import { format, formatISO, parseISO } from 'date-fns';
   templateUrl: './date-data-type.component.html',
   styleUrls: ['./date-data-type.component.scss'],
   standalone: true,
-  imports: [ IonicModule, ReactiveFormsModule ],
+  imports: [IonicModule, ReactiveFormsModule],
 })
-export class DateDataTypeComponent  implements OnInit {
+export class DateDataTypeComponent implements OnInit {
+  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) formGroup!: FormGroup;
 
-  @Input({ required: true }) question!: Question
-  @Input({ required: true }) formGroup!: FormGroup
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() { }
+  ngOnInit() {}
 
   getValue(): string {
     let value: string = this.formGroup.get(`${this.question.id}`)?.value;
     let date: Date = value ? parseISO(value) : new Date();
-    return formatISO(date)
+    return formatISO(date);
   }
 
   setValue(event: any): void {
     this.formGroup.get(`${this.question.id}`)?.setValue(event.detail.value);
   }
 
-  getMinToMaxDate(): string {
-    let maxDate: string = this.question.min ? formatISO(new Date()) : '';
+  getMinToMaxDate(): string | undefined {
+    const date: Date = new Date();
+    const maxDate: string | undefined = this.question.min
+      ? date.toISOString()
+      : undefined;
     return maxDate;
   }
 
-  getMaxToMinDate(): string {
-    let minDate: string = this.question.max ? this.substractYears(this.question.max) : '';
+  getMaxToMinDate(): string | undefined {
+    const minDate: string | undefined = this.question.max
+      ? this.substractYears(Number(this.question.max))
+      : undefined;
     return minDate;
   }
 
-  substractYears(years: number): string {
-    let date: Date = new Date();
-    date.setFullYear(date.getFullYear() + years);
-    return formatISO(date);
+  private substractYears(years: number): string {
+    const date: Date = new Date();
+    const newYear: number = date.getFullYear() + years;
+    date.setFullYear(newYear);
+    const formattedDate: string = date.toISOString();
+    return formattedDate;
   }
-
 }
