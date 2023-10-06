@@ -35,6 +35,7 @@ export class AutocompleteComponent implements OnInit {
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ transform: booleanAttribute }) open!: boolean;
   @Input() title = 'Selecciona uno';
+  @Input({ required: true }) disabled!: boolean;
 
   selection!: string;
   public answersData!: Answer[];

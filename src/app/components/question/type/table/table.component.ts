@@ -16,6 +16,7 @@ import { AnswerRelationService } from 'src/app/services/detailed-form/question/a
 export class TableComponent {
   @Input({ required: true }) question!: any;
   @Input({ required: true }) formGroup!: FormGroup;
+  @Input({ required: true }) disabled!: boolean;
 
   constructor(private answerRelationService: AnswerRelationService) {}
 

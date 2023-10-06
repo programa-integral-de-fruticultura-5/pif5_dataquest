@@ -17,6 +17,7 @@ export class MultipleComponent implements OnInit {
 
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
+  @Input({ required: true }) disabled!: boolean;
 
   constructor() { }
 

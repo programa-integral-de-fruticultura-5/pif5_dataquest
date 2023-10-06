@@ -1,7 +1,7 @@
 <ion-content>
   <ion-img [src]="getPhoto()"></ion-img>
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="takePhoto()">
+    <ion-fab-button disabled="disabled" (click)="takePhoto()">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>
   </ion-fab>

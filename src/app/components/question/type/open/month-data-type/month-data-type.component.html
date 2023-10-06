@@ -1,5 +1,6 @@
 <ng-container>
   <ion-datetime
+    [disabled]="disabled"
     [value]="getValue()"
     (ionChange)="onChange($event)"
     presentation="month-year"

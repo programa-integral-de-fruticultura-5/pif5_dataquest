@@ -1,5 +1,6 @@
 <ion-item>
   <ion-input
+    [disabled]="disabled"
     type="email"
     [value]="getValue()"
     (ionChange)="setValue($event)"

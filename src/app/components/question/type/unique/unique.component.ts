@@ -29,8 +29,7 @@ import { AssociationService } from 'src/app/services/association/association.ser
 export class UniqueComponent implements OnInit {
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
-
-  disabled: boolean = false;
+  @Input({ required: true }) disabled!: boolean;
 
   constructor(
     private detailedFormService: DetailedFormService,
@@ -94,8 +93,6 @@ export class UniqueComponent implements OnInit {
       console.log('answerIdToCheck', answerIdToCheck);
       this.setCheckedValue(answersFormGroup, answerIdToCheck);
       this.disabled = true;
-    } else {
-      this.disabled = false;
     }
   }
 

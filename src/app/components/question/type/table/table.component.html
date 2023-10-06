@@ -15,6 +15,7 @@
           </ion-item>
           <ng-container *ngFor="let questionChild of questionsSection">
             <app-type
+              [disabled]="disabled"
               *ngIf="showQuestion(questionChild, i)"
               [formGroup]="getFormGroup(i)"
               [question]="questionChild"

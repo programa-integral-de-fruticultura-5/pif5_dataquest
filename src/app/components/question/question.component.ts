@@ -29,6 +29,7 @@ import { SurveyService } from 'src/app/services/survey/survey.service';
 export class QuestionComponent {
   currentQuestion!: Question;
   formGroup!: FormGroup;
+  disabled: boolean = false;
 
   constructor(
     private draftService: DraftService,
@@ -42,6 +43,9 @@ export class QuestionComponent {
   ngOnInit() {
     this.currentQuestion = this.questionService.getFirst();
     this.formGroup = this.questionService.getFormGroup();
+    if (this.isSurvey()) {
+      this.disabled = true
+    }
   }
 
   nextQuestion(): void {
@@ -191,5 +195,13 @@ export class QuestionComponent {
 
   private disableQuestion(question: Question, formGroup: FormGroup): void {
     this.answerRelationService.disableQuestion(question, formGroup);
+  }
+
+  isDraft(): boolean {
+    return this.detailedFormService.isDraft();
+  }
+
+  isSurvey(): boolean {
+    return this.detailedFormService.isSurvey();
   }
 }
