@@ -31,6 +31,8 @@ export class UniqueComponent implements OnInit {
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 
+  other: boolean = false;
+
   constructor(
     private detailedFormService: DetailedFormService,
     private assoaciationService: AssociationService
@@ -60,6 +62,9 @@ export class UniqueComponent implements OnInit {
     this.preloadFarmingValue(answersFormGroup);
 
     const id: string = this.getCheckedAnswerId(answersFormGroup);
+
+    this.changeOtherInputState(id);
+
     return id;
   }
 
@@ -78,6 +83,7 @@ export class UniqueComponent implements OnInit {
   private setCheckedValue(answersFormGroup: FormGroup, id: string): void {
     for (const key in answersFormGroup.controls) {
       if (key === id) {
+        this.changeOtherInputState(id);
         answersFormGroup.controls[key].setValue(true);
       } else {
         answersFormGroup.controls[key].setValue(false);
@@ -86,7 +92,8 @@ export class UniqueComponent implements OnInit {
   }
 
   private preloadFarmingValue(answersFormGroup: FormGroup): void {
-    const isFarmingQuestion: boolean = this.question.text === 'Cultivo Priorizado';
+    const isFarmingQuestion: boolean =
+      this.question.text === 'Cultivo Priorizado';
     console.log('isFarmingQuestion', isFarmingQuestion);
     if (isFarmingQuestion) {
       const answerIdToCheck: string = this.searchAnswerIdByFarming();
@@ -109,7 +116,26 @@ export class UniqueComponent implements OnInit {
       (answer) => answer.value === associationFarming
     )!;
 
-    console.log('answer', answer)
+    console.log('answer', answer);
     return answer.id.toString();
+  }
+
+  getTextValue(): string {
+    return '';
+  }
+
+  setTextValue(event: any): void {
+    return;
+  }
+
+  changeOtherInputState(id: string): void {
+    const answer: Answer = this.question.answers.find(
+      (answer) => answer.id.toString() === id
+    )!;
+    if (answer.value.includes('Otro, ¿cuál?')) {
+      this.other = true;
+    } else {
+      this.other = false;
+    }
   }
 }

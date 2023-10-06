@@ -1,5 +1,5 @@
 <ion-radio-group
-  *ngIf="question.type !== 'Única respuesta con select'"
+  *ngIf="question.type === 'Única respuesta'"
   [value]="getValue()"
   (ionChange)="setValue($event)"
 >
@@ -11,6 +11,31 @@
       justify="start"
       >{{ answer.value }}</ion-radio
     >
+  </ion-item>
+</ion-radio-group>
+
+<ion-radio-group
+  *ngIf="question.type === 'Única respuesta con otro'"
+  [value]="getValue()"
+  (ionChange)="setValue($event)"
+>
+  <ion-item *ngFor="let answer of getAnswers(); last as isLast">
+    <ion-radio
+      [disabled]="disabled"
+      [value]="answer.id.toString()"
+      labelPlacement="end"
+      justify="start"
+      >{{ isLast ? answer.value.split(":")[0] : answer.value }}
+    </ion-radio>
+  </ion-item>
+  <ion-item *ngIf="other">
+    <ion-input
+      [disabled]="disabled"
+      [value]="getTextValue()"
+      (ionChange)="setTextValue($event)"
+      placeholder="Ingrese aquí"
+    />
+    <ion-icon name="text-outline" slot="start" />
   </ion-item>
 </ion-radio-group>
 
