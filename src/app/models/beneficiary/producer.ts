@@ -11,6 +11,6 @@ export class Producer {
     public demonstrationPlot: boolean, // parcela demostrativa
     public greenhouse: boolean, // casa malla (invernadero espacial)
     public supplies: boolean, // insumos
-    public productiveLine: string, // linea productiva
+    public associationId: number // id de la asociacion
   ) {}
 }

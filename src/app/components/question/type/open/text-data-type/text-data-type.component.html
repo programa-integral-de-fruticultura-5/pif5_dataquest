@@ -1,5 +1,6 @@
 <ion-item>
   <ion-input
+    [disabled]="disabled"
     [value]="getValue()"
     (ionChange)="setValue($event)"
     placeholder="Ingrese aquí"

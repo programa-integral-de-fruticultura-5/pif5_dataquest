@@ -11,19 +11,31 @@ import { IonicModule } from '@ionic/angular';
 import { Answer } from 'src/app/models/answer';
 import { Question } from 'src/app/models/question';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
+import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
+import { AssociationService } from 'src/app/services/association/association.service';
 
 @Component({
   selector: 'app-unique',
   templateUrl: './unique.component.html',
   styleUrls: ['./unique.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ReactiveFormsModule, AutocompleteComponent],
+  imports: [
+    CommonModule,
+    IonicModule,
+    ReactiveFormsModule,
+    AutocompleteComponent,
+  ],
 })
 export class UniqueComponent implements OnInit {
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
 
-  constructor() {}
+  disabled: boolean = false;
+
+  constructor(
+    private detailedFormService: DetailedFormService,
+    private assoaciationService: AssociationService
+  ) {}
 
   ngOnInit() {}
 
@@ -45,6 +57,8 @@ export class UniqueComponent implements OnInit {
     const answersFormGroup: FormGroup = this.formGroup.get(
       `${this.question.id}`
     ) as FormGroup;
+
+    this.preloadFarmingValue(answersFormGroup);
 
     const id: string = this.getCheckedAnswerId(answersFormGroup);
     return id;
@@ -70,5 +84,35 @@ export class UniqueComponent implements OnInit {
         answersFormGroup.controls[key].setValue(false);
       }
     }
+  }
+
+  private preloadFarmingValue(answersFormGroup: FormGroup): void {
+    const isFarmingQuestion: boolean = this.question.text === 'Cultivo Priorizado';
+    console.log('isFarmingQuestion', isFarmingQuestion);
+    if (isFarmingQuestion) {
+      const answerIdToCheck: string = this.searchAnswerIdByFarming();
+      console.log('answerIdToCheck', answerIdToCheck);
+      this.setCheckedValue(answersFormGroup, answerIdToCheck);
+      this.disabled = true;
+    } else {
+      this.disabled = false;
+    }
+  }
+
+  private searchAnswerIdByFarming(): string {
+    const associationId: number =
+      this.detailedFormService.getForm().beneficiary.associationId;
+
+    console.log('associationId', associationId);
+    const associationFarming: string =
+      this.assoaciationService.getAssociationById(associationId)!.farming;
+
+    console.log('associationFarming', associationFarming);
+    const answer: Answer = this.question.answers.find(
+      (answer) => answer.value === associationFarming
+    )!;
+
+    console.log('answer', answer)
+    return answer.id.toString();
   }
 }

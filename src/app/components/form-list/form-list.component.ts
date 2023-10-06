@@ -57,7 +57,7 @@ export class FormListComponent implements OnInit {
 
   handleRefresh(event: any) {
     setTimeout(() => {
-      this.requestData
+      this.requestData()
       event.target.complete();
     }, 2000);
   }

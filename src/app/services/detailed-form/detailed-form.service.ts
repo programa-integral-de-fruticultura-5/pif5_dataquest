@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { QuestionService } from './question/question.service';
 import { DraftService } from '../draft/draft.service';
 import { SurveyService } from '../survey/survey.service';
+import { Producer } from 'src/app/models/beneficiary/producer';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,10 @@ export class DetailedFormService {
     this.draft = draftType;
     this.survey = surveyType;
     this.setQuestions();
+  }
+
+  public setBeneficiary (selectedBeneficiary: Producer): void {
+    this.selectedForm.beneficiary = selectedBeneficiary;
   }
 
   public setQuestions(): void {
