@@ -15,6 +15,7 @@
 </ion-radio-group>
 
 <app-autocomplete
+  [disabled]="disabled"
   *ngIf="question.type === 'Única respuesta con select'"
   [title]="'Residencia'"
   [question]="question"

@@ -1,5 +1,6 @@
 <ion-item>
   <ion-textarea
+    [disabled]="disabled"
     placeholder="Escribe aquí tu respuesta"
     [value]="getValue()"
     (ionChange)="setValue($event)"

@@ -18,6 +18,7 @@ import { Question } from 'src/app/models/question';
 export class NumberDataTypeComponent {
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
+  @Input({ required: true }) disabled!: boolean;
 
   constructor(private alertController: AlertController) {}
 
@@ -65,5 +66,14 @@ export class NumberDataTypeComponent {
 
       await maxAlert.present();
     }
+  }
+
+  getPlaceholder(): string {
+    let message: string = 'Ingrese un valor';
+    if (this.question.min && this.question.max)
+      message += ` entre ${this.question.min} y ${this.question.max}`;
+    else if (this.question.min) message += ` mayor a ${this.question.min}`;
+    else if (this.question.max) message += ` menor a ${this.question.max}`;
+    return message;
   }
 }

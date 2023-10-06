@@ -16,8 +16,7 @@ import { DetailedFormService } from 'src/app/services/detailed-form/detailed-for
 export class TextDataTypeComponent implements OnInit {
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
-
-  disabled: boolean = false;
+  @Input({ required: true }) disabled!: boolean;
 
   constructor(
     private detailedFormService: DetailedFormService,
@@ -49,8 +48,6 @@ export class TextDataTypeComponent implements OnInit {
         formControl.setValue(association.name);
         this.disabled = true;
       }
-    } else {
-      this.disabled = false;
     }
   }
 

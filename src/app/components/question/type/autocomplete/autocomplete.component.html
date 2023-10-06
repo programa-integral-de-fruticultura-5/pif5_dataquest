@@ -1,5 +1,5 @@
 <ion-list [inset]="true">
-  <ion-item button detail id="select-item" lines="full">
+  <ion-item button [disabled]="disabled" detail id="select-item" lines="full">
     <ion-label slot="start" *ngIf="!selection">{{ title }}</ion-label>
     <div slot="start" id="selected-item" *ngIf="selection">{{ selection }}</div>
   </ion-item>

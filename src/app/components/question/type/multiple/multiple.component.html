@@ -2,6 +2,7 @@
   <ion-list>
     <ion-item *ngFor="let answer of getAnswers()">
       <ion-checkbox
+        [disabled]="disabled"
         [formControlName]="answer.id"
         labelPlacement="end"
         justify="start"

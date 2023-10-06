@@ -15,6 +15,7 @@ export class DrawingPadDataTypeComponent {
   private signaturePad!: SignaturePad;
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
+  @Input({ required: true }) disabled!: boolean;
 
   @ViewChild('canvas')
   canvas!: ElementRef;

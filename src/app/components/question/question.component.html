@@ -1,8 +1,18 @@
 <app-dataquest-header progressBar></app-dataquest-header>
 <ion-content class="ion-padding">
   <ng-container [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-    <app-type [question]="currentQuestion" [formGroup]="formGroup" *ngIf="getType() !== 'Tabla'"></app-type>
-    <app-table [question]="currentQuestion" [formGroup]="formGroup" *ngIf="getType() === 'Tabla'"></app-table>
+    <app-type
+      [disabled]="disabled"
+      [question]="currentQuestion"
+      [formGroup]="formGroup"
+      *ngIf="getType() !== 'Tabla'"
+    ></app-type>
+    <app-table
+      [disabled]="disabled"
+      [question]="currentQuestion"
+      [formGroup]="formGroup"
+      *ngIf="getType() === 'Tabla'"
+    ></app-table>
   </ng-container>
 </ion-content>
 <ion-footer>
@@ -12,7 +22,7 @@
         <ion-icon name="chevron-back-circle"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="primary" *ngIf="formGroup.valid">
+    <ion-buttons slot="primary" *ngIf="formGroup.valid && isDraft()">
       <ion-button (click)="onSubmit()">
         <ion-icon name="save"></ion-icon>
       </ion-button>

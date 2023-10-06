@@ -6,16 +6,19 @@
 
   <ion-card-content>
     <app-open
+      [disabled]="disabled"
       [question]="question"
       [formGroup]="formGroup"
       *ngIf="getType() === 'Abierta'"
     />
     <app-autocomplete
+      [disabled]="disabled"
       [question]="question"
       [formGroup]="formGroup"
       *ngIf="getType() === 'Autocomplete'"
     />
     <app-multiple
+      [disabled]="disabled"
       [question]="question"
       [formGroup]="formGroup"
       *ngIf="
@@ -24,6 +27,7 @@
       "
     />
     <app-unique
+      [disabled]="disabled"
       [question]="question"
       [formGroup]="formGroup"
       *ngIf="

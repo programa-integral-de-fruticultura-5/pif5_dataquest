@@ -14,6 +14,7 @@ import { format, formatISO, parseISO } from 'date-fns';
 export class DateDataTypeComponent implements OnInit {
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
+  @Input({ required: true }) disabled!: boolean;
 
   constructor() {}
 

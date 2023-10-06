@@ -1,13 +1,73 @@
-
-<app-text-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'text'"/>
-<app-autocomplete open [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'autocomplete'"/>
-<app-date-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'date'"/>
-<app-photo-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'photo'"/>
-<app-drawing-pad-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'drawing pad'"/>
-<app-text-area-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'textarea'"/>
-<app-number-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'number'"/>
-<app-percentage-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'percentage'"/>
-<app-month-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'month'"/>
-<app-email-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'email'"/>
-<app-money-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'money'"/>
-<app-phone-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'tel'"/>
+<app-text-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'text'"
+/>
+<app-autocomplete
+  open
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'autocomplete'"
+/>
+<app-date-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'date'"
+/>
+<app-photo-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'photo'"
+/>
+<app-drawing-pad-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'drawing pad'"
+/>
+<app-text-area-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'textarea'"
+/>
+<app-number-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'number'"
+/>
+<app-percentage-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'percentage'"
+/>
+<app-month-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'month'"
+/>
+<app-email-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'email'"
+/>
+<app-money-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'money'"
+/>
+<app-phone-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === 'tel'"
+/>
