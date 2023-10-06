@@ -76,7 +76,8 @@ export class AssociationService {
 
       if (!foundAssociation) {
         const newAssociation = new Association(
-          association.nit.toString(),
+          association.id,
+          association.nit,
           association.name,
           association.identification,
           association.zone,
@@ -86,5 +87,9 @@ export class AssociationService {
         this.associations.push(newAssociation);
       }
     });
+  }
+
+  public getAssociationById(id: number): Association | undefined {
+    return this.associations.find((association) => association.id === id);
   }
 }

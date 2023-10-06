@@ -1,3 +1,4 @@
+import { Producer } from "./beneficiary/producer";
 import { Question } from "./question";
 
 export class Form {
@@ -18,7 +19,7 @@ export class Form {
     public fatherName: string,
     public questions: Array<Question>,
     public description: string,
-    public respondent: string,
+    public beneficiary: Producer,
     public metadataId: number
   ) {}
 }

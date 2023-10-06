@@ -1,6 +1,6 @@
 
 <app-text-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'text'"/>
-<app-autocomplete [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'autocomplete'"/>
+<app-autocomplete open [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'autocomplete'"/>
 <app-date-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'date'"/>
 <app-photo-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'photo'"/>
 <app-drawing-pad-data-type [question]="question" [formGroup]="formGroup" *ngIf="getDataType() === 'drawing pad'"/>

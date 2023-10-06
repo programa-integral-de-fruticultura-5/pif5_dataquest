@@ -83,9 +83,8 @@ export class ProducerService {
           producer.pd_p5,
           producer.cm_p5,
           producer.insumo_p5,
-          producer.linea_productiva
+          producer.association_id
         );
-
         this.producers.push(newProducer);
       }
     });
