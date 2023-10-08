@@ -44,7 +44,7 @@ export class QuestionComponent {
     this.currentQuestion = this.questionService.getFirst();
     this.formGroup = this.questionService.getFormGroup();
     if (this.isSurvey()) {
-      this.disabled = true
+      this.disabled = true;
     }
   }
 
@@ -79,11 +79,10 @@ export class QuestionComponent {
   }
 
   onSubmit() {
-
     if (this.isValid()) {
       this.saveResponse(this.currentQuestion, this.formGroup);
       this.detailedFormService.saveSurvey();
-      this.navCtrl.pop()
+      this.navCtrl.pop();
     } else {
       this.presentAlert(false);
     }
@@ -152,6 +151,13 @@ export class QuestionComponent {
       const value: boolean =
         answersFormGroup.controls[answer.id.toString()].value;
       answer.checked = value;
+      if (
+        question.type === 'Múltiple respuesta con otro' ||
+        question.type === 'Única respuesta con otro'
+      ) {
+        const otherValue: string = answersFormGroup.controls['other'].value;
+        answer.value = `${answer.value}:${otherValue}`;
+      }
     });
   }
 

@@ -6,6 +6,7 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Answer } from 'src/app/models/answer';
@@ -49,9 +50,9 @@ export class UniqueComponent implements OnInit {
       `${this.question.id}`
     ) as FormGroup;
 
-    const value: string = event.detail.value;
+    const id: string = event.detail.value;
 
-    this.setCheckedValue(formGroup, value);
+    this.setCheckedValue(formGroup, id, true);
   }
 
   getValue(): string {
@@ -61,44 +62,49 @@ export class UniqueComponent implements OnInit {
 
     this.preloadFarmingValue(answersFormGroup);
 
-    const id: string = this.getCheckedAnswerId(answersFormGroup);
+    const { answerId, answerValue } = this.getCheckedAnswerId(answersFormGroup);
+    console.log(answerId, answerValue)
+    if (answerId !== 'other')
+      this.changeInputState(answersFormGroup, answerId, answerValue);
 
-    this.changeOtherInputState(id);
-
-    return id;
+    return answerId;
   }
 
-  private getCheckedAnswerId(answersFormGroup: FormGroup): string {
-    let id: string = '';
+  private getCheckedAnswerId(answersFormGroup: FormGroup): {answerId: string, answerValue: boolean} {
+    let answerId: string = '';
+    let answerValue: boolean = false;
 
     for (const key in answersFormGroup.controls) {
-      if (answersFormGroup.controls[key].value) {
-        id = key;
+      const value = answersFormGroup.controls[key].value
+      if (value && key !== 'other') {
+        answerId = key;
+        answerValue = value;
       }
     }
 
-    return id;
+    return { answerId, answerValue };
   }
 
-  private setCheckedValue(answersFormGroup: FormGroup, id: string): void {
+  private setCheckedValue(answersFormGroup: FormGroup, id: string, value: boolean): void {
     for (const key in answersFormGroup.controls) {
-      if (key === id) {
-        this.changeOtherInputState(id);
-        answersFormGroup.controls[key].setValue(true);
-      } else {
-        answersFormGroup.controls[key].setValue(false);
+      if (key === id && key !== 'other') {
+        this.changeInputState(answersFormGroup, id, value);
+        answersFormGroup.controls[key].setValue(value);
+      } else if (key !== 'other') {
+        answersFormGroup.controls[key].setValue(!value);
       }
+      console.log('key', key, 'value', answersFormGroup.controls[key].value)
     }
+    console.log('Controls')
+    console.log(answersFormGroup.controls)
   }
 
   private preloadFarmingValue(answersFormGroup: FormGroup): void {
     const isFarmingQuestion: boolean =
       this.question.text === 'Cultivo Priorizado';
-    console.log('isFarmingQuestion', isFarmingQuestion);
     if (isFarmingQuestion) {
       const answerIdToCheck: string = this.searchAnswerIdByFarming();
-      console.log('answerIdToCheck', answerIdToCheck);
-      this.setCheckedValue(answersFormGroup, answerIdToCheck);
+      this.setCheckedValue(answersFormGroup, answerIdToCheck, true);
       this.disabled = true;
     }
   }
@@ -107,35 +113,42 @@ export class UniqueComponent implements OnInit {
     const associationId: number =
       this.detailedFormService.getForm().beneficiary.associationId;
 
-    console.log('associationId', associationId);
     const associationFarming: string =
       this.assoaciationService.getAssociationById(associationId)!.farming;
 
-    console.log('associationFarming', associationFarming);
     const answer: Answer = this.question.answers.find(
       (answer) => answer.value === associationFarming
     )!;
 
-    console.log('answer', answer);
     return answer.id.toString();
   }
 
   getTextValue(): string {
-    return '';
+    const answerGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+    const otherValue: string = answerGroup.get('other')?.value;
+    return otherValue;
   }
 
   setTextValue(event: any): void {
-    return;
+    const answerGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+    const otherValue: string = event.detail.value;
+    answerGroup.get('other')?.setValue(otherValue);
   }
 
-  changeOtherInputState(id: string): void {
-    const answer: Answer = this.question.answers.find(
+  private changeInputState(answerGroup: FormGroup, id: string, value: boolean): void {
+    const answer: Answer | undefined = this.question.answers.find(
       (answer) => answer.id.toString() === id
-    )!;
-    if (answer.value.includes('Otro, ¿cuál?')) {
+    );
+    if (answer?.value.includes('Otro, ¿cuál?') && value) {
       this.other = true;
+      answerGroup.get('other')?.enable();
     } else {
       this.other = false;
+      answerGroup.get('other')?.disable();
     }
   }
 }

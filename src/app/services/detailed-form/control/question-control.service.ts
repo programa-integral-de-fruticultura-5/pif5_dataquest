@@ -70,6 +70,18 @@ export class QuestionControlService {
       group,
       required ? this.atLeastOneChecked() : null
     );
+
+    if (
+      question.type === 'Múltiple respuesta con otro' ||
+      question.type === 'Única respuesta con otro'
+    ) {
+      let value: string =
+        question.answers[question.answers.length - 1].value.split(':')[1] || '';
+      formGroup.addControl(
+        'other',
+        new FormControl(value, Validators.required)
+      );
+    }
     return formGroup;
   }
 

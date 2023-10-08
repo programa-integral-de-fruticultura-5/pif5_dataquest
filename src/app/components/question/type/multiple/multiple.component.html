@@ -1,13 +1,36 @@
-<div [formGroup]="getFormGroup()">
-  <ion-list>
-    <ion-item *ngFor="let answer of getAnswers()">
-      <ion-checkbox
-        [disabled]="disabled"
-        [formControlName]="answer.id"
-        labelPlacement="end"
-        justify="start"
-        >{{ answer.value }}</ion-checkbox
-      >
-    </ion-item>
-  </ion-list>
-</div>
+<ion-list *ngIf="question.type === 'Múltiple respuesta'">
+  <ion-item *ngFor="let answer of getAnswers()">
+    <ion-checkbox
+      [disabled]="disabled"
+      value="answer.id"
+      (ionChange)="checkAnswer($event, answer.id)"
+      [checked]="isChecked(answer)"
+      labelPlacement="end"
+      justify="start"
+      >{{ answer.value }}</ion-checkbox
+    >
+  </ion-item>
+</ion-list>
+
+<ion-list *ngIf="question.type === 'Múltiple respuesta con otro'">
+  <ion-item *ngFor="let answer of getAnswers(); last as isLast">
+    <ion-checkbox
+      [disabled]="disabled"
+      value="answer.id"
+      (ionChange)="checkAnswer($event, answer.id)"
+      [checked]="isChecked(answer)"
+      labelPlacement="end"
+      justify="start"
+      >{{ isLast ? answer.value.split(":")[0] : answer.value }}</ion-checkbox
+    >
+  </ion-item>
+  <ion-item *ngIf="other">
+    <ion-input
+      [disabled]="disabled"
+      [value]="getTextValue()"
+      (ionChange)="setTextValue($event)"
+      placeholder="Ingrese aquí"
+    />
+    <ion-icon name="text-outline" slot="start" />
+  </ion-item>
+</ion-list>

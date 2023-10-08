@@ -14,8 +14,8 @@
   </ion-item>
 </ion-radio-group>
 
-<ion-radio-group
-  *ngIf="question.type === 'Única respuesta con otro'"
+<ng-container *ngIf="question.type === 'Única respuesta con otro'">
+  <ion-radio-group
   [value]="getValue()"
   (ionChange)="setValue($event)"
 >
@@ -28,16 +28,17 @@
       >{{ isLast ? answer.value.split(":")[0] : answer.value }}
     </ion-radio>
   </ion-item>
-  <ion-item *ngIf="other">
-    <ion-input
-      [disabled]="disabled"
-      [value]="getTextValue()"
-      (ionChange)="setTextValue($event)"
-      placeholder="Ingrese aquí"
-    />
-    <ion-icon name="text-outline" slot="start" />
-  </ion-item>
 </ion-radio-group>
+<ion-item *ngIf="other">
+  <ion-input
+    [disabled]="disabled"
+    [value]="getTextValue()"
+    (ionChange)="setTextValue($event)"
+    placeholder="Ingrese aquí"
+  />
+  <ion-icon name="text-outline" slot="start" />
+</ion-item>
+</ng-container>
 
 <app-autocomplete
   [disabled]="disabled"
