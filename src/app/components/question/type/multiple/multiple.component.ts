@@ -77,16 +77,19 @@ export class MultipleComponent implements OnInit {
   }
 
   private changeInputState(answerGroup: FormGroup, id: string, value: boolean): void {
-    const answer: Answer | undefined = this.question.answers.find(
-      (answer) => answer.id.toString() === id
-    );
-    if (answer?.value.includes('Otro, ¿cuál?') && value) {
+
+    if (this.isLastAnswer(id) && value) {
       this.other = true;
       answerGroup.get('other')?.enable();
-    } else if (answer?.value.includes('Otro, ¿cuál?') && !value) {
+    } else if (this.isLastAnswer(id) && !value) {
       this.other = false;
       answerGroup.get('other')?.disable();
     }
   }
 
+  private isLastAnswer(id: string): boolean {
+    const answers: Answer[] = this.getAnswers();
+    const lastAnswer: Answer = answers[answers.length - 1];
+    return Number(id) === lastAnswer.id;
+  }
 }

@@ -151,14 +151,23 @@ export class QuestionComponent {
       const value: boolean =
         answersFormGroup.controls[answer.id.toString()].value;
       answer.checked = value;
-      if (
-        question.type === 'Múltiple respuesta con otro' ||
-        question.type === 'Única respuesta con otro'
-      ) {
-        const otherValue: string = answersFormGroup.controls['other'].value;
-        answer.value = `${answer.value}:${otherValue}`;
-      }
     });
+    if (
+      question.type === 'Múltiple respuesta con otro' ||
+      question.type === 'Única respuesta con otro'
+    ) {
+      const textAnswered: string = answersFormGroup.controls['other'].value;
+      const fullSavedString: string = question.answers[question.answers.length - 1].value
+      const savedStringArray: string[] = fullSavedString.split(':')
+
+      if (savedStringArray.length === 2) {
+        savedStringArray[1] = textAnswered
+      } else {
+        savedStringArray.push(textAnswered)
+      }
+      question.answers[question.answers.length - 1].value = savedStringArray.join(':')
+      console.log(question.answers[question.answers.length - 1].value);
+    }
   }
 
   private saveOpenResponse(question: Question, formGroup: FormGroup) {
