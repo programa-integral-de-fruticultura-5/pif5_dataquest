@@ -1,10 +1,18 @@
-<ng-container>
-  <ion-datetime
-    [disabled]="disabled"
-    [value]="getValue()"
-    (ionChange)="setValue($event)"
-    presentation="date"
-    [min]="getMaxToMinDate()"
-    [max]="getMinToMaxDate()"
-  ></ion-datetime>
-</ng-container>
+<ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime
+      id="datetime"
+      [disabled]="disabled"
+      [value]="getValue()"
+      (ionChange)="setValue($event)"
+      presentation="date"
+      [min]="getMaxToMinDate()"
+      [max]="getMinToMaxDate()"
+    ></ion-datetime>
+    <ion-button (click)="closeModal()">
+      OK
+    </ion-button>
+  </ng-template>
+</ion-modal>
