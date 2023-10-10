@@ -53,7 +53,19 @@ export class QuestionControlService {
   private generateFormControl(
     question: Question,
     required: boolean
-  ): FormControl {
+  ): FormControl | FormGroup {
+    if (question.dataType === 'tel') {
+      const group: { [key: string]: FormControl } = {};
+      question.answers.forEach((answer) => {
+        group[answer.order] = new FormControl(answer.value);
+      });
+      const formGroup: FormGroup = new FormGroup(group, [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+      ]);
+      return formGroup;
+    }
     return new FormControl(
       question.answers[0].value || '',
       required ? Validators.required : null

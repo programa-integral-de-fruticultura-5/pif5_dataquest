@@ -1,10 +1,36 @@
-<ion-item>
+<ion-item lines="none" *ngFor="let phone of phones">
   <ion-input
     [disabled]="disabled"
-    type="number"
-    [value]="getValue()"
-    (ionChange)="setValue($event)"
-    placeholder="Ingrese aquí"
+    type="tel"
+    [value]="getValue(phone.order)"
+    (ionChange)="setValue($event, phone.order)"
+    placeholder="Telefono {{ phone.order }}"
+    [counter]="true"
+    [minlength]="10"
+    [maxlength]="10"
   />
   <ion-icon name="keypad" slot="start" />
 </ion-item>
+
+<div class="ion-padding-top">
+  <ion-button fill="outline" (click)="addPhone()">
+    Agregar
+  </ion-button>
+  <ion-button fill="outline" color="danger" (click)="removePhone()">
+    Eliminar
+  </ion-button>
+</div>
+
+<!-- <ion-fab slot="fixed" size="small">
+  <ion-fab-button>
+    <ion-icon name="list"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="top">
+    <ion-fab-button (click)="addPhone()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button (click)="removePhone()">
+      <ion-icon name="remove"></ion-icon>
+    </ion-fab-button>
+  </ion-fab-list>
+</ion-fab> -->

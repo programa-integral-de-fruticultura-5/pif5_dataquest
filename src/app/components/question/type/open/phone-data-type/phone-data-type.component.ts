@@ -1,6 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AlertController, IonicModule } from '@ionic/angular';
+import { Answer } from 'src/app/models/answer';
 import { Question } from 'src/app/models/question';
 
 @Component({
@@ -8,23 +10,70 @@ import { Question } from 'src/app/models/question';
   templateUrl: './phone-data-type.component.html',
   styleUrls: ['./phone-data-type.component.scss'],
   standalone: true,
-  imports: [ IonicModule ],
+  imports: [CommonModule, IonicModule],
 })
-export class PhoneDataTypeComponent  implements OnInit {
+export class PhoneDataTypeComponent implements OnInit {
   @Input({ required: true }) question!: Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 
-  constructor() {}
+  phones!: Answer[];
 
-  ngOnInit() {}
+  constructor(private alertController: AlertController) {}
 
-  getValue(): string {
-    return this.formGroup.get(`${this.question.id}`)?.value;
+  ngOnInit() {
+    this.phones = this.question.answers;
   }
 
-  setValue(event: any) {
-    this.formGroup.get(`${this.question.id}`)?.setValue(event.target.value);
+  getValue(order: number): string {
+    const formGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+    const formControl: FormControl = formGroup.get(`${order}`) as FormControl;
+    return formControl.value;
   }
 
+  async setValue(event: any, order: number) {
+    if (event.target.value.length < 10) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'El número de teléfono debe tener 10 dígitos',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    } else {
+      const formGroup: FormGroup = this.formGroup.get(
+        `${this.question.id}`
+      ) as FormGroup;
+      const formControl: FormControl = formGroup.get(`${order}`) as FormControl;
+      formControl.setValue(event.target.value);
+    }
+  }
+
+  addPhone(): void {
+    const formGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+    const lastPhone: Answer =
+      this.question.answers[this.question.answers.length - 1];
+    const phone: Answer = { ...lastPhone };
+    phone.order = lastPhone.order + 1;
+    this.phones.push(phone);
+    formGroup.addControl(
+      `${phone.order}`,
+      new FormControl('', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+      ])
+    );
+  }
+
+  removePhone(): void {
+    const formGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+    formGroup.removeControl(`${this.phones[this.phones.length - 1].order}`);
+    this.phones.pop();
+  }
 }

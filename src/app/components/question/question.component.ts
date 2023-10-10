@@ -171,9 +171,17 @@ export class QuestionComponent {
   }
 
   private saveOpenResponse(question: Question, formGroup: FormGroup) {
-    let formResponse = formGroup.controls[question.id].value;
-    let answer = question.answers[0];
-    answer.value = formResponse;
+    if (question.dataType === 'tel') {
+      let answersGroup: FormGroup = formGroup.controls[question.id] as FormGroup;
+      question.answers.forEach((answer) => {
+        const value: string = answersGroup.controls[answer.order].value;
+        answer.value = value;
+      });
+    } else {
+      let formResponse = formGroup.controls[question.id].value;
+      let answer = question.answers[0];
+      answer.value = formResponse;
+    }
   }
 
   private getNextQuestionFrom(question: Question): Question {
