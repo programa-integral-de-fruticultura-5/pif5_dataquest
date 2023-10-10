@@ -5,6 +5,7 @@ import { Question } from 'src/app/models/question';
 import { TypeComponent } from '../type.component';
 import { FormArray, FormGroup } from '@angular/forms';
 import { AnswerRelationService } from 'src/app/services/detailed-form/question/answer-relation/answer-relation.service';
+import { QuestionControlService } from 'src/app/services/detailed-form/control/question-control.service';
 
 @Component({
   selector: 'app-table',
@@ -18,17 +19,28 @@ export class TableComponent {
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 
-  constructor(private answerRelationService: AnswerRelationService) {}
+  constructor(
+    private answerRelationService: AnswerRelationService,
+    private questionControlService: QuestionControlService
+  ) {}
 
   ngOnInit() {}
 
   addSection() {
+    const formArray: FormArray = this.formGroup.controls[
+      this.question.id
+    ] as FormArray;
     let base: Question[] = this.question.questionChildren[0];
+    formArray.push(this.questionControlService.toFormGroup(base));
     this.question.questionChildren.push([...base]);
   }
 
   removeSection() {
     if (this.question.questionChildren.length > 1) {
+      const formArray: FormArray = this.formGroup.controls[
+        this.question.id
+      ] as FormArray;
+      formArray.removeAt(formArray.length - 1);
       this.question.questionChildren.pop();
     }
   }
@@ -53,7 +65,6 @@ export class TableComponent {
   }
 
   showQuestion(currentQuestion: Question, i: number) {
-
     const checkedAnswersRelation: boolean =
       this.answerRelationService.checkAnswerRelation(
         currentQuestion,
