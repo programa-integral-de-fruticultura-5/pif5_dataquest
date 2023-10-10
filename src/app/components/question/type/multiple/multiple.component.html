@@ -7,8 +7,11 @@
       [checked]="isChecked(answer)"
       labelPlacement="end"
       justify="start"
-      >{{ answer.value }}</ion-checkbox
     >
+      <ion-text class="ion-text-wrap">
+        {{ answer.value }}
+      </ion-text>
+    </ion-checkbox>
   </ion-item>
 </ion-list>
 
@@ -21,8 +24,11 @@
       [checked]="isChecked(answer)"
       labelPlacement="end"
       justify="start"
-      >{{ isLast ? answer.value.split(":")[0] : answer.value }}</ion-checkbox
     >
+      <ion-text class="ion-text-wrap">
+        {{ isLast ? answer.value.split(":")[0] : answer.value }}
+      </ion-text>
+    </ion-checkbox>
   </ion-item>
   <ion-item *ngIf="other">
     <ion-input

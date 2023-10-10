@@ -3,41 +3,44 @@
   [value]="getValue()"
   (ionChange)="setValue($event)"
 >
-  <ion-item *ngFor="let answer of getAnswers()">
+  <ion-item class="ion-text-wrap" *ngFor="let answer of getAnswers()">
     <ion-radio
       [disabled]="disabled"
       [value]="answer.id.toString()"
       labelPlacement="end"
       justify="start"
-      >{{ answer.value }}</ion-radio
     >
+      <ion-text class="ion-text-wrap">
+        {{ answer.value }}
+      </ion-text>
+    </ion-radio>
   </ion-item>
 </ion-radio-group>
 
 <ng-container *ngIf="question.type === 'Única respuesta con otro'">
-  <ion-radio-group
-  [value]="getValue()"
-  (ionChange)="setValue($event)"
->
-  <ion-item *ngFor="let answer of getAnswers(); last as isLast">
-    <ion-radio
+  <ion-radio-group [value]="getValue()" (ionChange)="setValue($event)">
+    <ion-item *ngFor="let answer of getAnswers(); last as isLast">
+      <ion-radio
+        [disabled]="disabled"
+        [value]="answer.id.toString()"
+        labelPlacement="end"
+        justify="start"
+        >
+        <ion-text class="ion-text-wrap">
+          {{ isLast ? answer.value.split(":")[0] : answer.value }}
+        </ion-text>
+      </ion-radio>
+    </ion-item>
+  </ion-radio-group>
+  <ion-item *ngIf="other">
+    <ion-input
       [disabled]="disabled"
-      [value]="answer.id.toString()"
-      labelPlacement="end"
-      justify="start"
-      >{{ isLast ? answer.value.split(":")[0] : answer.value }}
-    </ion-radio>
+      [value]="getTextValue()"
+      (ionChange)="setTextValue($event)"
+      placeholder="Ingrese aquí"
+    />
+    <ion-icon name="text-outline" slot="start" />
   </ion-item>
-</ion-radio-group>
-<ion-item *ngIf="other">
-  <ion-input
-    [disabled]="disabled"
-    [value]="getTextValue()"
-    (ionChange)="setTextValue($event)"
-    placeholder="Ingrese aquí"
-  />
-  <ion-icon name="text-outline" slot="start" />
-</ion-item>
 </ng-container>
 
 <app-autocomplete
