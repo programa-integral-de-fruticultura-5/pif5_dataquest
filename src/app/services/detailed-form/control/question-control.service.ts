@@ -57,13 +57,16 @@ export class QuestionControlService {
     if (question.dataType === 'tel') {
       const group: { [key: string]: FormControl } = {};
       question.answers.forEach((answer) => {
-        group[answer.order] = new FormControl(answer.value);
+        group[answer.order] = new FormControl(answer.value, [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+        ]);
       });
-      const formGroup: FormGroup = new FormGroup(group, [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(10),
-      ]);
+      const formGroup: FormGroup = new FormGroup(
+        group,
+        required ? this.requiredChildrenResponse() : null
+      );
       return formGroup;
     }
     return new FormControl(

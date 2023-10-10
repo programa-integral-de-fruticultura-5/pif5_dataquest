@@ -58,6 +58,7 @@ export class PhoneDataTypeComponent implements OnInit {
       this.question.answers[this.question.answers.length - 1];
     const phone: Answer = { ...lastPhone };
     phone.order = lastPhone.order + 1;
+    phone.value = '';
     this.phones.push(phone);
     formGroup.addControl(
       `${phone.order}`,
