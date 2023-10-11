@@ -130,6 +130,7 @@ export class QuestionComponent {
         ] as FormGroup;
         this.saveSelection(question, questionFormGroup);
     }
+    this.detailedFormService.updateModifyDate();
   }
 
   private saveTableResponse(question: Question, formGroup: FormGroup) {

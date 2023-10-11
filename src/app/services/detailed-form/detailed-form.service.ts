@@ -81,4 +81,10 @@ export class DetailedFormService {
     this.draftService.saveDrafts();
     this.surveyService.saveSurveys();
   }
+
+  public updateModifyDate(): void {
+    if (this.isDraft()) {
+      this.draftService.updateModifyDate(this.selectedForm);
+    }
+  }
 }

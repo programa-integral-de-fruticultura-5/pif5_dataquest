@@ -4,10 +4,15 @@
   </ion-refresher>
 
   <ion-card button="true" *ngFor="let form of forms" (click)="navigate(form)">
+    <ion-icon
+      class="ion-padding"
+      name="checkmark-circle"
+      *ngIf="survey && form.sync"
+    ></ion-icon>
     <ion-card-header>
-      <ion-card-subtitle id="uuid" color="danger"
-        *ngIf="draft || survey"
-      ># {{form.uuid}}</ion-card-subtitle>
+      <ion-card-subtitle id="uuid" color="danger" *ngIf="draft || survey"
+        ># {{ form.uuid }}</ion-card-subtitle
+      >
       <ion-card-title>{{ form.name }}</ion-card-title>
       <ion-card-subtitle>Finaliza el {{ form.dateEnd }}</ion-card-subtitle>
       <ion-card-subtitle *ngIf="draft || survey">{{

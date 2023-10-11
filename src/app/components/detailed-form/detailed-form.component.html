@@ -2,7 +2,7 @@
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-subtitle>Encuesta descargada el {{getForm().fechaDescarga}}</ion-card-subtitle>
+      <ion-card-subtitle>Encuesta descargada el {{getTransformedDownladedDate()}}</ion-card-subtitle>
       <ion-card-title>{{getForm().name}}</ion-card-title>
       <ion-card-subtitle>Proyecto iniciado el {{getForm().dateInit}} | Finaliza el {{getForm().dateEnd}}</ion-card-subtitle>
       <ion-card-subtitle>Total preguntas: {{getTotalQuestions()}}</ion-card-subtitle>

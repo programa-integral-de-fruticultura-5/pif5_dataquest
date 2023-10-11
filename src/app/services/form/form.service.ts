@@ -85,13 +85,9 @@ export class FormService {
             question.questionChildren = children;
           }
         });
-        const options: Intl.DateTimeFormatOptions = {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        };
+
         const currentDate: Date = new Date();
-        form.fechaDescarga = currentDate.toLocaleDateString('es-ES', options); // Convert Date to string
+        form.fechaDescarga = currentDate.toISOString(); // Convert Date to string
         this.forms.push(form);
       }
     });

@@ -116,4 +116,15 @@ export class DetailedFormComponent {
   getTotalQuestions(): number {
     return this.detailedFormService.getTotalQuestions();
   }
+
+  getTransformedDownladedDate() {
+    const date = new Date(this.getForm().fechaDescarga);
+
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    };
+    return date.toLocaleDateString('es-ES', options);
+  }
 }

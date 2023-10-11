@@ -17,16 +17,8 @@ export class DraftService {
 
   public pushDraft(draft: Form): void {
     const copy: Form = { ...draft };
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    };
     const currentDate: Date = new Date();
-    const formattedDate: string = currentDate.toLocaleDateString(
-      'es-ES',
-      options
-    );
+    const formattedDate: string = currentDate.toISOString()
     copy.fechaInicial = formattedDate;
     copy.fechaUltimoCambio = formattedDate;
     this.drafts.push(copy);
@@ -65,12 +57,18 @@ export class DraftService {
 
   public saveDrafts(): void {
     this.storageService.set('drafts', this.drafts);
-    console.log('Saved drafts');
-    const savedDrafts: Form[] = this.getDrafts();
-    console.log(savedDrafts);
   }
 
   public generateUUID(): string {
     return uuidv4();
+  }
+
+  public updateModifyDate(draft: Form): void {
+    const index = this.drafts.findIndex((d) => d.id === draft.id);
+    if (index > -1) {
+      const currentDate: Date = new Date();
+      const formattedDate: string = currentDate.toISOString()
+      this.drafts[index].fechaUltimoCambio = formattedDate;
+    }
   }
 }
