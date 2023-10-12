@@ -2,7 +2,10 @@
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>{{ getCategory() }}</ion-card-subtitle>
-      <ion-card-title>{{ getText() }}</ion-card-title>
+      <ion-card-title>
+        <ion-text color="medium">{{ getOrder() }}. </ion-text
+        >{{ getText() }}
+      </ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-accordion-group [multiple]="true" [value]="0">
