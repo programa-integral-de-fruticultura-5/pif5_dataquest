@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button default-href="detail"></ion-back-button>
+      <ion-button (click)="confirmExit()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <div class="img-container">
       <ion-img src="assets/imgs/inner-icon-2.png"></ion-img>
