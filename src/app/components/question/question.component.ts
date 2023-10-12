@@ -10,7 +10,8 @@ import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AnswerRelationService } from 'src/app/services/detailed-form/question/answer-relation/answer-relation.service';
 import { DraftService } from 'src/app/services/draft/draft.service';
 import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
-import { SurveyService } from 'src/app/services/survey/survey.service';
+import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-question',
@@ -37,7 +38,9 @@ export class QuestionComponent {
     private questionService: QuestionService,
     private navCtrl: NavController,
     private alertController: AlertController,
-    private answerRelationService: AnswerRelationService
+    private answerRelationService: AnswerRelationService,
+    private platform: Platform,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -46,6 +49,37 @@ export class QuestionComponent {
     if (this.isSurvey()) {
       this.disabled = true;
     }
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.confirmExit();
+    });
+  }
+
+  async confirmExit() {
+    const alert = await this.alertController.create({
+      header: '¿Desea salir?',
+      message: 'Si sale, su progreso se guardará como borrador.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Salir',
+          role: 'confirm',
+          cssClass: 'danger',
+          handler: () => {
+            this.router.navigate(['/home'])
+          }
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  ionViewWillLeave() {
+    this.confirmExit();
   }
 
   nextQuestion(): void {
@@ -157,22 +191,26 @@ export class QuestionComponent {
       question.type === 'Única respuesta con otro'
     ) {
       const textAnswered: string = answersFormGroup.controls['other'].value;
-      const fullSavedString: string = question.answers[question.answers.length - 1].value
-      const savedStringArray: string[] = fullSavedString.split(':')
+      const fullSavedString: string =
+        question.answers[question.answers.length - 1].value;
+      const savedStringArray: string[] = fullSavedString.split(':');
 
       if (savedStringArray.length === 2) {
-        savedStringArray[1] = textAnswered
+        savedStringArray[1] = textAnswered;
       } else {
-        savedStringArray.push(textAnswered)
+        savedStringArray.push(textAnswered);
       }
-      question.answers[question.answers.length - 1].value = savedStringArray.join(':')
+      question.answers[question.answers.length - 1].value =
+        savedStringArray.join(':');
       console.log(question.answers[question.answers.length - 1].value);
     }
   }
 
   private saveOpenResponse(question: Question, formGroup: FormGroup) {
     if (question.dataType === 'tel') {
-      let answersGroup: FormGroup = formGroup.controls[question.id] as FormGroup;
+      let answersGroup: FormGroup = formGroup.controls[
+        question.id
+      ] as FormGroup;
       question.answers.forEach((answer) => {
         const value: string = answersGroup.controls[answer.order].value;
         answer.value = value;
