@@ -87,6 +87,14 @@ export class QuestionComponent {
       this.saveResponse(this.currentQuestion, this.formGroup);
       this.draftService.saveDrafts();
       this.currentQuestion = this.getNextQuestionFrom(this.currentQuestion);
+      if (this.currentQuestion.question_category.name === 'Capital social individual') {
+        this.alertController.create({
+          header: 'Atención',
+          subHeader: 'Capital social individual',
+          message: 'A continuación, pasamos a las preguntas que corresponden al componente del capital social individual del índice de desarrollo socio-organizacional.',
+          buttons: ['OK']
+        }).then(alert => alert.present());
+      }
     } else {
       const type: string = this.currentQuestion.type;
       const isTable: boolean = type === 'Tabla';
