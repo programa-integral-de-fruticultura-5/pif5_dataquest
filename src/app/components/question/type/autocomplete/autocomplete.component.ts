@@ -54,6 +54,10 @@ export class AutocompleteComponent implements OnInit {
     this.data = this.getData();
   }
 
+  openModal(): void {
+    this.modal.present();
+  }
+
   private getQuestionValue(): string {
     const answers: FormGroup = this.formGroup.get(
       `${this.question.id}`

@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicModule, LoadingController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  IonicModule,
+  LoadingController,
+  NavController,
+} from '@ionic/angular';
 import { QuestionService } from 'src/app/services/detailed-form/question/question.service';
 import { Question } from 'src/app/models/question';
 import { DataquestHeaderComponent } from '../header/dataquest-header/dataquest-header.component';
@@ -70,8 +75,8 @@ export class QuestionComponent {
           role: 'confirm',
           cssClass: 'danger',
           handler: () => {
-            this.router.navigate(['/home'])
-          }
+            this.router.navigate(['/home']);
+          },
         },
       ],
     });
@@ -84,11 +89,9 @@ export class QuestionComponent {
   }
 
   async nextQuestion() {
-    const loading = await this.loadingController.create(
-      {
-        message: 'Cargando...',
-      }
-    );
+    const loading = await this.loadingController.create({
+      message: 'Cargando...',
+    });
     await loading.present();
     if (this.isQuestionValid()) {
       this.saveResponse(this.currentQuestion, this.formGroup);
@@ -96,13 +99,19 @@ export class QuestionComponent {
       const nextQuestion = this.getNextQuestionFrom(this.currentQuestion);
       if (nextQuestion) {
         this.currentQuestion = nextQuestion;
-        if (this.currentQuestion.question_category.name === 'Capital social individual') {
-          this.alertController.create({
-            header: 'Atención',
-            subHeader: 'Capital social individual',
-            message: 'A continuación, pasamos a las preguntas que corresponden al componente del capital social individual del índice de desarrollo socio-organizacional.',
-            buttons: ['OK']
-          }).then(alert => alert.present());
+        if (
+          this.currentQuestion.question_category.name ===
+          'Capital social individual'
+        ) {
+          this.alertController
+            .create({
+              header: 'Atención',
+              subHeader: 'Capital social individual',
+              message:
+                'A continuación, pasamos a las preguntas que corresponden al componente del capital social individual del índice de desarrollo socio-organizacional.',
+              buttons: ['OK'],
+            })
+            .then((alert) => alert.present());
         }
       }
     } else {
@@ -111,9 +120,9 @@ export class QuestionComponent {
       this.presentAlert(isTable);
     }
     await loading.dismiss();
-    Object.keys(this.formGroup.controls).forEach(key => {
+    Object.keys(this.formGroup.controls).forEach((key) => {
       if (this.formGroup.controls[key].invalid)
-        console.log(key, this.formGroup.controls[key])
+        console.log(key, this.formGroup.controls[key]);
     });
   }
 
@@ -166,10 +175,7 @@ export class QuestionComponent {
 
   isLastQuestion(): boolean {
     let question: Question = this.currentQuestion;
-    let lastQuestion: Question = this.questionService.getLast();
-    const nextQuestion: Question | null = this.questionService.nextQuestion(
-      question
-    );
+    const nextQuestion: Question | null = this.getNextQuestionFrom(question);
     if (!nextQuestion) {
       return true;
     }
@@ -257,7 +263,8 @@ export class QuestionComponent {
   }
 
   private getNextQuestionFrom(question: Question): Question | null {
-    const nextQuestion: Question | null = this.questionService.nextQuestion(question);
+    const nextQuestion: Question | null =
+      this.questionService.nextQuestion(question);
     const formGroup: FormGroup = this.formGroup;
     if (!nextQuestion) {
       return null;

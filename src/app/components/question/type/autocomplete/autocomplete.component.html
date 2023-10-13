@@ -1,11 +1,11 @@
 <ion-list [inset]="true">
-  <ion-item button [disabled]="disabled" detail id="select-item" lines="full">
+  <ion-item button (click)="openModal()" [disabled]="disabled" detail id="select-item" lines="full">
     <ion-label slot="start" *ngIf="!selection">{{ title }}</ion-label>
-    <div slot="start" id="selected-item" *ngIf="selection">{{ selection }}</div>
+    <div slot="start" *ngIf="selection">{{ selection }}</div>
   </ion-item>
 </ion-list>
 
-<ion-modal trigger="select-item" #modal>
+<ion-modal #modal>
   <ng-template>
     <app-typeahead
       class="ion-page"
