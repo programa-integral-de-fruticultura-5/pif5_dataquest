@@ -15,12 +15,12 @@ export class QuestionService {
     private questionControlService: QuestionControlService
   ) {}
 
-  getFilteredQuestions(): Question[] {
-    let filteredQuestions: Question[] = this.filteredQuestions.filter(
+/*   getFilteredQuestions(): Question[] {
+    let filteredQuestions: Question[] = this.originalQuestions.filter(
       (question) => question.questionParentId === null
     );
     return filteredQuestions;
-  }
+  } */
 
   getOriginalQuestions(): Question[] {
     return this.originalQuestions;
@@ -28,7 +28,7 @@ export class QuestionService {
 
   setQuestions(questions: Question[]): void {
     this.originalQuestions = questions;
-    this.filteredQuestions = questions.filter(
+    this.filteredQuestions = this.originalQuestions.filter(
       (question) => question.questionParentId === null
     );
   }
@@ -52,14 +52,14 @@ export class QuestionService {
     return lastQuestion;
   }
 
-  nextQuestion(current: Question): Question {
+  nextQuestion(current: Question): Question | null {
     if (current !== this.getLast()) {
       let next: Question =
         this.filteredQuestions[this.getCurrentIndex(current) + 1];
       this.updateProgress(next);
       return next;
     }
-    return current;
+    return null;
   }
 
   getCurrentIndex(current: Question): number {
@@ -67,14 +67,14 @@ export class QuestionService {
     return currentIndex;
   }
 
-  previousQuestion(current: Question): Question {
+  previousQuestion(current: Question): Question | null {
     if (current !== this.getFirst()) {
       let previous: Question =
         this.filteredQuestions[this.getCurrentIndex(current) - 1];
       this.updateProgress(previous);
       return previous;
     }
-    return current;
+    return null;
   }
 
   getProgress(): number {
@@ -89,6 +89,6 @@ export class QuestionService {
   }
 
   getFormGroup(): FormGroup {
-    return this.questionControlService.toFormGroup(this.originalQuestions);
+    return this.questionControlService.toFormGroup(this.filteredQuestions);
   }
 }
