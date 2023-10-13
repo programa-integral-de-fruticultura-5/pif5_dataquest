@@ -1,12 +1,14 @@
-<canvas #canvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
-<ion-toolbar>
-  <ion-buttons>
-    <ion-button size="small" fill="clear" color="danger" (click)="clearPad()">Limpiar</ion-button>
-    <ion-button size="small" fill="clear" color="success" (click)="savePad()">Guardar</ion-button>
-  </ion-buttons>
-  <ion-buttons slot="end">
-    <ion-button size="small" fill="clear" color="primary" (click)="undoPad()">Deshacer</ion-button>
-  </ion-buttons>
-</ion-toolbar>
-<img src='{{ signatureImg }}' />
+<canvas [hidden]="disabled" #canvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
+<div [hidden]="disabled">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button [disabled]="disabled" size="small" fill="clear" color="danger" (click)="clearPad()">Limpiar</ion-button>
+      <ion-button [disabled]="disabled" size="small" fill="clear" color="success" (click)="savePad()">Guardar</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="disabled" size="small" fill="clear" color="primary" (click)="undoPad()">Deshacer</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</div>
+<img [hidden]="!signatureImg" src='{{ signatureImg }}' />
 

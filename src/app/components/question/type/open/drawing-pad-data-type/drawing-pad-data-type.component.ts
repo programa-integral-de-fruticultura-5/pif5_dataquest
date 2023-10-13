@@ -28,6 +28,7 @@ export class DrawingPadDataTypeComponent {
     this.signaturePad = new SignaturePad(this.canvas.nativeElement);
     window.addEventListener('resize', () => this.resizeCanvas());
     this.resizeCanvas();
+    this.disabled ? this.signaturePad.off() : this.signaturePad.on();
   }
 
   resizeCanvas() {

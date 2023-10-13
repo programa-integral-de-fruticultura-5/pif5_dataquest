@@ -26,6 +26,7 @@ export class UniqueComponent implements OnInit {
   @Input({ required: true }) disabled!: boolean;
 
   other: boolean = false;
+  farming: boolean = false;
 
   constructor(
     private detailedFormService: DetailedFormService,
@@ -105,9 +106,9 @@ export class UniqueComponent implements OnInit {
     if (isFarmingQuestion) {
       const answerIdToCheck: string = this.searchAnswerIdByFarming();
       this.setCheckedValue(answersFormGroup, answerIdToCheck, true);
-      this.disabled = true;
+      this.farming = true;
     } else {
-      this.disabled = false;
+      this.farming = false;
     }
   }
 
