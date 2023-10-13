@@ -46,7 +46,9 @@ export class DetailedFormService {
     this.form = formType;
     this.draft = draftType;
     this.survey = surveyType;
-    this.setQuestions();
+    if (this.isDraft() || this.isSurvey()) {
+      this.setQuestions();
+    }
   }
 
   public setBeneficiary (selectedBeneficiary: Producer): void {
@@ -71,8 +73,10 @@ export class DetailedFormService {
 
   public startDraft(): void {
     const copy: Form = JSON.parse(JSON.stringify(this.selectedForm));
-    copy.uuid = uuidv4();
-    this.draftService.pushDraft(copy);
+    this.selectedForm = copy;
+    this.selectedForm.uuid = uuidv4();
+    this.draftService.pushDraft(this.selectedForm);
+    this.setQuestions();
   }
 
   public saveSurvey(): void {

@@ -16,12 +16,11 @@ export class DraftService {
   }
 
   public pushDraft(draft: Form): void {
-    const copy: Form = { ...draft };
     const currentDate: Date = new Date();
     const formattedDate: string = currentDate.toISOString()
-    copy.fechaInicial = formattedDate;
-    copy.fechaUltimoCambio = formattedDate;
-    this.drafts.push(copy);
+    draft.fechaInicial = formattedDate;
+    draft.fechaUltimoCambio = formattedDate;
+    this.drafts.push(draft);
   }
 
   public removeDraft(draft: Form): Form {
