@@ -1,4 +1,4 @@
-package com.example.app;
+package com.blaucast.dataquest.app;
 
 import com.getcapacitor.BridgeActivity;
 
