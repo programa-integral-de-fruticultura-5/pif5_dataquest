@@ -53,6 +53,10 @@ export class TableComponent {
     return this.question.text;
   }
 
+  getOrder(): number {
+    return this.question.order;
+  }
+
   getCategory(): string {
     return this.question.question_category.name;
   }

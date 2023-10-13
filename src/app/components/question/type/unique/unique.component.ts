@@ -1,13 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Answer } from 'src/app/models/answer';
 import { Question } from 'src/app/models/question';
@@ -63,19 +56,22 @@ export class UniqueComponent implements OnInit {
     this.preloadFarmingValue(answersFormGroup);
 
     const { answerId, answerValue } = this.getCheckedAnswerId(answersFormGroup);
-    console.log(answerId, answerValue)
+    console.log(answerId, answerValue);
     if (answerId !== 'other')
       this.changeInputState(answersFormGroup, answerId, answerValue);
 
     return answerId;
   }
 
-  private getCheckedAnswerId(answersFormGroup: FormGroup): {answerId: string, answerValue: boolean} {
+  private getCheckedAnswerId(answersFormGroup: FormGroup): {
+    answerId: string;
+    answerValue: boolean;
+  } {
     let answerId: string = '';
     let answerValue: boolean = false;
 
     for (const key in answersFormGroup.controls) {
-      const value = answersFormGroup.controls[key].value
+      const value = answersFormGroup.controls[key].value;
       if (value && key !== 'other') {
         answerId = key;
         answerValue = value;
@@ -85,7 +81,11 @@ export class UniqueComponent implements OnInit {
     return { answerId, answerValue };
   }
 
-  private setCheckedValue(answersFormGroup: FormGroup, id: string, value: boolean): void {
+  private setCheckedValue(
+    answersFormGroup: FormGroup,
+    id: string,
+    value: boolean
+  ): void {
     for (const key in answersFormGroup.controls) {
       if (key === id && key !== 'other') {
         this.changeInputState(answersFormGroup, id, value);
@@ -93,10 +93,10 @@ export class UniqueComponent implements OnInit {
       } else if (key !== 'other') {
         answersFormGroup.controls[key].setValue(!value);
       }
-      console.log('key', key, 'value', answersFormGroup.controls[key].value)
+      console.log('key', key, 'value', answersFormGroup.controls[key].value);
     }
-    console.log('Controls')
-    console.log(answersFormGroup.controls)
+    console.log('Controls');
+    console.log(answersFormGroup.controls);
   }
 
   private preloadFarmingValue(answersFormGroup: FormGroup): void {
@@ -106,6 +106,8 @@ export class UniqueComponent implements OnInit {
       const answerIdToCheck: string = this.searchAnswerIdByFarming();
       this.setCheckedValue(answersFormGroup, answerIdToCheck, true);
       this.disabled = true;
+    } else {
+      this.disabled = false;
     }
   }
 
@@ -139,8 +141,11 @@ export class UniqueComponent implements OnInit {
     answerGroup.get('other')?.setValue(otherValue);
   }
 
-  private changeInputState(answerGroup: FormGroup, id: string, value: boolean): void {
-
+  private changeInputState(
+    answerGroup: FormGroup,
+    id: string,
+    value: boolean
+  ): void {
     if (this.isLastAnswer(id) && value) {
       this.other = true;
       answerGroup.get('other')?.enable();

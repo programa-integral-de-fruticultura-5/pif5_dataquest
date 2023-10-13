@@ -48,4 +48,8 @@ export class TypeComponent implements OnInit {
   getText(): string {
     return this.question.text;
   }
+
+  getOrder(): number {
+    return this.question.order;
+  }
 }
