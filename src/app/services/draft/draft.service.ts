@@ -23,6 +23,11 @@ export class DraftService {
     this.drafts.push(draft);
   }
 
+  public deleteDraft(index: number) {
+    this.drafts.splice(index, 1);
+    this.saveDrafts();
+  }
+
   public removeDraft(draft: Form): Form {
     const index = this.drafts.findIndex((d) => d.id === draft.id);
     if (index > -1) {

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, booleanAttribute } from '@angular/core';
 import { Router } from '@angular/router';
-import { Platform, AlertController, IonicModule } from '@ionic/angular';
+import { Platform, AlertController, IonicModule, ToastController } from '@ionic/angular';
 import { Form } from 'src/app/models/form';
 import { AssociationService } from 'src/app/services/association/association.service';
 import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
@@ -33,7 +33,8 @@ export class FormListComponent implements OnInit {
     private detailedFormService: DetailedFormService,
     private router: Router,
     private platform: Platform,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {
@@ -53,6 +54,32 @@ export class FormListComponent implements OnInit {
       });
       await alert.present();
     }
+  }
+
+  async deleteDraft(index: number) {
+    const deletionAlert = await this.alertController.create({
+      header: '¿Estás seguro?',
+      message: 'Esta acción no se puede deshacer',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Eliminar',
+          handler: async () => {
+            this.draftService.deleteDraft(index);
+            const deletedToast = await this.toastController.create({
+              message: 'Borrador eliminado exitosamente',
+              duration: 2000,
+            });
+            await deletedToast.present();
+          },
+        },
+      ],
+    });
+    await deletionAlert.present();
+
   }
 
   handleRefresh(event: any) {
