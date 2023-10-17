@@ -13,10 +13,10 @@
 </ion-item>
 
 <div class="ion-padding-top">
-  <ion-button fill="outline" (click)="addPhone()">
+  <ion-button [disabled]="disabled" fill="outline" (click)="addPhone()">
     Agregar
   </ion-button>
-  <ion-button fill="outline" color="danger" (click)="removePhone()">
+  <ion-button [disabled]="disabled" fill="outline" color="danger" (click)="removePhone()">
     Eliminar
   </ion-button>
 </div>
