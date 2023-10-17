@@ -5,19 +5,29 @@ import { ApiService } from '../api/api.service';
 import { HttpResponse } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { User } from 'src/app/models/user';
+import { UserResponse } from 'src/app/types/userResponse';
 
 const TOKEN_KEY = 'TOKEN_KEY';
+const USER_KEY = 'USER_KEY';
 const ENDPOINT = 'auth/login';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+
+  user!: User;
+
   constructor(
     private router: Router,
     private api: ApiService,
     private jwtHelperService: JwtHelperService
-  ) {}
+  ) {
+    this.getUser().then((user) => {
+      this.user = user as User;
+    });
+  }
 
   public saveToken(token: string) {
     this.removeToken();
@@ -25,13 +35,45 @@ export class AuthService {
     Preferences.set(options);
   }
 
+  public saveUser(user: UserResponse) {
+    this.removeUser();
+    const newUser = new User(
+      user.id,
+      user.name,
+      user.email,
+      user.email_verified_at,
+      user.cedula,
+      user.roles,
+      user.types,
+      user.zone,
+      user.created_at,
+      user.updated_at
+    );
+    this.user = newUser;
+    this.storeUser(newUser);
+  }
+
   public async getToken(): Promise<string | null> {
     const token = await Preferences.get({ key: TOKEN_KEY });
     return token.value || null;
   }
 
+  public async getUser(): Promise<User | null> {
+    const user = await Preferences.get({ key: USER_KEY });
+    return user.value ? JSON.parse(user.value) : null;
+  }
+
   public removeToken() {
     Preferences.remove({ key: TOKEN_KEY });
+  }
+
+  private storeUser(user: User) {
+    const options = { key: USER_KEY, value: JSON.stringify(user) };
+    Preferences.set(options);
+  }
+
+  private removeUser() {
+    Preferences.remove({ key: USER_KEY });
   }
 
   public async decodeToken(token: string): Promise<boolean> {

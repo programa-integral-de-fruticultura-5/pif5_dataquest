@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import { FormService } from 'src/app/services/form/form.service';
 import { AssociationService } from 'src/app/services/association/association.service';
 import { ProducerService } from 'src/app/services/producer/producer.service';
+import { HttpResponse } from '@capacitor/core';
+import { AuthResponse } from 'src/app/types/authResponse';
+import { UserResponse } from 'src/app/types/userResponse';
 
 @Component({
   selector: 'app-login',
@@ -50,10 +53,14 @@ export class LoginPage implements OnInit {
 
     if (this.form.valid) {
       this.auth.login(this.form.value).then(
-        async (res) => {
-          if (res.status === 200) {
+        async (res: HttpResponse) => {
+          const status = res.status;
+          const authResponse: AuthResponse = res.data;
+          const userResponse: UserResponse = authResponse.user;
+          if (status === 200) {
             await this.loadingController.dismiss();
-            this.auth.saveToken(res.data.token);
+            this.auth.saveToken(authResponse.token);
+            this.auth.saveUser(userResponse);
             this.router.navigate(['/home']);
             this.requestData();
           } else {

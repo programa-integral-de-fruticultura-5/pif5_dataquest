@@ -1,14 +1,25 @@
 ion-img {
-  width: 192px;
+  width: 60%;
 }
 
-ion-toolbar {
-  padding: 10px 10px 0px 10px;
-  --background: url('../../../assets/imgs/header-inner-2.jpg');
-  --background-size: cover;
+#home-header {
+  ion-toolbar {
+    --background: url('../../../assets/imgs/header-inner.jpg');
+    display: flex;
+    align-content: center;
+    height: 100px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }
 
-.cloud-icon {
-  font-size: 25px;
+.header-icon {
+  color: white;
+}
+
+ion-modal {
+  .modal-content {
+    --height: 10px;
+  }
 }
 

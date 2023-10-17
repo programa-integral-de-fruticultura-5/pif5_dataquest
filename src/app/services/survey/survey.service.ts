@@ -65,7 +65,7 @@ export class SurveyService {
 
   private changeSyncStatus(survey: Form, status: boolean): void {
     const index = this.surveys.indexOf(survey);
-    this.surveys[index].sync = status;
+    this.surveys[index].sync = status; //TODO save into storage
   }
 
   private uploadSurvey(survey: Form): void {

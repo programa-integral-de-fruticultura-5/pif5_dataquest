@@ -4,6 +4,11 @@ import { HomePage } from './home.page';
 export const routes: Routes = [
   {
     path: '',
+    redirectTo: 'forms',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     component: HomePage,
     children: [
       {
