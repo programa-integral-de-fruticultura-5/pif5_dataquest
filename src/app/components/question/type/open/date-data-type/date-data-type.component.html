@@ -8,8 +8,8 @@
       [value]="getValue()"
       (ionChange)="setValue($event)"
       presentation="date"
-      [min]="getMaxToMinDate()"
-      [max]="getMinToMaxDate()"
+      [min]="getMinDate()"
+      [max]="getMaxDate()"
     ></ion-datetime>
     <ion-button (click)="closeModal()">
       OK

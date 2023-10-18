@@ -57,7 +57,6 @@ export class UniqueComponent implements OnInit {
     this.preloadFarmingValue(answersFormGroup);
 
     const { answerId, answerValue } = this.getCheckedAnswerId(answersFormGroup);
-    console.log(answerId, answerValue);
     if (answerId !== 'other')
       this.changeInputState(answersFormGroup, answerId, answerValue);
 
@@ -94,10 +93,7 @@ export class UniqueComponent implements OnInit {
       } else if (key !== 'other') {
         answersFormGroup.controls[key].setValue(!value);
       }
-      console.log('key', key, 'value', answersFormGroup.controls[key].value);
     }
-    console.log('Controls');
-    console.log(answersFormGroup.controls);
   }
 
   private preloadFarmingValue(answersFormGroup: FormGroup): void {

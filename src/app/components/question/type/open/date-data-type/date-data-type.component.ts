@@ -30,24 +30,24 @@ export class DateDataTypeComponent implements OnInit {
     this.formGroup.get(`${this.question.id}`)?.setValue(event.detail.value);
   }
 
-  getMinToMaxDate(): string | undefined {
-    const date: Date = new Date();
-    const maxDate: string | undefined = this.question.min
-      ? date.toISOString()
+  getMaxDate(): string | undefined {
+    const maxDate: string | undefined = this.question.max
+      ? this.getNewYear(Number(this.question.max), true)
       : undefined;
     return maxDate;
   }
 
-  getMaxToMinDate(): string | undefined {
-    const minDate: string | undefined = this.question.max
-      ? this.substractYears(Number(this.question.max))
+  getMinDate(): string | undefined {
+    const minDate: string | undefined = this.question.min
+      ? this.getNewYear(Number(this.question.min), false)
       : undefined;
     return minDate;
   }
 
-  private substractYears(years: number): string {
+  private getNewYear(years: number, sum: boolean): string {
+    console.log(years, sum)
     const date: Date = new Date();
-    const newYear: number = date.getFullYear() + years;
+    const newYear: number = sum ? date.getFullYear() + years : date.getFullYear() - years;
     date.setFullYear(newYear);
     const formattedDate: string = date.toISOString();
     return formattedDate;

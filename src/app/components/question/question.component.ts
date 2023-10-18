@@ -120,10 +120,6 @@ export class QuestionComponent {
       this.presentAlert(isTable);
     }
     await loading.dismiss();
-    Object.keys(this.formGroup.controls).forEach((key) => {
-      if (this.formGroup.controls[key].invalid)
-        console.log(key, this.formGroup.controls[key]);
-    });
   }
 
   previousQuestion(): void {
@@ -242,7 +238,6 @@ export class QuestionComponent {
       }
       question.answers[question.answers.length - 1].value =
         savedStringArray.join(':');
-      console.log(question.answers[question.answers.length - 1].value);
     }
   }
 
