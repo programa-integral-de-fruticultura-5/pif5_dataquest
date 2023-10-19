@@ -40,7 +40,6 @@ export class DraftService {
     this.storageService.get('drafts')?.then((drafts) => {
       if (drafts) {
         this.drafts = drafts;
-        console.log(drafts);
         this.removeOldDrafts();
       }
     });

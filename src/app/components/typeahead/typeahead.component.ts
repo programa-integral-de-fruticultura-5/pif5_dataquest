@@ -22,7 +22,6 @@ export class TypeaheadComponent {
 
   ngOnInit() {
     this.filteredItems = [...this.items];
-    this.select(this.selectedItem);
   }
 
   select(item: string) {
