@@ -1,10 +1,11 @@
-<ion-item>
+<ion-item lines="none">
   <ion-input
     [disabled]="disabled"
-    type="number"
     [value]="getValue()"
     (ionChange)="setValue($event)"
-    placeholder="Ingrese aquí"
+    [helperText]="getHelperText()"
+    [maskito]="moneyMask"
+    [maskitoElement]="maskPredicate"
   ></ion-input>
   <ion-icon name="cash" slot="start" />
 </ion-item>

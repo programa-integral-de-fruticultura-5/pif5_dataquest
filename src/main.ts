@@ -11,6 +11,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { CurrencyPipe } from '@angular/common';
 
 if (environment.production) {
   enableProdMode();
@@ -19,6 +20,7 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: CurrencyPipe, useClass: CurrencyPipe },
     importProvidersFrom(
       IonicModule.forRoot({}),
       IonicStorageModule.forRoot(),
