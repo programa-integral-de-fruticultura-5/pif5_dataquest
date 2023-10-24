@@ -16,7 +16,6 @@ const ENDPOINT = 'auth/login';
   providedIn: 'root',
 })
 export class AuthService {
-
   user!: User;
 
   constructor(
@@ -24,9 +23,7 @@ export class AuthService {
     private api: ApiService,
     private jwtHelperService: JwtHelperService
   ) {
-    this.getUser().then((user) => {
-      this.user = user as User;
-    });
+    this.user = this.getUser() as User;
   }
 
   public saveToken(token: string) {
@@ -58,9 +55,12 @@ export class AuthService {
     return token.value || null;
   }
 
-  public async getUser(): Promise<User | null> {
-    const user = await Preferences.get({ key: USER_KEY });
-    return user.value ? JSON.parse(user.value) : null;
+  public getUser(): User | null {
+    var user: User | null = null;
+    Preferences.get({ key: USER_KEY }).then(
+      (response) => (user = JSON.parse(response.value!))
+    ).catch((error) => console.log(error));
+    return user;
   }
 
   public removeToken() {
