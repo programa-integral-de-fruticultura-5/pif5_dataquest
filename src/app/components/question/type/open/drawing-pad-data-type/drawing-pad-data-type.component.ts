@@ -67,7 +67,6 @@ export class DrawingPadDataTypeComponent {
 
   savePad() {
     const base64Data = this.signaturePad.toDataURL('image/png', 0.5);
-    console.log(base64Data);
     this.signatureImg = base64Data;
     this.formGroup.get(`${this.question.id}`)?.setValue(base64Data);
   }
