@@ -1,8 +1,13 @@
-<ion-datetime-button [disabled]="disabled" datetime="datetime"></ion-datetime-button>
+<ion-datetime-button
+  class="ion-padding"
+  [disabled]="disabled"
+  datetime="datetime"
+></ion-datetime-button>
 
 <ion-modal [keepContentsMounted]="true">
   <ng-template>
     <ion-datetime
+      showDefaultButtons
       id="datetime"
       [disabled]="disabled"
       [value]="getValue()"
@@ -11,8 +16,5 @@
       [min]="getMinDate()"
       [max]="getMaxDate()"
     ></ion-datetime>
-    <ion-button (click)="closeModal()">
-      OK
-    </ion-button>
   </ng-template>
 </ion-modal>

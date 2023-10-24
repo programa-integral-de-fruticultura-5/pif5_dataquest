@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Question } from 'src/app/models/question';
 
@@ -25,7 +25,10 @@ export class MonthDataTypeComponent  implements OnInit {
   }
 
   getValue(): string {
-    return this.formGroup.controls[this.question.id].value
+    const control: FormControl = this.formGroup.controls[this.question.id] as FormControl
+
+    const date: Date = control.value ? new Date(control.value) : new Date()
+    return date.toISOString()
   }
 
 }

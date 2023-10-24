@@ -1,8 +1,17 @@
-<ng-container>
-  <ion-datetime
-    [disabled]="disabled"
-    [value]="getValue()"
-    (ionChange)="onChange($event)"
-    presentation="month-year"
-  ></ion-datetime>
-</ng-container>
+<ion-datetime-button
+  [disabled]="disabled"
+  datetime="month"
+></ion-datetime-button>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime
+      showDefaultButtons
+      id="month"
+      [disabled]="disabled"
+      [value]="getValue()"
+      (ionChange)="onChange($event)"
+      presentation="month-year"
+    ></ion-datetime>
+  </ng-template>
+</ion-modal>

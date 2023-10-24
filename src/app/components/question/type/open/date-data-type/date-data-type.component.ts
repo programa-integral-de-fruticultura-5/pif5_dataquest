@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { Question } from 'src/app/models/question';
-import { format, formatISO, parseISO } from 'date-fns';
+import { formatISO, parseISO } from 'date-fns';
 
 @Component({
   selector: 'app-date-data-type',
@@ -16,7 +16,7 @@ export class DateDataTypeComponent implements OnInit {
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 
-  constructor(private modalController: ModalController) {}
+  constructor() {}
 
   ngOnInit() {}
 
@@ -51,9 +51,5 @@ export class DateDataTypeComponent implements OnInit {
     date.setFullYear(newYear);
     const formattedDate: string = date.toISOString();
     return formattedDate;
-  }
-
-  closeModal(): void {
-    this.modalController.dismiss();
   }
 }
