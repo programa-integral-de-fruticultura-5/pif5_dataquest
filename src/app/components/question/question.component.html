@@ -22,7 +22,7 @@
         Anterior
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="primary" *ngIf="formGroup.valid && isDraft()">
+    <ion-buttons slot="primary" *ngIf="formGroup.valid && !isSurvey()">
       <ion-button color="secondary" (click)="onSubmit()">
         Guardar
       </ion-button>
