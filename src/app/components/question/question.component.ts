@@ -36,6 +36,7 @@ export class QuestionComponent {
   currentQuestion!: Question;
   formGroup!: FormGroup;
   disabled: boolean = false;
+  alertShown: boolean = false;
 
   constructor(
     private draftService: DraftService,
@@ -101,8 +102,9 @@ export class QuestionComponent {
         this.currentQuestion = nextQuestion;
         if (
           this.currentQuestion.question_category.name ===
-          'Capital social individual'
+          'Capital social individual' && !this.alertShown
         ) {
+          this.alertShown = true;
           this.alertController
             .create({
               header: 'Atención',
