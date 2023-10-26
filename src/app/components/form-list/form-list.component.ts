@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Platform, AlertController, IonicModule, ToastController } from '@ionic/angular';
 import { Form } from 'src/app/models/form';
 import { AssociationService } from 'src/app/services/association/association.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
 import { DraftService } from 'src/app/services/draft/draft.service';
 import { FormService } from 'src/app/services/form/form.service';
@@ -25,6 +26,7 @@ export class FormListComponent implements OnInit {
   @Input({ transform: booleanAttribute }) survey: boolean = false;
 
   constructor(
+    private authService: AuthService,
     private formsService: FormService,
     private draftService: DraftService,
     private surveyService: SurveyService,
@@ -95,5 +97,7 @@ export class FormListComponent implements OnInit {
     this.surveyService.loadSurveys();
     this.producersService.requestProducers();
     this.associationService.requestAssociations();
+    this.authService.loadUser();
+    console.log(this.authService.user);
   }
 }

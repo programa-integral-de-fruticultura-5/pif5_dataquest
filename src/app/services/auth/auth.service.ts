@@ -22,9 +22,7 @@ export class AuthService {
     private router: Router,
     private api: ApiService,
     private jwtHelperService: JwtHelperService
-  ) {
-    this.user = this.getUser() as User;
-  }
+  ) { }
 
   public saveToken(token: string) {
     this.removeToken();
@@ -47,6 +45,7 @@ export class AuthService {
       user.updated_at
     );
     this.user = newUser;
+    console.log(this.user);
     this.storeUser(newUser);
   }
 
@@ -55,12 +54,13 @@ export class AuthService {
     return token.value || null;
   }
 
-  public getUser(): User | null {
-    var user: User | null = null;
+  public loadUser(): void{
     Preferences.get({ key: USER_KEY }).then(
-      (response) => (user = JSON.parse(response.value!))
+      (response) => (
+        console.log(response),
+        this.user = JSON.parse(response.value!)
+      )
     ).catch((error) => console.log(error));
-    return user;
   }
 
   public removeToken() {

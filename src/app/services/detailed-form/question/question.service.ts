@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Question } from 'src/app/models/question';
 import { FormGroup } from '@angular/forms';
 import { QuestionControlService } from '../control/question-control.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +13,11 @@ export class QuestionService {
   private progress: number = 0;
 
   constructor(
-    private questionControlService: QuestionControlService
+    private questionControlService: QuestionControlService,
+    private authService: AuthService
   ) {}
 
-/*   getFilteredQuestions(): Question[] {
+  /*   getFilteredQuestions(): Question[] {
     let filteredQuestions: Question[] = this.originalQuestions.filter(
       (question) => question.questionParentId === null
     );
@@ -31,6 +33,13 @@ export class QuestionService {
     this.filteredQuestions = this.originalQuestions.filter(
       (question) => question.questionParentId === null
     );
+    console.log(this.authService.user);
+    this.filteredQuestions = this.filteredQuestions.filter(
+      (question) =>
+        question.user_type_restriction === this.authService.user.type ||
+        question.user_type_restriction === null
+    );
+    console.log(this.filteredQuestions);
   }
 
   getOriginalLength(): number {
