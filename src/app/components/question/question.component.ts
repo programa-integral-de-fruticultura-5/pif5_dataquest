@@ -50,9 +50,14 @@ export class QuestionComponent {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    this.currentQuestion = this.questionService.getFirst();
+  async ngOnInit() {
     this.formGroup = this.questionService.getFormGroup();
+    const loading = await this.loadingController.create({
+      message: 'Cargando...',
+    });
+    await loading.present();
+    this.currentQuestion = this.getLastAnsweredQuestion();
+    loading.dismiss();
     if (this.isSurvey()) {
       this.disabled = true;
     }
@@ -124,6 +129,15 @@ export class QuestionComponent {
     await loading.dismiss();
   }
 
+  private getLastAnsweredQuestion(): Question {
+    let lastAnsweredQuestion: Question = this.questionService.getFirst();
+    const formGroup: FormGroup = this.formGroup;
+    while (formGroup.controls[lastAnsweredQuestion.id.toString()].valid) {
+      lastAnsweredQuestion = this.getNextQuestionFrom(lastAnsweredQuestion)!;
+    }
+    return lastAnsweredQuestion;
+  }
+
   previousQuestion(): void {
     const previousQuestion = this.getPreviousQuestionFrom(this.currentQuestion);
     if (previousQuestion) {
@@ -156,11 +170,11 @@ export class QuestionComponent {
   }
 
   getCategory(): string {
-    return this.currentQuestion.question_category.name;
+    return this.currentQuestion?.question_category.name;
   }
 
   getType(): string {
-    return this.currentQuestion.type;
+      return this.currentQuestion?.type;
   }
 
   private isQuestionValid() {
@@ -184,7 +198,7 @@ export class QuestionComponent {
   isFirstQuestion(): boolean {
     let question: Question = this.currentQuestion;
     let firstQuestion: Question = this.questionService.getFirst();
-    return question.id === firstQuestion.id;
+    return question?.id === firstQuestion.id;
   }
 
   private saveResponse(question: Question, formGroup: FormGroup): void {

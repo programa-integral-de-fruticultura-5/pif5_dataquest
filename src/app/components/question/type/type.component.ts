@@ -34,22 +34,22 @@ export class TypeComponent implements OnInit {
   }
 
   getCategory(): string {
-    return this.question.question_category.name;
+    return this.question?.question_category.name;
   }
 
   getType(): string {
-    return this.question.type;
+    return this.question?.type;
   }
 
   getDataType(): string { // TODO move this method to open component
-    return this.question.dataType;
+    return this.question?.dataType;
   }
 
   getText(): string {
-    return this.question.text;
+    return this.question?.text;
   }
 
   getOrder(): number {
-    return this.question.order;
+    return this.question?.order;
   }
 }
