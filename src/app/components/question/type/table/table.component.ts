@@ -31,7 +31,11 @@ export class TableComponent {
       this.question.id
     ] as FormArray;
     let base: Question[] = this.question.questionChildren[0];
-    formArray.push(this.questionControlService.toFormGroup(base));
+    const newFormGroup: FormGroup = this.questionControlService.toFormGroup(
+      base
+    );
+    newFormGroup.reset();
+    formArray.push(newFormGroup);
     this.question.questionChildren.push([...base]);
   }
 
