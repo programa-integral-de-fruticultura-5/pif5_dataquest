@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.blaucast.dataquest.app',
+  appId: 'com.blaucastmedia.dataquest.app',
   appName: 'Dataquest',
   webDir: 'www',
   server: {
@@ -10,6 +10,12 @@ const config: CapacitorConfig = {
   plugins: {
     CapacitorHttp: {
       enabled: true,
+    },
+    SplashScreen: {
+      launchShowDuration: 3000,
+      launchAutoHide: true,
+      launchFadeOutDuration: 1000,
+      androidScaleType: "CENTER",
     },
   },
 };
