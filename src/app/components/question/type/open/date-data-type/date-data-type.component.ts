@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Question } from 'src/app/models/question';
-import { formatISO, parseISO } from 'date-fns';
 
 @Component({
   selector: 'app-date-data-type',
@@ -21,13 +20,32 @@ export class DateDataTypeComponent implements OnInit {
   ngOnInit() {}
 
   getValue(): string {
-    let value: string = this.formGroup.get(`${this.question.id}`)?.value;
-    let date: Date = value ? parseISO(value) : new Date();
-    return formatISO(date);
+    const stringDate: string = this.formGroup.get(`${this.question.id}`)?.value;
+    console.log('stringDate: ', stringDate);
+    const [day, month, year] = stringDate.split('/');
+    const parsedDate: Date = new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day)
+    );
+    console.log('date: ', parsedDate.toISOString());
+    return parsedDate.toISOString();
   }
 
-  setValue(event: any): void {
-    this.formGroup.get(`${this.question.id}`)?.setValue(event.detail.value);
+  setValue(event: Event): void {
+    const questionFormControl: FormControl = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormControl;
+    const dateTimeElement = event.target as HTMLInputElement;
+    const value: string = dateTimeElement.value;
+    const date: Date = new Date(value);
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    };
+    const stringDate: string = date.toLocaleDateString('es-ES', options);
+    questionFormControl.setValue(stringDate);
   }
 
   getMaxDate(): string | undefined {
@@ -45,9 +63,11 @@ export class DateDataTypeComponent implements OnInit {
   }
 
   private getNewYear(years: number, sum: boolean): string {
-    console.log(years, sum)
+    console.log(years, sum);
     const date: Date = new Date();
-    const newYear: number = sum ? date.getFullYear() + years : date.getFullYear() - years;
+    const newYear: number = sum
+      ? date.getFullYear() + years
+      : date.getFullYear() - years;
     date.setFullYear(newYear);
     const formattedDate: string = date.toISOString();
     return formattedDate;
