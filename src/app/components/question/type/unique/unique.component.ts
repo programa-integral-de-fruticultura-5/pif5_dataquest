@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { InputChangeEventDetail, InputCustomEvent, IonicModule } from '@ionic/angular';
 import { Answer } from 'src/app/models/answer';
 import { Question } from 'src/app/models/question';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
@@ -122,7 +122,8 @@ export class UniqueComponent implements OnInit {
     return answer.id.toString();
   }
 
-  getTextValue(): string {
+  getOtherValue(): string {
+    this.loadOtherControl();
     const answerGroup: FormGroup = this.formGroup.get(
       `${this.question.id}`
     ) as FormGroup;
@@ -130,12 +131,69 @@ export class UniqueComponent implements OnInit {
     return otherValue;
   }
 
-  setTextValue(event: any): void {
+  setOtherValue(event: Event): void {
     const answerGroup: FormGroup = this.formGroup.get(
       `${this.question.id}`
     ) as FormGroup;
-    const otherValue: string = event.detail.value;
-    answerGroup.get('other')?.setValue(otherValue);
+    const otherControl: FormControl = answerGroup.get('other') as FormControl;
+    const eventTarget: HTMLIonInputElement = event.target as HTMLIonInputElement;
+    const otherValue: string | number = eventTarget.value!;
+    otherControl.setValue(otherValue);
+  }
+
+  isOtherInvalid(): boolean {
+    const answerGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+    const otherControl: FormControl = answerGroup.get('other') as FormControl;
+    const invalid: boolean = otherControl?.invalid;
+    return invalid
+  }
+
+/*   isOtherTouched(): boolean {
+    const answerGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+    const otherControl: FormControl = answerGroup.get('other') as FormControl;
+    return otherControl?.touched;
+  } */
+
+  getOtherErrorMessage(): string {
+    const answerGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+    const otherControl: FormControl = answerGroup.get('other') as FormControl;
+    const errors: any = otherControl?.errors;
+    if (errors?.required) {
+      return 'Este campo es requerido';
+    } else if (errors?.min) {
+      return `El valor mínimo es ${this.question.min}`;
+    } else if (errors?.max) {
+      return `El valor máximo es ${this.question.max}`;
+    }
+    return '';
+  }
+
+  getOtherPlaceholder(): string {
+    let message: string = 'Ingrese un valor';
+    if (this.question.min && this.question.max)
+      message += ` entre ${this.question.min} y ${this.question.max}`;
+    else if (this.question.min) message += ` mayor a ${this.question.min}`;
+    else if (this.question.max) message += ` menor a ${this.question.max}`;
+    return message;
+  }
+
+  private loadOtherControl(): void {
+    const answerGroup: FormGroup = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormGroup;
+    const otherFormControl: FormControl = answerGroup.get(
+      'other'
+    ) as FormControl;
+    if (this.question.min)
+      otherFormControl.addValidators(Validators.min(this.question.min));
+    if (this.question.max)
+      otherFormControl.addValidators(Validators.max(this.question.max));
   }
 
   private changeInputState(
