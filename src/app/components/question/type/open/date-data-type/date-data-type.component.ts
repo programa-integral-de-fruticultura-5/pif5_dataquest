@@ -22,6 +22,10 @@ export class DateDataTypeComponent implements OnInit {
   getValue(): string {
     const stringDate: string = this.formGroup.get(`${this.question.id}`)?.value;
     console.log('stringDate: ', stringDate);
+    if (!stringDate) {
+      const today: Date = new Date();
+      return today.toISOString();
+    }
     const [day, month, year] = stringDate.split('/');
     const parsedDate: Date = new Date(
       Number(year),
