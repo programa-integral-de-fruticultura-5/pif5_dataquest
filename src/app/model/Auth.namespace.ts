@@ -1,4 +1,4 @@
-namespace Authentication {
+export namespace Authentication {
   export interface User {
     id: number,
     name: string,
