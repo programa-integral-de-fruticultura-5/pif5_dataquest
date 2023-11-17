@@ -22,10 +22,6 @@ export namespace FormDetail {
     metadataId: number
   }
 
-  export interface FormManagement {
-    getQuestion(question: Question, form: Form): Question[][];
-  }
-
   export type FormResponse = {
     id: number,
     name: string,
