@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../api/api.service';
-import { Form } from 'src/app/models/form';
+import { ApiService } from '@services/api/api.service';
+import { FormDetail } from '@models/FormDetail.namespace';
 import { HttpResponse } from '@capacitor/core';
-import { Question } from 'src/app/models/question';
 import { StorageService } from '../storage/storage.service';
 import { Network } from '@capacitor/network';
 
@@ -12,7 +11,7 @@ const ENDPOINT = 'form-detail';
   providedIn: 'root',
 })
 export class FormService {
-  private forms: Form[];
+  private forms: FormDetail.Form[];
 
   constructor(
     private apiService: ApiService,
@@ -58,8 +57,8 @@ export class FormService {
     var response: Promise<HttpResponse> = this.apiService.post(ENDPOINT);
 
     response.then(
-      (formsResponse) => {
-        const forms: Form[] = JSON.parse(formsResponse.data);
+      (formsResponse: HttpResponse) => {
+        const forms: FormDetail.Form[] = JSON.parse(formsResponse.data);
         this.processForms(forms);
         this.setLocalForms();
       },
@@ -69,16 +68,16 @@ export class FormService {
     );
   }
 
-  private processForms(forms: Form[]): void {
+  private processForms(forms: FormDetail.Form[]): void {
     // Iterate through each form and initialize questionChildren arrays
-    forms.forEach((form: Form) => {
-      let foundForm: Form | undefined = this.forms.find(
-        (f: Form) => f.id === form.id
+    forms.forEach((form: FormDetail.Form) => {
+      let foundForm: FormDetail.Form | undefined = this.forms.find(
+        (f: FormDetail.Form) => f.id === form.id
       );
       if (!foundForm) {
-        form.questions.forEach((question: Question) => {
+        form.questions.forEach((question: FormDetail.Question) => {
           if (question.type === 'Tabla') {
-            let children: Question[][] = this.getQuestionChildren(
+            let children: FormDetail.Question[][] = this.getQuestionChildren(
               question,
               form
             );
@@ -93,12 +92,12 @@ export class FormService {
     });
   }
 
-  private getQuestionChildren(question: Question, form: Form): Question[][] {
-    let children: Question[][] = [];
-    let base: Question[] = [];
+  private getQuestionChildren(question: FormDetail.Question, form: FormDetail.Form): FormDetail.Question[][] {
+    let children: FormDetail.Question[][] = [];
+    let base: FormDetail.Question[] = [];
 
     // Iterate through each question of the form
-    form.questions.forEach((q: Question) => {
+    form.questions.forEach((q: FormDetail.Question) => {
       // If the question is a child of the current question
       if (q.questionParentId === question.id) {
         // Add the question to the base array
@@ -112,8 +111,8 @@ export class FormService {
     return children;
   }
 
-  public getForms(): Form[] {
-    return this.forms.filter((form: Form) => {
+  public getForms(): FormDetail.Form[] {
+    return this.forms.filter((form: FormDetail.Form) => {
       const dateInit: Date = new Date(form.dateInit);
       const dateEnd: Date = new Date(form.dateEnd);
       const today: Date = new Date();
