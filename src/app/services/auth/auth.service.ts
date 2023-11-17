@@ -5,8 +5,7 @@ import { ApiService } from '../api/api.service';
 import { HttpResponse } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { User } from 'src/app/models/user';
-import { UserResponse } from 'src/app/types/userResponse';
+import { Authentication } from '@model/Auth.namespace';
 
 const TOKEN_KEY = 'TOKEN_KEY';
 const USER_KEY = 'USER_KEY';
@@ -15,12 +14,12 @@ const ENDPOINT = 'auth/login';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
-  user!: User;
+export class AuthService implements Authentication.AuthManagement {
+  user!: Authentication.User;
 
   constructor(
     private router: Router,
-    private api: ApiService,
+    private apiService: ApiService,
     private jwtHelperService: JwtHelperService
   ) { }
 
@@ -30,8 +29,8 @@ export class AuthService {
     Preferences.set(options);
   }
 
-  public saveUser(user: UserResponse) {
-    this.removeUser();
+  public saveUser(user: Authentication.UserResponse) {
+/*     this.removeUser();
     const newUser = new User(
       user.id,
       user.name,
@@ -46,7 +45,7 @@ export class AuthService {
     );
     this.user = newUser;
     console.log(this.user);
-    this.storeUser(newUser);
+    this.storeUser(newUser); */
   }
 
   public async getToken(): Promise<string | null> {
@@ -67,14 +66,14 @@ export class AuthService {
     Preferences.remove({ key: TOKEN_KEY });
   }
 
-  private storeUser(user: User) {
+/*   private storeUser(user: User) {
     const options = { key: USER_KEY, value: JSON.stringify(user) };
     Preferences.set(options);
   }
 
   private removeUser() {
     Preferences.remove({ key: USER_KEY });
-  }
+  } */
 
   public async decodeToken(token: string): Promise<boolean> {
     if (token) {
@@ -83,11 +82,10 @@ export class AuthService {
     return false;
   }
 
-  public login(credentials: {
-    email: string;
-    password: string;
-  }): Promise<HttpResponse> {
-    return this.api.post(ENDPOINT, credentials);
+  public async login(authParams: Authentication.AuthParams): Promise<Authentication.AuthResponse> {
+    const response: HttpResponse = await this.apiService.post(ENDPOINT, authParams);
+    console.log(response);
+    return response.data as Authentication.AuthResponse;
   }
 
   public logout(): void {
