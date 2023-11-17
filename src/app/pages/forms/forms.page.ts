@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { FormService } from 'src/app/services/form/form.service';
-import { FormListComponent } from 'src/app/components/form-list/form-list.component';
+import { FormService } from '@services/form/form.service';
+import { FormListComponent } from '@components/form-list/form-list.component';
 
 @Component({
   selector: 'app-forms',

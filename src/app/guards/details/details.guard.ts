@@ -1,5 +1,5 @@
 import { inject } from "@angular/core";
-import { DetailedFormService } from "src/app/services/detailed-form/detailed-form.service"
+import { DetailedFormService } from "@services/detailed-form/detailed-form.service"
 import { Router } from "@angular/router";
 
 export const DetailsGuard = () => {

@@ -3,7 +3,7 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { OpenComponent } from './open/open.component';
 import { MultipleComponent } from './multiple/multiple.component';
 import { UniqueComponent } from './unique/unique.component';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormGroup } from '@angular/forms';
@@ -24,7 +24,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class TypeComponent implements OnInit {
 
-  @Input({ required: true }) question!: Question
+  @Input({ required: true }) question!: FormDetail.Question
   @Input({ required: true }) formGroup!: FormGroup
   @Input({ required: true }) disabled!: boolean
 

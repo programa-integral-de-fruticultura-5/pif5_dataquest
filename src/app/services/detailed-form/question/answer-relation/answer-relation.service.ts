@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AnswerRelation } from 'src/app/models/answerRelation';
-import { Question } from 'src/app/models/question';
+import { AnswerRelation } from '@models/answerRelation';
+import { FormDetail } from '@models/FormDetail.namespace'
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ export class AnswerRelationService {
   constructor() {}
 
   public checkAnswerRelation(
-    question: Question,
+    question: FormDetail.Question,
     formGroup: FormGroup
   ): boolean {
     const answerRelation: AnswerRelation[] = question.answers_relation;
@@ -54,13 +54,13 @@ export class AnswerRelationService {
     return value;
   }
 
-  public disableQuestion(question: Question, formGroup: FormGroup): void {
+  public disableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
     const questionId: string = question.id.toString();
     formGroup.get(questionId)?.reset();
     formGroup.get(questionId)?.disable();
   }
 
-  public enableQuestion(question: Question, formGroup: FormGroup): void {
+  public enableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
     const questionId: string = question.id.toString();
     formGroup.get(questionId)?.enable();
   }

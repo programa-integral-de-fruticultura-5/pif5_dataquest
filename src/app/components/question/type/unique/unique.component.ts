@@ -2,11 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputChangeEventDetail, InputCustomEvent, IonicModule } from '@ionic/angular';
-import { Answer } from 'src/app/models/answer';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
-import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
-import { AssociationService } from 'src/app/services/association/association.service';
+import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
+import { AssociationService } from '@services/association/association.service';
 
 @Component({
   selector: 'app-unique',
@@ -21,7 +20,7 @@ import { AssociationService } from 'src/app/services/association/association.ser
   ],
 })
 export class UniqueComponent implements OnInit {
-  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 
@@ -35,7 +34,7 @@ export class UniqueComponent implements OnInit {
 
   ngOnInit() {}
 
-  getAnswers(): Answer[] {
+  getAnswers(): FormDetail.Answer[] {
     return this.question.answers;
   }
 
@@ -115,7 +114,7 @@ export class UniqueComponent implements OnInit {
     const associationFarming: string =
       this.assoaciationService.getAssociationById(associationId)!.farming;
 
-    const answer: Answer = this.question.answers.find(
+    const answer: FormDetail.Answer = this.question.answers.find(
       (answer) => answer.value === associationFarming
     )!;
 
@@ -211,8 +210,8 @@ export class UniqueComponent implements OnInit {
   }
 
   private isLastAnswer(id: string): boolean {
-    const answers: Answer[] = this.getAnswers();
-    const lastAnswer: Answer = answers[answers.length - 1];
+    const answers: FormDetail.Answer[] = this.getAnswers();
+    const lastAnswer: FormDetail.Answer = answers[answers.length - 1];
     return Number(id) === lastAnswer.id;
   }
 }

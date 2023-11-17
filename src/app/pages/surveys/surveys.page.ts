@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { FormListComponent } from 'src/app/components/form-list/form-list.component';
-import { SurveyService } from 'src/app/services/survey/survey.service';
+import { FormListComponent } from '@components/form-list/form-list.component';
+import { SurveyService } from '@services/survey/survey.service';
 
 @Component({
   selector: 'app-surveys',

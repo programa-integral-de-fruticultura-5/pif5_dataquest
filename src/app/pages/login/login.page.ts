@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { IonicModule } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { AuthService } from '@services/auth/auth.service';
 import { Router } from '@angular/router';
-import { FormService } from 'src/app/services/form/form.service';
-import { AssociationService } from 'src/app/services/association/association.service';
-import { ProducerService } from 'src/app/services/producer/producer.service';
+import { FormService } from '@services/form/form.service';
+import { AssociationService } from '@services/association/association.service';
+import { ProducerService } from '@services/producer/producer.service';
 import { HttpResponse } from '@capacitor/core';
-import { AuthResponse } from 'src/app/types/authResponse';
-import { UserResponse } from 'src/app/types/userResponse';
+import { AuthResponse } from '@types/authResponse';
+import { UserResponse } from '@types/userResponse';
 
 @Component({
   selector: 'app-login',

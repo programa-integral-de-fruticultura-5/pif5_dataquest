@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { QuestionService } from 'src/app/services/detailed-form/question/question.service';
+import { QuestionService } from '@services/detailed-form/question/question.service';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { CommonModule } from '@angular/common';
 import { PhotoDataTypeComponent } from './photo-data-type/photo-data-type.component';
@@ -13,7 +13,7 @@ import { PercentageDataTypeComponent } from './percentage-data-type/percentage-d
 import { MonthDataTypeComponent } from './month-data-type/month-data-type.component';
 import { EmailDataTypeComponent } from './email-data-type/email-data-type.component';
 import { MoneyDataTypeComponent } from './money-data-type/money-data-type.component';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 import { FormGroup } from '@angular/forms';
 import { PhoneDataTypeComponent } from './phone-data-type/phone-data-type.component';
 
@@ -41,7 +41,7 @@ import { PhoneDataTypeComponent } from './phone-data-type/phone-data-type.compon
 })
 export class OpenComponent  implements OnInit {
 
-  @Input({ required: true }) question!: Question
+  @Input({ required: true }) question!: FormDetail.Question
   @Input({ required: true }) formGroup!: FormGroup
   @Input({ required: true }) disabled!: boolean
 

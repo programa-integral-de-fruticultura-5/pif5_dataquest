@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
-import { Answer } from 'src/app/models/answer';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 
 @Component({
   selector: 'app-phone-data-type',
@@ -13,11 +12,11 @@ import { Question } from 'src/app/models/question';
   imports: [CommonModule, IonicModule],
 })
 export class PhoneDataTypeComponent implements OnInit {
-  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 
-  phones!: Answer[];
+  phones!: FormDetail.Answer[];
 
   constructor(private alertController: AlertController) {}
 
@@ -54,9 +53,9 @@ export class PhoneDataTypeComponent implements OnInit {
     const formGroup: FormGroup = this.formGroup.get(
       `${this.question.id}`
     ) as FormGroup;
-    const lastPhone: Answer =
+    const lastPhone: FormDetail.Answer =
       this.question.answers[this.question.answers.length - 1];
-    const phone: Answer = { ...lastPhone };
+    const phone: FormDetail.Answer = { ...lastPhone };
     phone.order = lastPhone.order + 1;
     phone.value = '';
     this.phones.push(phone);

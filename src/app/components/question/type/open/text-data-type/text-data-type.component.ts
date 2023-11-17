@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Association } from 'src/app/models/beneficiary/association';
-import { Question } from 'src/app/models/question';
-import { AssociationService } from 'src/app/services/association/association.service';
-import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
+import { Beneficiary } from '@models/Beneficiary.namespace';
+import { FormDetail } from '@models/FormDetail.namespace'
+import { AssociationService } from '@services/association/association.service';
+import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
 
 @Component({
   selector: 'app-text-data-type',
@@ -14,7 +14,7 @@ import { DetailedFormService } from 'src/app/services/detailed-form/detailed-for
   imports: [IonicModule, ReactiveFormsModule],
 })
 export class TextDataTypeComponent implements OnInit {
-  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 
@@ -38,7 +38,7 @@ export class TextDataTypeComponent implements OnInit {
     const isAssociationQuestion: boolean =
       this.question.text === 'Asociación a la que pertenece';
 
-    const association: Association | undefined = this.getAssociation();
+    const association: Beneficiary.Association | undefined = this.getAssociation();
 
     const formControl: FormControl = this.formGroup.get(
       `${this.question.id}`
@@ -51,11 +51,11 @@ export class TextDataTypeComponent implements OnInit {
     }
   }
 
-  private getAssociation(): Association | undefined {
+  private getAssociation(): Beneficiary.Association | undefined {
     const associationId: number =
       this.detailedFormService.getForm().beneficiary.associationId;
 
-    const association: Association | undefined =
+    const association: Beneficiary.Association | undefined =
       this.associationService.getAssociationById(associationId);
 
     return association;

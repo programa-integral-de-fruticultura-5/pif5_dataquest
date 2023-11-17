@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Form } from 'src/app/models/form';
+import { FormDetail } from '@models/FormDetail.namespace';
 import { StorageService } from '../storage/storage.service';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,14 +8,14 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class DraftService {
 
-  private drafts: Form[];
+  private drafts: FormDetail.Form[];
 
   constructor(private storageService: StorageService) {
     this.drafts = [];
     this.loadDrafts();
   }
 
-  public pushDraft(draft: Form): void {
+  public pushDraft(draft: FormDetail.Form): void {
     const currentDate: Date = new Date();
     const formattedDate: string = currentDate.toISOString()
     draft.fechaInicial = formattedDate;
@@ -28,7 +28,7 @@ export class DraftService {
     this.saveDrafts();
   }
 
-  public removeDraft(draft: Form): Form {
+  public removeDraft(draft: FormDetail.Form): FormDetail.Form {
     const index = this.drafts.findIndex((d) => d.id === draft.id);
     if (index > -1) {
       return this.drafts.splice(index, 1)[0];
@@ -45,7 +45,7 @@ export class DraftService {
     });
   }
 
-  public getDrafts(): Form[] {
+  public getDrafts(): FormDetail.Form[] {
     return this.drafts;
   }
 
@@ -66,7 +66,7 @@ export class DraftService {
     return uuidv4();
   }
 
-  public updateModifyDate(draft: Form): void {
+  public updateModifyDate(draft: FormDetail.Form): void {
     const index = this.drafts.findIndex((d) => d.id === draft.id);
     if (index > -1) {
       const currentDate: Date = new Date();

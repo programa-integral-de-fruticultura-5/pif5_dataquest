@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
-import { Association } from 'src/app/models/beneficiary/association';
+import { Beneficiary } from '@models/Beneficiary.namespace';
 import { StorageService } from '../storage/storage.service';
 import { Network } from '@capacitor/network';
 
@@ -8,7 +8,7 @@ import { Network } from '@capacitor/network';
   providedIn: 'root',
 })
 export class AssociationService {
-  private associations: Association[];
+  private associations: Beneficiary.Association[];
   private readonly ENDPOINT = 'associations';
 
   constructor(
@@ -75,7 +75,7 @@ export class AssociationService {
       );
 
       if (!foundAssociation) {
-        const newAssociation = new Association(
+        const newAssociation = new Beneficiary.Association(
           association.id,
           association.nit,
           association.name,
@@ -89,7 +89,7 @@ export class AssociationService {
     });
   }
 
-  public getAssociationById(id: number): Association | undefined {
+  public getAssociationById(id: number): Beneficiary.Association | undefined {
     return this.associations.find((association) => association.id === id);
   }
 }

@@ -8,7 +8,7 @@ import { Network } from '@capacitor/network';
   providedIn: 'root',
 })
 export class ProducerService {
-  private producers: Producer[];
+  private producers: Beneficiary.Producer[];
   private readonly ENDPOINT = 'producers';
 
   constructor(

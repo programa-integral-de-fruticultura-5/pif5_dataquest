@@ -13,14 +13,12 @@ import {
   FormGroupDirective,
 } from '@angular/forms';
 import { IonModal, IonicModule } from '@ionic/angular';
-import { TypeaheadComponent } from 'src/app/components/typeahead/typeahead.component';
-import { Answer } from 'src/app/models/answer';
-import { Association } from 'src/app/models/beneficiary/association';
-import { Producer } from 'src/app/models/beneficiary/producer';
-import { Question } from 'src/app/models/question';
-import { AssociationService } from 'src/app/services/association/association.service';
-import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
-import { ProducerService } from 'src/app/services/producer/producer.service';
+import { TypeaheadComponent } from '@components/typeahead/typeahead.component';
+import { FormDetail } from '@models/FormDetail.namespace';
+import { Beneficiary } from '@models/Beneficiary.namespace';
+import { AssociationService } from '@services/association/association.service';
+import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
+import { ProducerService } from '@services/producer/producer.service';
 
 @Component({
   selector: 'app-autocomplete',
@@ -31,16 +29,16 @@ import { ProducerService } from 'src/app/services/producer/producer.service';
 })
 export class AutocompleteComponent implements OnInit {
   @ViewChild('modal', { static: true }) modal!: IonModal;
-  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ transform: booleanAttribute }) open!: boolean;
   @Input() title = 'Selecciona uno';
   @Input({ required: true }) disabled!: boolean;
 
   selection!: string;
-  public answersData!: Answer[];
-  public producersData!: Producer[];
-  public associationsData!: Association[];
+  public answersData!: FormDetail.Answer[];
+  public producersData!: Beneficiary.Producer[];
+  public associationsData!: Beneficiary.Association[];
   public data!: string[];
 
   constructor(
@@ -89,12 +87,12 @@ export class AutocompleteComponent implements OnInit {
   private getData(): string[] {
     let result: string[] = [];
     if (this.open) {
-      const producers: Producer[] = (this.producersData = this.getProducers());
-      const associations: Association[] = (this.associationsData =
+      const producers: Beneficiary.Producer[] = (this.producersData = this.getProducers());
+      const associations: Beneficiary.Association[] = (this.associationsData =
         this.getAssociations());
       result = producers.map((producer) => producer.id);
     } else {
-      const answers: Answer[] = (this.answersData = this.getAnswers());
+      const answers: FormDetail.Answer[] = (this.answersData = this.getAnswers());
       result = answers.map((answer) => answer.value);
     }
     return result;
@@ -142,7 +140,7 @@ export class AutocompleteComponent implements OnInit {
   }
 
   private assignBeneficiary(id: string): void {
-    const beneficiary: Producer | undefined = this.producersData.find(
+    const beneficiary: Beneficiary.Producer | undefined = this.producersData.find(
       (producer) => producer.id === id
     );
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Form } from 'src/app/models/form';
+import { FormDetail } from '@models/FormDetail.namespace';
 import { StorageService } from '../storage/storage.service';
 import { ApiService } from '../api/api.service';
 import { Network } from '@capacitor/network';
@@ -11,7 +11,7 @@ const ENDPOINT = 'uploadSurveys';
   providedIn: 'root',
 })
 export class SurveyService {
-  private surveys: Form[];
+  private surveys: FormDetail.Form[];
 
   constructor(
     private apiService: ApiService,
@@ -22,7 +22,7 @@ export class SurveyService {
     this.loadSurveys();
   }
 
-  public pushSurvey(survey: Form): void {
+  public pushSurvey(survey: FormDetail.Form): void {
     const copy = { ...survey };
     this.surveys.push(copy);
   }
@@ -35,7 +35,7 @@ export class SurveyService {
     });
   }
 
-  public getSurveys(): Form[] {
+  public getSurveys(): FormDetail.Form[] {
     return this.surveys;
   }
 
@@ -63,12 +63,12 @@ export class SurveyService {
     }
   }
 
-  private changeSyncStatus(survey: Form, status: boolean): void {
+  private changeSyncStatus(survey: FormDetail.Form, status: boolean): void {
     const index = this.surveys.indexOf(survey);
     this.surveys[index].sync = status; //TODO save into storage
   }
 
-  private uploadSurvey(survey: Form): void {
+  private uploadSurvey(survey: FormDetail.Form): void {
     this.apiService.post(ENDPOINT, survey).then( (res) => {
       if (res.status === 200) {
         this.changeSyncStatus(survey, true);

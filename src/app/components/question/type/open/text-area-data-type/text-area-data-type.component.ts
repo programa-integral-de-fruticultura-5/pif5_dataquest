@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 
 @Component({
   selector: 'app-text-area-data-type',
@@ -12,7 +12,7 @@ import { Question } from 'src/app/models/question';
 })
 export class TextAreaDataTypeComponent  implements OnInit {
 
-  @Input({ required: true }) question!: Question
+  @Input({ required: true }) question!: FormDetail.Question
   @Input({ required: true }) formGroup!: FormGroup
   @Input({ required: true }) disabled!: boolean
 

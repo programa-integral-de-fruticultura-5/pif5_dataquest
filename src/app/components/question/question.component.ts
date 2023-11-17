@@ -5,16 +5,16 @@ import {
   LoadingController,
   NavController,
 } from '@ionic/angular';
-import { QuestionService } from 'src/app/services/detailed-form/question/question.service';
-import { Question } from 'src/app/models/question';
+import { QuestionService } from '@services/detailed-form/question/question.service';
+import { FormDetail } from '@models/FormDetail.namespace';
 import { DataquestHeaderComponent } from '../header/dataquest-header/dataquest-header.component';
 import { CommonModule } from '@angular/common';
 import { TableComponent } from './type/table/table.component';
 import { TypeComponent } from './type/type.component';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AnswerRelationService } from 'src/app/services/detailed-form/question/answer-relation/answer-relation.service';
-import { DraftService } from 'src/app/services/draft/draft.service';
-import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
+import { AnswerRelationService } from '@services/detailed-form/question/answer-relation/answer-relation.service';
+import { DraftService } from '@services/draft/draft.service';
+import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -33,7 +33,7 @@ import { Router } from '@angular/router';
   standalone: true,
 })
 export class QuestionComponent {
-  currentQuestion!: Question;
+  currentQuestion!: FormDetail.Question;
   formGroup!: FormGroup;
   disabled: boolean = false;
   alertShown: boolean = false;
@@ -106,7 +106,7 @@ export class QuestionComponent {
       if (nextQuestion) {
         this.currentQuestion = nextQuestion;
         if (
-          this.currentQuestion.question_category.name ===
+          this.currentQuestion.questionCategory.name ===
           'Capital social individual' && !this.alertShown
         ) {
           this.alertShown = true;
@@ -129,8 +129,8 @@ export class QuestionComponent {
     await loading.dismiss();
   }
 
-  private getLastAnsweredQuestion(): Question {
-    let lastAnsweredQuestion: Question = this.questionService.getFirst();
+  private getLastAnsweredQuestion(): FormDetail.Question {
+    let lastAnsweredQuestion: FormDetail.Question = this.questionService.getFirst();
     const formGroup: FormGroup = this.formGroup;
     while (formGroup.controls[lastAnsweredQuestion.id.toString()].valid) {
       lastAnsweredQuestion = this.getNextQuestionFrom(lastAnsweredQuestion)!;
@@ -170,7 +170,7 @@ export class QuestionComponent {
   }
 
   getCategory(): string {
-    return this.currentQuestion?.question_category.name;
+    return this.currentQuestion?.questionCategory.name;
   }
 
   getType(): string {
@@ -186,8 +186,8 @@ export class QuestionComponent {
   }
 
   isLastQuestion(): boolean {
-    let question: Question = this.currentQuestion;
-    const nextQuestion: Question | null = this.getNextQuestionFrom(question);
+    let question: FormDetail.Question = this.currentQuestion;
+    const nextQuestion: FormDetail.Question | null = this.getNextQuestionFrom(question);
     if (!nextQuestion) {
       return true;
     }
@@ -196,12 +196,12 @@ export class QuestionComponent {
   }
 
   isFirstQuestion(): boolean {
-    let question: Question = this.currentQuestion;
-    let firstQuestion: Question = this.questionService.getFirst();
+    let question: FormDetail.Question = this.currentQuestion;
+    let firstQuestion: FormDetail.Question = this.questionService.getFirst();
     return question?.id === firstQuestion.id;
   }
 
-  private saveResponse(question: Question, formGroup: FormGroup): void {
+  private saveResponse(question: FormDetail.Question, formGroup: FormGroup): void {
     switch (question.type) {
       case 'Abierta':
         this.saveOpenResponse(question, formGroup);
@@ -218,7 +218,7 @@ export class QuestionComponent {
     this.detailedFormService.updateModifyDate();
   }
 
-  private saveTableResponse(question: Question, formGroup: FormGroup) {
+  private saveTableResponse(question: FormDetail.Question, formGroup: FormGroup) {
     let questionFormArray: FormArray = formGroup.controls[
       question.id
     ] as FormArray;
@@ -232,7 +232,7 @@ export class QuestionComponent {
     });
   }
 
-  private saveSelection(question: Question, answersFormGroup: FormGroup) {
+  private saveSelection(question: FormDetail.Question, answersFormGroup: FormGroup) {
     question.answers.forEach((answer) => {
       const value: boolean =
         answersFormGroup.controls[answer.id.toString()].value;
@@ -257,7 +257,7 @@ export class QuestionComponent {
     }
   }
 
-  private saveOpenResponse(question: Question, formGroup: FormGroup) {
+  private saveOpenResponse(question: FormDetail.Question, formGroup: FormGroup) {
     if (question.dataType === 'tel') {
       let answersGroup: FormGroup = formGroup.controls[
         question.id
@@ -273,8 +273,8 @@ export class QuestionComponent {
     }
   }
 
-  private getNextQuestionFrom(question: Question): Question | null {
-    const nextQuestion: Question | null =
+  private getNextQuestionFrom(question: FormDetail.Question): FormDetail.Question | null {
+    const nextQuestion: FormDetail.Question | null =
       this.questionService.nextQuestion(question);
     const formGroup: FormGroup = this.formGroup;
     if (!nextQuestion) {
@@ -292,8 +292,8 @@ export class QuestionComponent {
     }
   }
 
-  private getPreviousQuestionFrom(question: Question): Question | null {
-    const previousQuestion: Question | null =
+  private getPreviousQuestionFrom(question: FormDetail.Question): FormDetail.Question | null {
+    const previousQuestion: FormDetail.Question | null =
       this.questionService.previousQuestion(question);
     if (!previousQuestion) {
       return null;
@@ -308,11 +308,11 @@ export class QuestionComponent {
     }
   }
 
-  private enableQuestion(question: Question, formGroup: FormGroup): void {
+  private enableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
     this.answerRelationService.enableQuestion(question, formGroup);
   }
 
-  private disableQuestion(question: Question, formGroup: FormGroup): void {
+  private disableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
     this.answerRelationService.disableQuestion(question, formGroup);
   }
 

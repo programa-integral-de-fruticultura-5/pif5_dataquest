@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { AlertButton, AlertController, IonicModule } from '@ionic/angular';
 import { IonicSafeString } from '@ionic/angular/standalone';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { SurveyService } from 'src/app/services/survey/survey.service';
+import { AuthService } from '@services/auth/auth.service';
+import { SurveyService } from '@services/survey/survey.service';
 import { environment as env } from 'src/environments/environment';
 
 @Component({
