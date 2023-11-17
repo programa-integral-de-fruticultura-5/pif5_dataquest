@@ -6,6 +6,9 @@
     "paths": {
       "@*": [
         "app/*"
+      ],
+      "environment": [
+        "environments/environment"
       ]
     },
     "outDir": "./dist/out-tsc",
