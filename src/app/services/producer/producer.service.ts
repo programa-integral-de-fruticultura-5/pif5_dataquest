@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { StorageService } from '../storage/storage.service';
-import { Producer } from 'src/app/models/beneficiary/producer';
+import { Beneficiary } from '@models/Beneficiary.namespace';
 import { Network } from '@capacitor/network';
 
 @Injectable({

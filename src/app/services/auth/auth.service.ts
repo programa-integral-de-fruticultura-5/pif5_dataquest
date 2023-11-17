@@ -5,7 +5,7 @@ import { ApiService } from '../api/api.service';
 import { HttpResponse } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Authentication } from '@model/Auth.namespace';
+import { Authentication } from '@models/Auth.namespace';
 
 const TOKEN_KEY = 'TOKEN_KEY';
 const USER_KEY = 'USER_KEY';
