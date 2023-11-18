@@ -1,5 +1,6 @@
 import { Authentication } from '@models/Auth.namespace';
 import { Beneficiary } from '@models/Beneficiary.namespace';
+import { FormDetail } from '@models/FormDetail.namespace';
 
 export function userBuilder(
   user: Authentication.UserResponse
@@ -15,6 +16,91 @@ export function userBuilder(
     zone: user.zone,
     creationDate: user.created_at,
     updatedDate: user.updated_at,
+  };
+}
+
+export function formBuilder(form: FormDetail.FormResponse): FormDetail.Form {
+  return {
+    id: form.id,
+    uuid: '',
+    name: form.name,
+    fechaDescarga: '',
+    fechaInicial: '',
+    fechaUltimoCambio: '',
+    fechaCarga: '',
+    sync: false,
+    position: '',
+    altitud: 0,
+    dateInit: form.dateInit,
+    dateEnd: form.dateEnd,
+    questions: form.questions.map((question) => questionBuilder(question)),
+    description: form.description,
+    beneficiary: Beneficiary.ProducerBaseParams,
+  };
+}
+
+function questionBuilder(
+  question: FormDetail.QuestionResponse
+): FormDetail.Question {
+  return {
+    id: question.id,
+    text: question.text,
+    type: question.type,
+    required: question.required,
+    dataType: question.dataType,
+    order: question.order,
+    answerLength: 0,
+    extendable: false,
+    questionParentId: question.questionParentId,
+    answers: question.answers.map((answer) => answerBuilder(answer)),
+    questionCategoryId: question.question_category_id,
+    questionCategory: questionCategoryBuilder(question.question_category),
+    answersRelation: question.answers_relation.map((relation) =>
+      answerRelationBuilder(relation)
+    ),
+    questionChildren: [],
+    userTypeRestriction: question.user_type_restriction,
+    min: question.min,
+    max: question.max,
+  };
+}
+
+function answerBuilder(answer: FormDetail.AnswerResponse): FormDetail.Answer {
+  return {
+    id: answer.id,
+    questionId: answer.question_id,
+    value: answer.value,
+    order: answer.order,
+    checked: false,
+  };
+}
+
+function questionCategoryBuilder(
+  category: FormDetail.QuestionCategoryResponse
+): FormDetail.QuestionCategory {
+  return {
+    id: category.id,
+    name: category.name,
+  };
+}
+
+function answerRelationBuilder(
+  relation: FormDetail.AnswerRelationResponse
+): FormDetail.AnswerRelation {
+  return {
+    id: relation.id,
+    questionId: relation.question_id,
+    answerPivot: answerPivotBuilder(relation.pivot),
+  };
+}
+
+function answerPivotBuilder(
+  pivot: FormDetail.AnswerPivotResponse
+): FormDetail.AnswerPivot {
+  return {
+    questionId: pivot.question_id,
+    answerId: pivot.answer_id,
+    type: pivot.type,
   };
 }
 
