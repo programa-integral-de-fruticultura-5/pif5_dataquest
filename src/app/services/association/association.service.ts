@@ -3,93 +3,61 @@ import { ApiService } from '../api/api.service';
 import { Beneficiary } from '@models/Beneficiary.namespace';
 import { StorageService } from '../storage/storage.service';
 import { Network } from '@capacitor/network';
+import { Observable, from, map, switchMap, tap } from 'rxjs';
+import { HttpResponse } from '@capacitor/core';
+import { associationBuilder } from '@utils/builder';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AssociationService {
-  private associations: Beneficiary.Association[];
-  private readonly ENDPOINT = 'associations';
 
   constructor(
     private apiService: ApiService,
     private storageService: StorageService
-  ) {
-    this.associations = [];
-    this.requestAssociations();
-    this.enableListner();
-  }
+  ) { }
 
-  private enableListner() {
-    Network.addListener('networkStatusChange', (status) => {
-      let connectionType = status.connectionType;
-      if (connectionType === 'wifi' || connectionType === 'cellular') {
-        this.requestAssociations();
-      }
-    });
-  }
-
-  public async requestAssociations(): Promise<void> {
-    const { connected } = await Network.getStatus();
-    if (connected) {
-      this.getLocalAssociations();
-      this.getRemoteAssociations();
-    } else {
-      this.getLocalAssociations();
-    }
-  }
-
-  private getRemoteAssociations(): void {
-    this.apiService.post(this.ENDPOINT).then(
-      (response) => {
-        const associations = JSON.parse(response.data);
-        this.processAssociations(associations);
-        this.setLocalAssociations();
-      },
-      (err) => {
-        console.log(err);
-      }
+  public getAssociations(forceRefresh: boolean = false): Observable<Beneficiary.Association[]> {
+    return from(Network.getStatus()).pipe(
+      switchMap((status) => {
+        if (!status.connected || !forceRefresh) {
+          return this.getLocalAssociations();
+        } else {
+          return from(this.apiService.post(ENDPOINT)).pipe(
+            map((response: HttpResponse) => {
+              const associationResponse: Beneficiary.AssociationResponse[] = JSON.parse(
+                response.data
+              );
+              const associations: Beneficiary.Association[] = associationResponse.map(
+                (association) => associationBuilder(association)
+              );
+              return associations;
+            }),
+            tap((associations: Beneficiary.Association[]) => {
+              this.setLocalAssociations(associations);
+            })
+          );
+        }
+      })
     );
   }
 
-  public getAssociations(): any[] {
-    return this.associations;
+  private setLocalAssociations(associations: Beneficiary.Association[]): void {
+    this.storageService.set('associations', associations);
   }
 
-  private setLocalAssociations(): void {
-    this.storageService.set('associations', this.associations);
+  private async getLocalAssociations(): Promise<Beneficiary.Association[]> {
+    return await this.storageService.get(ASSOCIATIONS_STORAGE_KEY)
   }
 
-  private getLocalAssociations(): void {
-    this.storageService.get('associations')?.then((associations) => {
-      if (associations) {
-        this.associations = associations;
-      }
-    });
-  }
-
-  private processAssociations(associations: any[]): void {
-    associations.forEach((association) => {
-      const foundAssociation = this.associations.find(
-        (a) => a.id === association.identification
-      );
-
-      if (!foundAssociation) {
-        const newAssociation = new Beneficiary.Association(
-          association.id,
-          association.nit,
-          association.name,
-          association.identification,
-          association.zone,
-          association.farming
-        );
-
-        this.associations.push(newAssociation);
-      }
-    });
-  }
-
-  public getAssociationById(id: number): Beneficiary.Association | undefined {
-    return this.associations.find((association) => association.id === id);
+  public getAssociationById(id: number): Observable<Beneficiary.Association | undefined> {
+    return from(this.getLocalAssociations()).pipe(
+      map((associations: Beneficiary.Association[]) => {
+        return associations.find((association) => association.id === id);
+      })
+    );
   }
 }
+
+const ASSOCIATIONS_STORAGE_KEY = 'associations';
+const ENDPOINT = ASSOCIATIONS_STORAGE_KEY;

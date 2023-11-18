@@ -3,94 +3,56 @@ import { ApiService } from '../api/api.service';
 import { StorageService } from '../storage/storage.service';
 import { Beneficiary } from '@models/Beneficiary.namespace';
 import { Network } from '@capacitor/network';
+import { OfflineManagerService } from '@services/offline-manager/offline-manager.service';
+import { Observable, from, of } from 'rxjs';
+import { tap, map, switchMap } from 'rxjs/operators';
+import { HttpResponse } from '@capacitor/core';
+import { producerBuilder } from '@utils/builder';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProducerService {
-  private producers: Beneficiary.Producer[];
-  private readonly ENDPOINT = 'producers';
-
   constructor(
     private apiService: ApiService,
-    private storageService: StorageService
-  ) {
-    this.producers = [];
-    this.requestProducers();
-    this.enableListener();
-  }
+    private storageService: StorageService,
+    private offlineManagerService: OfflineManagerService
+  ) {}
 
-  private enableListener() {
-    Network.addListener('networkStatusChange', (status) => {
-      let connectionType = status.connectionType;
-      if (connectionType === 'wifi' || connectionType === 'cellular') {
-        this.requestProducers();
-      }
-    });
-  }
-
-  public async requestProducers(): Promise<void> {
-    const { connected } = await Network.getStatus();
-    if (connected) {
-      this.getLocalProducers();
-      this.getRemoteProducers();
-    } else {
-      this.getLocalProducers();
-    }
-  }
-
-  private getLocalProducers(): void {
-    this.storageService.get('producers')?.then((producers) => {
-      if (producers) {
-        this.producers = producers;
-      }
-    });
-  }
-
-  private setLocalProducers(): void {
-    this.storageService.set('producers', this.producers);
-  }
-
-  private getRemoteProducers(): void {
-    this.apiService.post(this.ENDPOINT).then(
-      (response) => {
-        const producers = JSON.parse(response.data);
-        this.processProducers(producers);
-        this.setLocalProducers();
-      },
-      (err) => {
-        console.log(err);
-      }
+  public getProducers(
+    forceRefresh: boolean = false
+  ): Observable<Beneficiary.Producer[]> {
+    return from(Network.getStatus()).pipe(
+      switchMap((status) => {
+        if (!status.connected || !forceRefresh) {
+          return this.getLocalProducers();
+        } else {
+          return from(this.apiService.post(ENDPOINT)).pipe(
+            map((response: HttpResponse) => {
+              const producerResponse: Beneficiary.ProducerResponse[] =
+                JSON.parse(response.data);
+              const producers: Beneficiary.Producer[] = producerResponse.map(
+                (producer) => producerBuilder(producer)
+              );
+              return producers;
+            }),
+            tap((producers: Beneficiary.Producer[]) => {
+              this.setLocalProducers(producers);
+            })
+          );
+        }
+      })
     );
   }
 
-  private processProducers(producers: any[]): void {
-    producers.forEach((producer) => {
-      const foundProducer = this.producers.find(
-        (p) => p.id === producer.identification
-      );
-
-      if (!foundProducer) {
-        const newProducer = new Producer(
-          producer.cedula,
-          producer.primer_nombre,
-          producer.segundo_nombre,
-          producer.primer_apellido,
-          producer.segundo_apellido,
-          producer.identification,
-          producer.has_especializada,
-          producer.at_p5,
-          producer.pd_p5,
-          producer.cm_p5,
-          producer.insumo_p5,
-          producer.association_id
-        );
-        this.producers.push(newProducer);
-      }
-    });
+  private async getLocalProducers(): Promise<Beneficiary.Producer[]> {
+    return await this.storageService.get(PRODUCERS_STORAGE_KEY);
   }
 
-  public getProducers(): any[] {
-    return this.producers;
+  private setLocalProducers(producers: Beneficiary.Producer[]): void {
+    this.storageService.set(ENDPOINT, producers);
   }
 }
+
+const PRODUCERS_STORAGE_KEY = 'producers';
+const ENDPOINT = PRODUCERS_STORAGE_KEY;
