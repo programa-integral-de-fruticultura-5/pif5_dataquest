@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  url: 'https://pif5.blaucast.com',
+  url: 'https://programaintegraldefruticultura.com.co',
   appVersion: '1.0.0',
 };
