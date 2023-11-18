@@ -75,7 +75,7 @@ export class HomePage {
   }
 
   loadUser(): void {
-    this.authService.getUser().subscribe((user) => {
+    this.authService.getUser().then((user) => {
       this.user = user;
     });
   }

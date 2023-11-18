@@ -33,11 +33,10 @@ export class QuestionService {
     this.filteredQuestions = this.originalQuestions.filter(
       (question) => question.questionParentId === null
     );
-    console.log(this.authService.user);
     this.filteredQuestions = this.filteredQuestions.filter(
-      (question) =>
-        question.user_type_restriction === this.authService.user.type ||
-        question.user_type_restriction === null
+      async (question) =>
+        question.userTypeRestriction === (await this.authService.getUser()).type ||
+        question.userTypeRestriction === null
     );
     console.log(this.filteredQuestions);
   }

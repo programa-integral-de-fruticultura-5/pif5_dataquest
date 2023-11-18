@@ -50,12 +50,14 @@ export class AssociationService {
     return await this.storageService.get(ASSOCIATIONS_STORAGE_KEY)
   }
 
-  public getAssociationById(id: number): Observable<Beneficiary.Association | undefined> {
-    return from(this.getLocalAssociations()).pipe(
+  public async getAssociationById(id: number):  Promise<Beneficiary.Association | undefined>/* Observable<Beneficiary.Association | undefined> */ {
+    const associations: Beneficiary.Association[] = await this.getLocalAssociations();
+    return associations.find((association) => association.id === id);
+/*     return from(this.getLocalAssociations()).pipe(
       map((associations: Beneficiary.Association[]) => {
         return associations.find((association) => association.id === id);
       })
-    );
+    ); */
   }
 }
 
