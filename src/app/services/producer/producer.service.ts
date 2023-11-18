@@ -3,8 +3,7 @@ import { ApiService } from '../api/api.service';
 import { StorageService } from '../storage/storage.service';
 import { Beneficiary } from '@models/Beneficiary.namespace';
 import { Network } from '@capacitor/network';
-import { OfflineManagerService } from '@services/offline-manager/offline-manager.service';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs/operators';
 import { HttpResponse } from '@capacitor/core';
 import { producerBuilder } from '@utils/builder';
@@ -16,7 +15,6 @@ export class ProducerService {
   constructor(
     private apiService: ApiService,
     private storageService: StorageService,
-    private offlineManagerService: OfflineManagerService
   ) {}
 
   public getProducers(
