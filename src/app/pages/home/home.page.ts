@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertButton, AlertController, IonicModule } from '@ionic/angular';
-import { IonicSafeString } from '@ionic/angular/standalone';
+import { AlertController, IonicModule } from '@ionic/angular';
+import { Authentication } from '@models/Auth.namespace';
 import { AuthService } from '@services/auth/auth.service';
 import { SurveyService } from '@services/survey/survey.service';
-import { environment as env } from 'src/environments/environment';
+import { environment as env } from 'environment';
 
 @Component({
   selector: 'app-home',
@@ -16,11 +16,17 @@ export class HomePage {
 
   @ViewChild('modal') modal!: HTMLIonModalElement;
 
+  user!: Authentication.User;
+
   constructor(
     private surveyService: SurveyService,
     private alertController: AlertController,
     private authService: AuthService
   ) {}
+
+  ngOnInit() {
+    this.loadUser();
+  }
 
   async uploadSurveys() {
 
@@ -68,12 +74,10 @@ export class HomePage {
     await logoutAlert.present();
   }
 
-  getUsername(): string {
-    return this.authService.user?.name || '';
-  }
-
-  getRole(): string {
-    return this.authService.user?.type || '';
+  loadUser(): void {
+    this.authService.getUser().subscribe((user) => {
+      this.user = user;
+    });
   }
 
   getAppVersion(): string {
