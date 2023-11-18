@@ -6,6 +6,7 @@ import { FormDetail } from '@models/FormDetail.namespace'
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
 import { AssociationService } from '@services/association/association.service';
+import { Beneficiary } from '@models/Beneficiary.namespace';
 
 @Component({
   selector: 'app-unique',
@@ -48,12 +49,12 @@ export class UniqueComponent implements OnInit {
     this.setCheckedValue(formGroup, id, true);
   }
 
-  getValue(): string {
+  async getValue(): Promise<string> {
     const answersFormGroup: FormGroup = this.formGroup.get(
       `${this.question.id}`
     ) as FormGroup;
 
-    this.preloadFarmingValue(answersFormGroup);
+    await this.preloadFarmingValue(answersFormGroup);
 
     const { answerId, answerValue } = this.getCheckedAnswerId(answersFormGroup);
     if (answerId !== 'other')
@@ -95,11 +96,11 @@ export class UniqueComponent implements OnInit {
     }
   }
 
-  private preloadFarmingValue(answersFormGroup: FormGroup): void {
+  private async preloadFarmingValue(answersFormGroup: FormGroup): Promise<void> {
     const isFarmingQuestion: boolean =
       this.question.text === 'Cultivo Priorizado';
     if (isFarmingQuestion) {
-      const answerIdToCheck: string = this.searchAnswerIdByFarming();
+      const answerIdToCheck: string = await this.searchAnswerIdByFarming();
       this.setCheckedValue(answersFormGroup, answerIdToCheck, true);
       this.farming = true;
     } else {
@@ -107,12 +108,15 @@ export class UniqueComponent implements OnInit {
     }
   }
 
-  private searchAnswerIdByFarming(): string {
+  private async searchAnswerIdByFarming(): Promise<string> {
     const associationId: number =
       this.detailedFormService.getForm().beneficiary.associationId;
 
+    const association: Beneficiary.Association | undefined =
+      await this.assoaciationService.getAssociationById(associationId);
+
     const associationFarming: string =
-      this.assoaciationService.getAssociationById(associationId)!.farming;
+      association!.farming;
 
     const answer: FormDetail.Answer = this.question.answers.find(
       (answer) => answer.value === associationFarming

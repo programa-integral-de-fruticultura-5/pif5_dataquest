@@ -36,20 +36,19 @@ export class AutocompleteComponent implements OnInit {
   @Input({ required: true }) disabled!: boolean;
 
   selection!: string;
-  public answersData!: FormDetail.Answer[];
-  public producersData!: Beneficiary.Producer[];
-  public associationsData!: Beneficiary.Association[];
-  public data!: string[];
+
+  private producers: Beneficiary.Producer[] = [];
+  public answers: FormDetail.Answer[] = [];
+  public data: string[] = [];
 
   constructor(
     private producersService: ProducerService,
-    private associationService: AssociationService,
     private detailedFormService: DetailedFormService
   ) {}
 
   ngOnInit() {
     this.selection = this.getQuestionValue();
-    this.data = this.getData();
+    this.getProducers();
   }
 
   openModal(): void {
@@ -87,13 +86,10 @@ export class AutocompleteComponent implements OnInit {
   private getData(): string[] {
     let result: string[] = [];
     if (this.open) {
-      const producers: Beneficiary.Producer[] = (this.producersData = this.getProducers());
-      const associations: Beneficiary.Association[] = (this.associationsData =
-        this.getAssociations());
-      result = producers.map((producer) => producer.id);
+      result = this.producers.map((producer) => producer.id);
     } else {
-      const answers: FormDetail.Answer[] = (this.answersData = this.getAnswers());
-      result = answers.map((answer) => answer.value);
+      this.answers = this.getAnswers();
+      result = this.answers.map((answer) => answer.value);
     }
     return result;
   }
@@ -102,12 +98,11 @@ export class AutocompleteComponent implements OnInit {
     return this.question.answers;
   }
 
-  getProducers() {
-    return this.producersService.getProducers();
-  }
-
-  getAssociations() {
-    return this.associationService.getAssociations();
+  getProducers(): void {
+    this.producersService.getProducers(true).subscribe((producers) => {
+      this.producers = producers;
+      this.data = this.getData();
+    });
   }
 
   selectionChanged(selection: string) {
@@ -140,7 +135,7 @@ export class AutocompleteComponent implements OnInit {
   }
 
   private assignBeneficiary(id: string): void {
-    const beneficiary: Beneficiary.Producer | undefined = this.producersData.find(
+    const beneficiary: Beneficiary.Producer | undefined = this.producers.find(
       (producer) => producer.id === id
     );
 
@@ -149,7 +144,7 @@ export class AutocompleteComponent implements OnInit {
 
   private getAnswerId(value: string): string {
     let id: string = '';
-    this.answersData.find((answer) => {
+    this.answers.find((answer) => {
       if (answer.value === value) {
         id = answer.id.toString();
       }

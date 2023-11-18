@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-typeahead',
@@ -19,6 +19,8 @@ export class TypeaheadComponent {
 
   filteredItems: string[] = [];
   workingSelectedValue: string = '';
+
+  constructor(private platform: Platform) {}
 
   ngOnInit() {
     this.filteredItems = [...this.items];

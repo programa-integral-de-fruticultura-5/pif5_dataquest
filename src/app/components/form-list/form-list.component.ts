@@ -26,12 +26,9 @@ export class FormListComponent implements OnInit {
   @Input({ transform: booleanAttribute }) survey: boolean = false;
 
   constructor(
-    private authService: AuthService,
     private formsService: FormService,
     private draftService: DraftService,
     private surveyService: SurveyService,
-    private producersService: ProducerService,
-    private associationService: AssociationService,
     private detailedFormService: DetailedFormService,
     private router: Router,
     private platform: Platform,
@@ -92,12 +89,16 @@ export class FormListComponent implements OnInit {
   }
 
   private requestData() {
-    this.formsService.requestForms();
-    this.draftService.loadDrafts();
-    this.surveyService.loadSurveys();
-    this.producersService.requestProducers();
-    this.associationService.requestAssociations();
-    this.authService.loadUser();
-    console.log(this.authService.user);
+    if (this.form) {
+      this.formsService.getForms().subscribe((forms) => {
+        this.forms = forms;
+      });
+    }
+    if (this.draft) {
+      this.draftService.loadDrafts();
+    }
+    if (this.survey) {
+      this.surveyService.loadSurveys();
+    }
   }
 }

@@ -34,7 +34,7 @@ export class TypeComponent implements OnInit {
   }
 
   getCategory(): string {
-    return this.question?.question_category.name;
+    return this.question?.questionCategory.name;
   }
 
   getType(): string {
