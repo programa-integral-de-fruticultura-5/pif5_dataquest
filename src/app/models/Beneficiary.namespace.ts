@@ -15,6 +15,21 @@ export namespace Beneficiary {
     associationId: number;
   }
 
+  export const ProducerBaseParams = {
+    cedula: '',
+    firstname: '',
+    middlename: '',
+    lastname: '',
+    secondLastname: '',
+    id: '',
+    specialized: false,
+    technicalAssistance: false,
+    demonstrationPlot: false,
+    greenhouse: false,
+    supplies: false,
+    associationId: 0,
+  };
+
   export type ProducerResponse = {
     cedula: string;
     primer_nombre: string;

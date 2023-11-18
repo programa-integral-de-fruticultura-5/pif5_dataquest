@@ -14,12 +14,9 @@ export namespace FormDetail {
     altitud: number,
     dateInit: string,
     dateEnd: string,
-    fatherId: any,
-    fatherName: string,
     questions: Array<Question>,
     description: string,
     beneficiary: Beneficiary.Producer,
-    metadataId: number
   }
 
   export type FormResponse = {
@@ -49,6 +46,7 @@ export namespace FormDetail {
     extendable: boolean,
     questionParentId: number,
     answers: Array<Answer>,
+    questionCategoryId: number,
     questionCategory: QuestionCategory,
     answersRelation: Array<AnswerRelation>,
     questionChildren: Array<Array<Question>>,
