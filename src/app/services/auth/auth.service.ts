@@ -6,6 +6,7 @@ import { HttpResponse } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Authentication } from '@models/Auth.namespace';
+import { userBuilder } from '@utils/builder';
 
 const TOKEN_KEY = 'TOKEN_KEY';
 const USER_KEY = 'USER_KEY';
@@ -29,23 +30,10 @@ export class AuthService implements Authentication.AuthManagement {
     Preferences.set(options);
   }
 
-  public saveUser(user: Authentication.UserResponse) {
-/*     this.removeUser();
-    const newUser = new User(
-      user.id,
-      user.name,
-      user.email,
-      user.email_verified_at,
-      user.cedula,
-      user.roles,
-      user.types,
-      user.zone,
-      user.created_at,
-      user.updated_at
-    );
-    this.user = newUser;
+  public saveUser(user: Authentication.User) {
+    this.removeUser();
     console.log(this.user);
-    this.storeUser(newUser); */
+    this.storeUser(user);
   }
 
   public async getToken(): Promise<string | null> {
@@ -66,14 +54,14 @@ export class AuthService implements Authentication.AuthManagement {
     Preferences.remove({ key: TOKEN_KEY });
   }
 
-/*   private storeUser(user: User) {
+  private storeUser(user: Authentication.User) {
     const options = { key: USER_KEY, value: JSON.stringify(user) };
     Preferences.set(options);
   }
 
   private removeUser() {
     Preferences.remove({ key: USER_KEY });
-  } */
+  }
 
   public async decodeToken(token: string): Promise<boolean> {
     if (token) {
@@ -82,10 +70,14 @@ export class AuthService implements Authentication.AuthManagement {
     return false;
   }
 
-  public async login(authParams: Authentication.AuthParams): Promise<Authentication.AuthResponse> {
+  public async login(authParams: Authentication.AuthParams): Promise<Authentication.User> {
     const response: HttpResponse = await this.apiService.post(ENDPOINT, authParams);
     console.log(response);
-    return response.data as Authentication.AuthResponse;
+    const authResponse: Authentication.AuthResponse = response.data as Authentication.AuthResponse;
+    this.saveToken(authResponse.token);
+    const user: Authentication.User = userBuilder(authResponse.user);
+    this.saveUser(user);
+    return user;
   }
 
   public logout(): void {
