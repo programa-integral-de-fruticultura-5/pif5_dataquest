@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  url: 'http://localhost:3000',
+  url: 'https://pif5.blaucast.com',
   appVersion: '1.0.0',
   authEndpoint: 'auth/login',
   formsEndpoint: 'form-detail',
