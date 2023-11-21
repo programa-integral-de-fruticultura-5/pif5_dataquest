@@ -3,7 +3,7 @@ import { AlertController, IonicModule } from '@ionic/angular';
 import { Authentication } from '@models/Auth.namespace';
 import { AuthService } from '@services/auth/auth.service';
 import { SurveyService } from '@services/survey/survey.service';
-import { environment as env } from 'environment';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +17,7 @@ export class HomePage {
   @ViewChild('modal') modal!: HTMLIonModalElement;
 
   user!: Authentication.User;
+  appVersion!: string;
 
   constructor(
     private surveyService: SurveyService,
@@ -26,6 +27,9 @@ export class HomePage {
 
   ngOnInit() {
     this.loadUser();
+    App.getInfo().then((info) => {
+      this.appVersion = info.version;
+    });
   }
 
   async uploadSurveys() {
@@ -81,6 +85,6 @@ export class HomePage {
   }
 
   getAppVersion(): string {
-    return env.appVersion;
+    return this.appVersion;
   }
 }
