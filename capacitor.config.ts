@@ -18,6 +18,12 @@ const config: CapacitorConfig = {
       androidScaleType: "CENTER",
     },
   },
-};
+  android: {
+      buildOptions: {
+        keystorePath: 'c:\Projects\dataquest-keystore.jks',
+        keystoreAlias: 'dataquest',
+      }
+  }
+  };
 
 export default config;
