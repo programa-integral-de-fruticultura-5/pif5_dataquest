@@ -11,7 +11,6 @@ import { v4 as uuidv4 } from 'uuid';
   providedIn: 'root',
 })
 export class OfflineManagerService {
-
   constructor(
     private storageService: StorageService,
     private apiService: ApiService,
@@ -42,7 +41,7 @@ export class OfflineManagerService {
     );
   }
 
-  public async storeRequest(url: string, data: any): Promise<any> {
+  public async storeRequest(url: string, data: any): Promise<void> {
     let toast = this.toastController.create({
       message: `Your data is stored locally because you seem to be offline.`,
       duration: 3000,
@@ -57,17 +56,23 @@ export class OfflineManagerService {
       id: uuidv4(),
     };
 
-    const storedOperations = await this.storageService.get(STORAGE_REQ_KEY);
-    let storedObj: StoredRequest[] = JSON.parse(storedOperations);
-    if (storedObj) {
-      storedObj.push(action);
-    } else {
-      storedObj = [action];
-    }
-    return await this.storageService.set(STORAGE_REQ_KEY, JSON.stringify(storedObj));
+    return this.storageService.get(STORAGE_REQ_KEY).then((storedOperations) => {
+      let storedObj: StoredRequest[] = JSON.parse(storedOperations);
+      if (storedObj) {
+        storedObj.push(action);
+      } else {
+        storedObj = [action];
+      }
+      return this.storageService.set(
+        STORAGE_REQ_KEY,
+        JSON.stringify(storedObj)
+      );
+    });
   }
 
-  private sendRequests(operations: StoredRequest[]): Observable<HttpResponse[]> {
+  private sendRequests(
+    operations: StoredRequest[]
+  ): Observable<HttpResponse[]> {
     let obs = [];
     for (let op of operations) {
       console.log('Make one request: ', op);
@@ -79,7 +84,6 @@ export class OfflineManagerService {
 }
 
 const STORAGE_REQ_KEY: string = 'storedreq';
-
 
 interface StoredRequest {
   url: string;
