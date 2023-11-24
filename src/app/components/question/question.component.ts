@@ -50,18 +50,13 @@ export class QuestionComponent {
     private router: Router
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     this.formGroup = this.questionService.getFormGroup();
-    const loading = await this.loadingController.create({
-      message: 'Cargando...',
-    });
-    await loading.present();
-    this.currentQuestion = this.getLastAnsweredQuestion();
-    loading.dismiss();
+    this.currentQuestion = this.questionService.getFirst();
     if (this.isSurvey()) {
       this.disabled = true;
     }
-    this.platform.backButton.subscribeWithPriority(10, () => {
+this.platform.backButton.subscribeWithPriority(10, () => {
       this.confirmExit();
     });
   }
@@ -99,37 +94,37 @@ export class QuestionComponent {
       message: 'Cargando...',
     });
     await loading.present();
-    if (this.isQuestionValid()) {
-      this.saveResponse(this.currentQuestion, this.formGroup);
-      this.draftService.saveDrafts();
-      const nextQuestion = this.getNextQuestionFrom(this.currentQuestion);
-      if (nextQuestion) {
-        this.currentQuestion = nextQuestion;
-        if (
-          this.currentQuestion.questionCategory.name ===
-          'Capital social individual' && !this.alertShown
-        ) {
-          this.alertShown = true;
-          this.alertController
-            .create({
-              header: 'Atención',
-              subHeader: 'Capital social individual',
-              message:
-                'A continuación, pasamos a las preguntas que corresponden al componente del capital social individual del índice de desarrollo socio-organizacional.',
-              buttons: ['OK'],
-            })
-            .then((alert) => alert.present());
+          if (this.isQuestionValid()) {
+        this.saveResponse(this.currentQuestion, this.formGroup);
+        this.draftService.saveDrafts();
+        const nextQuestion = this.getNextQuestionFrom(this.currentQuestion);
+        if (nextQuestion) {
+                    this.currentQuestion = nextQuestion;
+          if (
+            this.currentQuestion.questionCategory.name ===
+            'Capital social individual' && !this.alertShown
+          ) {
+            this.alertShown = true;
+            this.alertController
+              .create({
+                header: 'Atención',
+                subHeader: 'Capital social individual',
+                message:
+                  'A continuación, pasamos a las preguntas que corresponden al componente del capital social individual del índice de desarrollo socio-organizacional.',
+                buttons: ['OK'],
+              })
+              .then((alert) => alert.present());
+          }
         }
+      } else {
+        const type: string = this.currentQuestion.type;
+        const isTable: boolean = type === 'Tabla';
+        this.presentAlert(isTable);
       }
-    } else {
-      const type: string = this.currentQuestion.type;
-      const isTable: boolean = type === 'Tabla';
-      this.presentAlert(isTable);
-    }
-    await loading.dismiss();
-  }
+          await loading.dismiss();
+        }
 
-  private getLastAnsweredQuestion(): FormDetail.Question {
+private getLastAnsweredQuestion(): FormDetail.Question {
     let lastAnsweredQuestion: FormDetail.Question = this.questionService.getFirst();
     const formGroup: FormGroup = this.formGroup;
     while (formGroup.controls[lastAnsweredQuestion.id.toString()].valid) {
@@ -186,7 +181,7 @@ export class QuestionComponent {
   }
 
   isLastQuestion(): boolean {
-    let question: FormDetail.Question = this.currentQuestion;
+        let question: FormDetail.Question = this.currentQuestion;
     const nextQuestion: FormDetail.Question | null = this.getNextQuestionFrom(question);
     if (!nextQuestion) {
       return true;
@@ -276,7 +271,7 @@ export class QuestionComponent {
   private getNextQuestionFrom(question: FormDetail.Question): FormDetail.Question | null {
     const nextQuestion: FormDetail.Question | null =
       this.questionService.nextQuestion(question);
-    const formGroup: FormGroup = this.formGroup;
+        const formGroup: FormGroup = this.formGroup;
     if (!nextQuestion) {
       return null;
     }
@@ -287,7 +282,7 @@ export class QuestionComponent {
       this.enableQuestion(nextQuestion, formGroup);
       return nextQuestion;
     } else {
-      this.disableQuestion(nextQuestion, formGroup);
+            this.disableQuestion(nextQuestion, formGroup);
       return this.getNextQuestionFrom(nextQuestion);
     }
   }
