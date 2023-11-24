@@ -34,11 +34,11 @@ export class TextDataTypeComponent implements OnInit {
     this.formGroup.get(`${this.question.id}`)?.setValue(event.target.value);
   }
 
-  private async preloadValue(): Promise<void> {
+  private preloadValue(): void {
     const isAssociationQuestion: boolean =
       this.question.text === 'Asociación a la que pertenece';
 
-    const association: Beneficiary.Association | undefined = await this.getAssociation();
+    const association: Beneficiary.Association | undefined = this.getAssociation();
 
     const formControl: FormControl = this.formGroup.get(
       `${this.question.id}`
@@ -51,12 +51,12 @@ export class TextDataTypeComponent implements OnInit {
     }
   }
 
-  private async getAssociation(): Promise<Beneficiary.Association | undefined> {
+  private getAssociation(): Beneficiary.Association | undefined {
     const associationId: number =
       this.detailedFormService.getForm().beneficiary.associationId;
 
     const association: Beneficiary.Association | undefined =
-      await this.associationService.getAssociationById(associationId);
+      this.associationService.getAssociationById(associationId);
 
     return association;
   }

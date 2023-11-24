@@ -49,12 +49,12 @@ export class UniqueComponent implements OnInit {
     this.setCheckedValue(formGroup, id, true);
   }
 
-  async getValue(): Promise<string> {
+  getValue(): string {
     const answersFormGroup: FormGroup = this.formGroup.get(
       `${this.question.id}`
     ) as FormGroup;
 
-    await this.preloadFarmingValue(answersFormGroup);
+    this.preloadFarmingValue(answersFormGroup);
 
     const { answerId, answerValue } = this.getCheckedAnswerId(answersFormGroup);
     if (answerId !== 'other')
@@ -96,11 +96,11 @@ export class UniqueComponent implements OnInit {
     }
   }
 
-  private async preloadFarmingValue(answersFormGroup: FormGroup): Promise<void> {
+  private preloadFarmingValue(answersFormGroup: FormGroup): void {
     const isFarmingQuestion: boolean =
       this.question.text === 'Cultivo Priorizado';
-    if (isFarmingQuestion) {
-      const answerIdToCheck: string = await this.searchAnswerIdByFarming();
+        if (isFarmingQuestion) {
+      const answerIdToCheck: string = this.searchAnswerIdByFarming();
       this.setCheckedValue(answersFormGroup, answerIdToCheck, true);
       this.farming = true;
     } else {
@@ -108,12 +108,12 @@ export class UniqueComponent implements OnInit {
     }
   }
 
-  private async searchAnswerIdByFarming(): Promise<string> {
+  private searchAnswerIdByFarming(): string {
     const associationId: number =
       this.detailedFormService.getForm().beneficiary.associationId;
 
     const association: Beneficiary.Association | undefined =
-      await this.assoaciationService.getAssociationById(associationId);
+      this.assoaciationService.getAssociationById(associationId);
 
     const associationFarming: string =
       association!.farming;
