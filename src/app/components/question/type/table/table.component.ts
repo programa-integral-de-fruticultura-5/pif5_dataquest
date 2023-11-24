@@ -62,7 +62,7 @@ export class TableComponent {
   }
 
   getCategory(): string {
-    return this.question.question_category.name;
+    return this.question.questionCategory.name;
   }
 
   getFormGroup(index: number): FormGroup {
