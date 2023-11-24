@@ -12,22 +12,38 @@ import { associationBuilder } from '@utils/builder';
 })
 export class AssociationService {
 
+  associations: Beneficiary.Association[] = [];
+
   constructor(
     private apiService: ApiService,
     private storageService: StorageService
-  ) { }
+  ) {
+    this.syncAssociations(true).subscribe((associations: Beneficiary.Association[]) => {
+      this.associations = associations;
+    });
+  }
 
-  public getAssociations(forceRefresh: boolean = false): Observable<Beneficiary.Association[]> {
+  public getAssociations(): Beneficiary.Association[] {
+    console.log(this.associations);
+    return this.associations;
+  }
+
+  private syncAssociations(forceRefresh: boolean = false): Observable<Beneficiary.Association[]> {
     return from(Network.getStatus()).pipe(
       switchMap((status) => {
+        console.log('status')
+        console.log(status.connected)
         if (!status.connected || !forceRefresh) {
-          return this.getLocalAssociations();
+          return from(this.getLocalAssociations());
         } else {
+          console.log('syncAssociations')
           return from(this.apiService.post(ENDPOINT)).pipe(
             map((response: HttpResponse) => {
               const associationResponse: Beneficiary.AssociationResponse[] = JSON.parse(
                 response.data
               );
+              console.log('associationResponse');
+              console.log(associationResponse);
               const associations: Beneficiary.Association[] = associationResponse.map(
                 (association) => associationBuilder(association)
               );
@@ -46,18 +62,12 @@ export class AssociationService {
     this.storageService.set('associations', associations);
   }
 
-  private async getLocalAssociations(): Promise<Beneficiary.Association[]> {
-    return await this.storageService.get(ASSOCIATIONS_STORAGE_KEY)
+  private getLocalAssociations(): Promise<Beneficiary.Association[]> {
+    return this.storageService.get(ASSOCIATIONS_STORAGE_KEY)
   }
 
-  public async getAssociationById(id: number):  Promise<Beneficiary.Association | undefined>/* Observable<Beneficiary.Association | undefined> */ {
-    const associations: Beneficiary.Association[] = await this.getLocalAssociations();
-    return associations.find((association) => association.id === id);
-/*     return from(this.getLocalAssociations()).pipe(
-      map((associations: Beneficiary.Association[]) => {
-        return associations.find((association) => association.id === id);
-      })
-    ); */
+  public getAssociationById(id: number): Beneficiary.Association | undefined {
+    return this.associations.find((association) => association.id === id);
   }
 }
 
