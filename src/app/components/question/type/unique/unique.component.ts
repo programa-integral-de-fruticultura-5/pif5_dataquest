@@ -119,7 +119,7 @@ export class UniqueComponent implements OnInit {
       association!.farming;
 
     const answer: FormDetail.Answer = this.question.answers.find(
-      (answer) => answer.value === associationFarming
+      (answer) => answer.value.toLowerCase() === associationFarming.toLowerCase()
     )!;
 
     return answer.id.toString();
