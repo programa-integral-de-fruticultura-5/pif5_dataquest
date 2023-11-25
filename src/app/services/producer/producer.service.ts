@@ -12,12 +12,23 @@ import { producerBuilder } from '@utils/builder';
   providedIn: 'root',
 })
 export class ProducerService {
+
+  producers: Beneficiary.Producer[] = [];
+
   constructor(
     private apiService: ApiService,
     private storageService: StorageService,
-  ) {}
+  ) {
+    this.syncProducers(true).subscribe((producers: Beneficiary.Producer[]) => {
+      this.producers = producers;
+    });
+  }
 
-  public getProducers(
+  public getProducers(): Beneficiary.Producer[] {
+    return this.producers;
+  }
+
+  private syncProducers(
     forceRefresh: boolean = false
   ): Observable<Beneficiary.Producer[]> {
     return from(Network.getStatus()).pipe(
@@ -43,8 +54,8 @@ export class ProducerService {
     );
   }
 
-  private async getLocalProducers(): Promise<Beneficiary.Producer[]> {
-    return await this.storageService.get(PRODUCERS_STORAGE_KEY);
+  private getLocalProducers(): Promise<Beneficiary.Producer[]> {
+    return this.storageService.get(PRODUCERS_STORAGE_KEY);
   }
 
   private setLocalProducers(producers: Beneficiary.Producer[]): void {

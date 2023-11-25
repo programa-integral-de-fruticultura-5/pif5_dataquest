@@ -37,8 +37,6 @@ export class AutocompleteComponent implements OnInit {
 
   selection!: string;
 
-  private producers: Beneficiary.Producer[] = [];
-  public answers: FormDetail.Answer[] = [];
   public data: string[] = [];
 
   constructor(
@@ -48,7 +46,7 @@ export class AutocompleteComponent implements OnInit {
 
   ngOnInit() {
     this.selection = this.getQuestionValue();
-    this.getProducers();
+    this.data = this.getData();
   }
 
   openModal(): void {
@@ -86,23 +84,17 @@ export class AutocompleteComponent implements OnInit {
   private getData(): string[] {
     let result: string[] = [];
     if (this.open) {
-      result = this.producers.map((producer) => producer.id);
+      const producers: Beneficiary.Producer[] = this.producersService.getProducers();
+      result = producers.map((producer) => producer.id);
     } else {
-      this.answers = this.getAnswers();
-      result = this.answers.map((answer) => answer.value);
+      const answers = this.getAnswers();
+      result = answers.map((answer) => answer.value);
     }
     return result;
   }
 
   getAnswers() {
     return this.question.answers;
-  }
-
-  getProducers(): void {
-    this.producersService.getProducers(true).subscribe((producers) => {
-      this.producers = producers;
-      this.data = this.getData();
-    });
   }
 
   selectionChanged(selection: string) {
@@ -135,7 +127,8 @@ export class AutocompleteComponent implements OnInit {
   }
 
   private assignBeneficiary(id: string): void {
-    const beneficiary: Beneficiary.Producer | undefined = this.producers.find(
+    const producers: Beneficiary.Producer[] = this.producersService.getProducers();
+    const beneficiary: Beneficiary.Producer | undefined = producers.find(
       (producer) => producer.id === id
     );
 
@@ -143,12 +136,7 @@ export class AutocompleteComponent implements OnInit {
   }
 
   private getAnswerId(value: string): string {
-    let id: string = '';
-    this.answers.find((answer) => {
-      if (answer.value === value) {
-        id = answer.id.toString();
-      }
-    });
-    return id;
+    const answer = this.getAnswers().find((answer) => answer.value === value);
+    return answer ? answer.id.toString() : '';
   }
 }
