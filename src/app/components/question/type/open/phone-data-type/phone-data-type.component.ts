@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
-import { FormDetail } from '@models/FormDetail.namespace'
+import { FormDetail } from '@models/FormDetail.namespace';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-phone-data-type',
@@ -15,13 +16,19 @@ export class PhoneDataTypeComponent implements OnInit {
   @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
+  disabledRemoveButton: boolean = false;
 
   phones!: FormDetail.Answer[];
+  phonesObserver!: BehaviorSubject<FormDetail.Answer[]>;
 
   constructor(private alertController: AlertController) {}
 
   ngOnInit() {
     this.phones = this.question.answers;
+    this.phonesObserver = new BehaviorSubject<FormDetail.Answer[]>(this.phones);
+    this.phonesObserver.subscribe((phones) => {
+      this.checkPhoneListLength(phones);
+    });
   }
 
   getValue(order: number): string {
@@ -67,6 +74,7 @@ export class PhoneDataTypeComponent implements OnInit {
         Validators.maxLength(10),
       ])
     );
+    this.phonesObserver.next(this.phones);
   }
 
   removePhone(): void {
@@ -75,5 +83,14 @@ export class PhoneDataTypeComponent implements OnInit {
     ) as FormGroup;
     formGroup.removeControl(`${this.phones[this.phones.length - 1].order}`);
     this.phones.pop();
+    this.phonesObserver.next(this.phones);
+  }
+
+  private checkPhoneListLength(phones: FormDetail.Answer[]): void {
+    if (phones.length === 1) {
+      this.disabledRemoveButton = true;
+    } else {
+      this.disabledRemoveButton = false;
+    }
   }
 }
