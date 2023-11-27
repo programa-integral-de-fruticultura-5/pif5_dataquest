@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { FormDetail } from '@models/FormDetail.namespace'
+import { FormDetail } from '@models/FormDetail.namespace';
 import { FormGroup } from '@angular/forms';
 import { QuestionControlService } from '../control/question-control.service';
 import { AuthService } from '../../auth/auth.service';
+import { AnswerRelationService } from './answer-relation/answer-relation.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,8 @@ export class QuestionService {
 
   constructor(
     private questionControlService: QuestionControlService,
-    private authService: AuthService
+    private answerRelationService: AnswerRelationService,
+    private authService: AuthService,
   ) {}
 
   /*   getFilteredQuestions(): FormDetail.Question[] {
@@ -35,7 +37,8 @@ export class QuestionService {
     );
     this.filteredQuestions = this.filteredQuestions.filter(
       async (question) =>
-        question.userTypeRestriction === (await this.authService.getUser()).type ||
+        question.userTypeRestriction ===
+          (await this.authService.getUser()).type ||
         question.userTypeRestriction === null
     );
     console.log(this.filteredQuestions);
@@ -60,14 +63,32 @@ export class QuestionService {
     return lastQuestion;
   }
 
-  nextQuestion(current: FormDetail.Question): FormDetail.Question | null {
+  private getNextQuestion(current: FormDetail.Question): FormDetail.Question | null {
     if (current !== this.getLast()) {
       let next: FormDetail.Question =
         this.filteredQuestions[this.getCurrentIndex(current) + 1];
-      this.updateProgress(next);
       return next;
     }
     return null;
+  }
+
+  toggleNextQuestionFrom(question: FormDetail.Question, formGroup: FormGroup): FormDetail.Question | null {
+    const nextQuestion: FormDetail.Question | null =
+      this.getNextQuestion(question);
+    if (!nextQuestion) {
+      return null;
+    }
+    const checkedAnswersRelation: boolean =
+      this.answerRelationService.checkAnswerRelation(nextQuestion, formGroup);
+
+    if (checkedAnswersRelation) {
+      this.enableQuestion(nextQuestion, formGroup);
+      this.updateProgress(nextQuestion);
+      return nextQuestion;
+    } else {
+      this.disableQuestion(nextQuestion, formGroup);
+      return this.toggleNextQuestionFrom(nextQuestion, formGroup);
+    }
   }
 
   getCurrentIndex(current: FormDetail.Question): number {
@@ -75,14 +96,33 @@ export class QuestionService {
     return currentIndex;
   }
 
-  previousQuestion(current: FormDetail.Question): FormDetail.Question | null {
+  private getPreviousQuestion(current: FormDetail.Question): FormDetail.Question | null {
     if (current !== this.getFirst()) {
       let previous: FormDetail.Question =
         this.filteredQuestions[this.getCurrentIndex(current) - 1];
-      this.updateProgress(previous);
       return previous;
     }
     return null;
+  }
+
+  getPreviousValidQuestionFrom(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ): FormDetail.Question | null {
+    const previousQuestion: FormDetail.Question | null =
+      this.getPreviousQuestion(question);
+    if (!previousQuestion) {
+      return null;
+    }
+    const id: string = previousQuestion.id.toString();
+    const disabled: boolean = formGroup.get(id)!.disabled;
+
+    if (disabled) {
+      return this.getPreviousValidQuestionFrom(previousQuestion, formGroup);
+    } else {
+      this.updateProgress(previousQuestion);
+      return previousQuestion;
+    }
   }
 
   getProgress(): number {
@@ -98,5 +138,13 @@ export class QuestionService {
 
   getFormGroup(): FormGroup {
     return this.questionControlService.toFormGroup(this.filteredQuestions);
+  }
+
+  private enableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
+    this.answerRelationService.enableQuestion(question, formGroup);
+  }
+
+  private disableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
+    this.answerRelationService.disableQuestion(question, formGroup);
   }
 }
