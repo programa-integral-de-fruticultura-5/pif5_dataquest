@@ -45,7 +45,6 @@ export class QuestionComponent {
     private navCtrl: NavController,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    private answerRelationService: AnswerRelationService,
     private platform: Platform,
     private router: Router
   ) {}
@@ -56,7 +55,7 @@ export class QuestionComponent {
     if (this.isSurvey()) {
       this.disabled = true;
     }
-this.platform.backButton.subscribeWithPriority(10, () => {
+    this.platform.backButton.subscribeWithPriority(10, () => {
       this.confirmExit();
     });
   }
@@ -94,47 +93,58 @@ this.platform.backButton.subscribeWithPriority(10, () => {
       message: 'Cargando...',
     });
     await loading.present();
-          if (this.isQuestionValid()) {
-        this.saveResponse(this.currentQuestion, this.formGroup);
-        this.draftService.saveDrafts();
-        const nextQuestion = this.getNextQuestionFrom(this.currentQuestion);
-        if (nextQuestion) {
-                    this.currentQuestion = nextQuestion;
-          if (
-            this.currentQuestion.questionCategory.name ===
-            'Capital social individual' && !this.alertShown
-          ) {
-            this.alertShown = true;
-            this.alertController
-              .create({
-                header: 'Atención',
-                subHeader: 'Capital social individual',
-                message:
-                  'A continuación, pasamos a las preguntas que corresponden al componente del capital social individual del índice de desarrollo socio-organizacional.',
-                buttons: ['OK'],
-              })
-              .then((alert) => alert.present());
-          }
+    if (this.isQuestionValid()) {
+      this.saveResponse(this.currentQuestion, this.formGroup);
+      this.draftService.saveDrafts();
+      const nextQuestion = this.questionService.toggleNextQuestionFrom(
+        this.currentQuestion,
+        this.formGroup
+      );
+      if (nextQuestion) {
+        this.currentQuestion = nextQuestion;
+        if (
+          this.currentQuestion.questionCategory.name ===
+            'Capital social individual' &&
+          !this.alertShown
+        ) {
+          this.alertShown = true;
+          this.alertController
+            .create({
+              header: 'Atención',
+              subHeader: 'Capital social individual',
+              message:
+                'A continuación, pasamos a las preguntas que corresponden al componente del capital social individual del índice de desarrollo socio-organizacional.',
+              buttons: ['OK'],
+            })
+            .then((alert) => alert.present());
         }
-      } else {
-        const type: string = this.currentQuestion.type;
-        const isTable: boolean = type === 'Tabla';
-        this.presentAlert(isTable);
       }
-          await loading.dismiss();
-        }
-
-private getLastAnsweredQuestion(): FormDetail.Question {
-    let lastAnsweredQuestion: FormDetail.Question = this.questionService.getFirst();
-    const formGroup: FormGroup = this.formGroup;
-    while (formGroup.controls[lastAnsweredQuestion.id.toString()].valid) {
-      lastAnsweredQuestion = this.getNextQuestionFrom(lastAnsweredQuestion)!;
+    } else {
+      const type: string = this.currentQuestion.type;
+      const isTable: boolean = type === 'Tabla';
+      this.presentAlert(isTable);
     }
-    return lastAnsweredQuestion;
+    await loading.dismiss();
   }
 
+  // private getLastAnsweredQuestion(): FormDetail.Question {
+  //   let lastAnsweredQuestion: FormDetail.Question =
+  //     this.questionService.getFirst();
+  //   const formGroup: FormGroup = this.formGroup;
+  //   while (formGroup.controls[lastAnsweredQuestion.id.toString()].valid) {
+  //     lastAnsweredQuestion = this.questionService.getNextValidQuestionFrom(
+  //       lastAnsweredQuestion,
+  //       this.formGroup
+  //     )!;
+  //   }
+  //   return lastAnsweredQuestion;
+  // }
+
   previousQuestion(): void {
-    const previousQuestion = this.getPreviousQuestionFrom(this.currentQuestion);
+    const previousQuestion = this.questionService.getPreviousValidQuestionFrom(
+      this.currentQuestion,
+      this.formGroup
+    );
     if (previousQuestion) {
       this.currentQuestion = previousQuestion;
     }
@@ -169,7 +179,7 @@ private getLastAnsweredQuestion(): FormDetail.Question {
   }
 
   getType(): string {
-      return this.currentQuestion?.type;
+    return this.currentQuestion?.type;
   }
 
   private isQuestionValid() {
@@ -181,8 +191,9 @@ private getLastAnsweredQuestion(): FormDetail.Question {
   }
 
   isLastQuestion(): boolean {
-        let question: FormDetail.Question = this.currentQuestion;
-    const nextQuestion: FormDetail.Question | null = this.getNextQuestionFrom(question);
+    let question: FormDetail.Question = this.currentQuestion;
+    const nextQuestion: FormDetail.Question | null =
+      this.questionService.toggleNextQuestionFrom(question, this.formGroup);
     if (!nextQuestion) {
       return true;
     }
@@ -196,7 +207,10 @@ private getLastAnsweredQuestion(): FormDetail.Question {
     return question?.id === firstQuestion.id;
   }
 
-  private saveResponse(question: FormDetail.Question, formGroup: FormGroup): void {
+  private saveResponse(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ): void {
     switch (question.type) {
       case 'Abierta':
         this.saveOpenResponse(question, formGroup);
@@ -213,7 +227,10 @@ private getLastAnsweredQuestion(): FormDetail.Question {
     this.detailedFormService.updateModifyDate();
   }
 
-  private saveTableResponse(question: FormDetail.Question, formGroup: FormGroup) {
+  private saveTableResponse(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ) {
     let questionFormArray: FormArray = formGroup.controls[
       question.id
     ] as FormArray;
@@ -227,7 +244,10 @@ private getLastAnsweredQuestion(): FormDetail.Question {
     });
   }
 
-  private saveSelection(question: FormDetail.Question, answersFormGroup: FormGroup) {
+  private saveSelection(
+    question: FormDetail.Question,
+    answersFormGroup: FormGroup
+  ) {
     question.answers.forEach((answer) => {
       const value: boolean =
         answersFormGroup.controls[answer.id.toString()].value;
@@ -252,7 +272,10 @@ private getLastAnsweredQuestion(): FormDetail.Question {
     }
   }
 
-  private saveOpenResponse(question: FormDetail.Question, formGroup: FormGroup) {
+  private saveOpenResponse(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ) {
     if (question.dataType === 'tel') {
       let answersGroup: FormGroup = formGroup.controls[
         question.id
@@ -266,49 +289,6 @@ private getLastAnsweredQuestion(): FormDetail.Question {
       let answer = question.answers[0];
       answer.value = formResponse;
     }
-  }
-
-  private getNextQuestionFrom(question: FormDetail.Question): FormDetail.Question | null {
-    const nextQuestion: FormDetail.Question | null =
-      this.questionService.nextQuestion(question);
-        const formGroup: FormGroup = this.formGroup;
-    if (!nextQuestion) {
-      return null;
-    }
-    const checkedAnswersRelation: boolean =
-      this.answerRelationService.checkAnswerRelation(nextQuestion, formGroup);
-
-    if (checkedAnswersRelation) {
-      this.enableQuestion(nextQuestion, formGroup);
-      return nextQuestion;
-    } else {
-            this.disableQuestion(nextQuestion, formGroup);
-      return this.getNextQuestionFrom(nextQuestion);
-    }
-  }
-
-  private getPreviousQuestionFrom(question: FormDetail.Question): FormDetail.Question | null {
-    const previousQuestion: FormDetail.Question | null =
-      this.questionService.previousQuestion(question);
-    if (!previousQuestion) {
-      return null;
-    }
-    const id: string = previousQuestion.id.toString();
-    const disabled: boolean = this.formGroup.get(id)!.disabled;
-
-    if (disabled) {
-      return this.getPreviousQuestionFrom(previousQuestion);
-    } else {
-      return previousQuestion;
-    }
-  }
-
-  private enableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
-    this.answerRelationService.enableQuestion(question, formGroup);
-  }
-
-  private disableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
-    this.answerRelationService.disableQuestion(question, formGroup);
   }
 
   isDraft(): boolean {

@@ -7,6 +7,7 @@ import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
 import { AssociationService } from '@services/association/association.service';
 import { Beneficiary } from '@models/Beneficiary.namespace';
+import { QuestionService } from '@services/detailed-form/question/question.service';
 
 @Component({
   selector: 'app-unique',
@@ -30,6 +31,7 @@ export class UniqueComponent implements OnInit {
 
   constructor(
     private detailedFormService: DetailedFormService,
+    private questionService: QuestionService,
     private assoaciationService: AssociationService
   ) {}
 
@@ -47,6 +49,7 @@ export class UniqueComponent implements OnInit {
     const id: string = event.detail.value;
 
     this.setCheckedValue(formGroup, id, true);
+    this.questionService.toggleNextQuestionFrom(this.question, this.formGroup);
   }
 
   getValue(): string {
