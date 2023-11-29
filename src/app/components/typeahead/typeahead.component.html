@@ -15,7 +15,7 @@
 
 <ion-content color="light" class="ion-padding">
   <ion-list id="modal-list" [inset]="true">
-    <ion-item button (click)="select(item)" *ngFor="let item of filteredItems; let index=index; trackBy: trackItems">
+    <ion-item button (click)="select(item)" *rxFor="let item of filteredItems; trackBy: trackItems">
       <ion-label>{{ item }}</ion-label>
     </ion-item>
   </ion-list>

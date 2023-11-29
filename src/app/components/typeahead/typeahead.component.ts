@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IonicModule, Platform } from '@ionic/angular';
+import { RxFor } from "@rx-angular/template/for";
 
 @Component({
   selector: 'app-typeahead',
   templateUrl: './typeahead.component.html',
   styleUrls: ['./typeahead.component.scss'],
   standalone: true,
-  imports: [ CommonModule, IonicModule ],
+  imports: [ CommonModule, IonicModule, RxFor],
 })
 export class TypeaheadComponent {
   @Input() items: string[] = [];
