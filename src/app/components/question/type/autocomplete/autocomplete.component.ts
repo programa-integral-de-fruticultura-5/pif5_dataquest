@@ -46,10 +46,10 @@ export class AutocompleteComponent implements OnInit {
 
   ngOnInit() {
     this.selection = this.getQuestionValue();
-    this.data = this.getData();
   }
 
   openModal(): void {
+    this.data = this.getData();
     this.modal.present();
   }
 
