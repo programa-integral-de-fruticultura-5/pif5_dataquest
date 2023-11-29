@@ -10,13 +10,13 @@
     <ion-card-content>
       <ion-accordion-group [multiple]="true" [value]="0">
         <ion-accordion
-          *ngFor="let questionsSection of getQuestionChildren(); index as i"
+          *rxFor="let questionsSection of getQuestionChildren(); index as i"
           [value]="i"
         >
           <ion-item slot="header" color="light">
             <ion-label>Sección {{ i + 1 }}</ion-label>
           </ion-item>
-          <ng-container *ngFor="let questionChild of questionsSection">
+          <ng-container *rxFor="let questionChild of questionsSection">
             <app-type
               [disabled]="disabled"
               *ngIf="showQuestion(questionChild, i)"

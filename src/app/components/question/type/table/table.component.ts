@@ -6,13 +6,14 @@ import { TypeComponent } from '../type.component';
 import { FormArray, FormGroup } from '@angular/forms';
 import { AnswerRelationService } from '@services/detailed-form/question/answer-relation/answer-relation.service';
 import { QuestionControlService } from '@services/detailed-form/control/question-control.service';
+import { RxFor } from "@rx-angular/template/for";
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, TypeComponent],
+  imports: [CommonModule, IonicModule, TypeComponent, RxFor],
 })
 export class TableComponent {
   @Input({ required: true }) question!: any;
