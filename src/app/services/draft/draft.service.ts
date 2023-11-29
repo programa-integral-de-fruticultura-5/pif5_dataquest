@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormDetail } from '@models/FormDetail.namespace';
 import { StorageService } from '../storage/storage.service';
 import { v4 as uuidv4 } from 'uuid';
+import { Beneficiary } from '@models/Beneficiary.namespace';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,11 @@ export class DraftService {
   }
 
   public deleteDraft(index: number) {
-    this.drafts.splice(index, 1);
+    const removedDraft: FormDetail.Form = this.drafts.splice(index, 1).pop()!;
+    const beneficiary: Beneficiary.Producer = removedDraft.beneficiary;
+    if (removedDraft.id === 1 && beneficiary.specialized)
+      beneficiary.specialized = false;
+    
     this.saveDrafts();
   }
 

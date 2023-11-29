@@ -12,7 +12,7 @@ import {
   FormGroup,
   FormGroupDirective,
 } from '@angular/forms';
-import { IonModal, IonicModule } from '@ionic/angular';
+import { AlertController, IonModal, IonicModule } from '@ionic/angular';
 import { TypeaheadComponent } from '@components/typeahead/typeahead.component';
 import { FormDetail } from '@models/FormDetail.namespace';
 import { Beneficiary } from '@models/Beneficiary.namespace';
@@ -41,6 +41,7 @@ export class AutocompleteComponent implements OnInit {
 
   constructor(
     private producersService: ProducerService,
+    private alertController: AlertController,
     private detailedFormService: DetailedFormService
   ) {}
 
@@ -98,14 +99,17 @@ export class AutocompleteComponent implements OnInit {
   }
 
   selectionChanged(selection: string) {
-    this.selection = selection;
 
     if (this.open) {
-      this.assignBeneficiary(selection);
-      const formControl: FormControl = this.formGroup.get(
-        `${this.question.id}`
-      ) as FormControl;
-      formControl.setValue(selection);
+      if (this.assignBeneficiary(selection)) {
+        const formControl: FormControl = this.formGroup.get(
+          `${this.question.id}`
+        ) as FormControl;
+        formControl.setValue(selection);
+      } else {
+        this.showBeneficiaryAlert();
+        return;
+      }
     } else {
       const formGroup: FormGroup = this.formGroup.get(
         `${this.question.id}`
@@ -113,6 +117,7 @@ export class AutocompleteComponent implements OnInit {
       const answerId: string = this.getAnswerId(selection);
       this.setCheckedValue(formGroup, answerId);
     }
+    this.selection = selection;
     this.modal.dismiss();
   }
 
@@ -126,13 +131,22 @@ export class AutocompleteComponent implements OnInit {
     }
   }
 
-  private assignBeneficiary(id: string): void {
+  private assignBeneficiary(id: string): boolean {
     const producers: Beneficiary.Producer[] = this.producersService.getProducers();
-    const beneficiary: Beneficiary.Producer | undefined = producers.find(
+    const beneficiary: Beneficiary.Producer = producers.find(
       (producer) => producer.id === id
-    );
+    )!;
 
-    beneficiary ? this.detailedFormService.setBeneficiary(beneficiary) : null;
+    return this.detailedFormService.setBeneficiary(beneficiary);
+  }
+
+  private async showBeneficiaryAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Beneficiario ya tiene formulario especializado',
+      message: 'Elimina el formulario respectivo o escoge otro beneficiario',
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   private getAnswerId(value: string): string {
