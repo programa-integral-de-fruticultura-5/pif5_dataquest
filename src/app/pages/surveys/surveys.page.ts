@@ -13,6 +13,10 @@ import { SurveyService } from '@services/survey/survey.service';
 export class SurveysPage {
   constructor(private surveyService: SurveyService) {}
 
+  ionViewWillEnter() {
+    this.surveyService.getLocalSurveys();
+  }
+
   getSurveys() {
     return this.surveyService.getSurveys();
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormDetail } from '@models/FormDetail.namespace';
 import { FormService } from '../form/form.service';
-import { Geolocation, Position } from '@capacitor/geolocation';
+import { Geolocation } from '@capacitor/geolocation';
 import { v4 as uuidv4 } from 'uuid';
 import { QuestionService } from './question/question.service';
 import { DraftService } from '../draft/draft.service';
@@ -100,7 +100,6 @@ export class DetailedFormService {
     );
     this.surveyService.pushSurvey(removedDraft);
     this.draftService.saveDrafts();
-    this.surveyService.saveSurveys();
   }
 
   public updateModifyDate(): void {

@@ -1,14 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, booleanAttribute } from '@angular/core';
+import { Component, Input, booleanAttribute } from '@angular/core';
 import { Router } from '@angular/router';
 import { Platform, AlertController, IonicModule, ToastController } from '@ionic/angular';
 import { FormDetail } from '@models/FormDetail.namespace';
-import { AssociationService } from '@services/association/association.service';
-import { AuthService } from '@services/auth/auth.service';
 import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
 import { DraftService } from '@services/draft/draft.service';
 import { FormService } from '@services/form/form.service';
-import { ProducerService } from '@services/producer/producer.service';
 import { SurveyService } from '@services/survey/survey.service';
 
 @Component({
@@ -18,7 +15,7 @@ import { SurveyService } from '@services/survey/survey.service';
   standalone: true,
   imports: [ CommonModule, IonicModule ],
 })
-export class FormListComponent implements OnInit {
+export class FormListComponent {
 
   @Input({ required: true }) forms!: FormDetail.Form[];
   @Input({ transform: booleanAttribute }) form: boolean = false;
@@ -96,9 +93,6 @@ export class FormListComponent implements OnInit {
     }
     if (this.draft) {
       this.draftService.loadDrafts();
-    }
-    if (this.survey) {
-      this.surveyService.loadSurveys();
     }
   }
 }
