@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
-import { environment } from 'src/environments/environment';
+import { environment } from 'environment';
 import { Preferences } from '@capacitor/preferences';
 
 @Injectable({

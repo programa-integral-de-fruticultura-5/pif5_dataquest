@@ -16,7 +16,7 @@
   <ion-button [disabled]="disabled" fill="outline" (click)="addPhone()">
     Agregar
   </ion-button>
-  <ion-button [disabled]="disabled" fill="outline" color="danger" (click)="removePhone()">
+  <ion-button [disabled]="disabled || disabledRemoveButton" fill="outline" color="danger" (click)="removePhone()">
     Eliminar
   </ion-button>
 </div>

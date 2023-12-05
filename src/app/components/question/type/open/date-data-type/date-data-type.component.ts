@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 
 @Component({
   selector: 'app-date-data-type',
@@ -11,7 +11,7 @@ import { Question } from 'src/app/models/question';
   imports: [IonicModule, ReactiveFormsModule],
 })
 export class DateDataTypeComponent implements OnInit {
-  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 

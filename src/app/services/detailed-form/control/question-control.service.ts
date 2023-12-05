@@ -9,7 +9,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ import { Question } from 'src/app/models/question';
 export class QuestionControlService {
   constructor() {}
 
-  public toFormGroup(questions: Question[]): FormGroup {
+  public toFormGroup(questions: FormDetail.Question[]): FormGroup {
     const group: { [key: string]: FormControl | FormGroup | FormArray } = {};
     questions.forEach((question) => {
       group[question.id] = this.getFormControl(question);
@@ -27,7 +27,7 @@ export class QuestionControlService {
   }
 
   private getFormControl(
-    question: Question
+    question: FormDetail.Question
   ): FormControl | FormGroup | FormArray {
     if (question.required === 1) {
       return this.assignFormControls(question, true);
@@ -37,7 +37,7 @@ export class QuestionControlService {
   }
 
   private assignFormControls(
-    question: Question,
+    question: FormDetail.Question,
     required: boolean
   ): FormControl | FormArray | FormGroup {
     switch (question.type) {
@@ -51,7 +51,7 @@ export class QuestionControlService {
   }
 
   private generateFormControl(
-    question: Question,
+    question: FormDetail.Question,
     required: boolean
   ): FormControl | FormGroup {
     if (question.dataType === 'tel') {
@@ -75,7 +75,7 @@ export class QuestionControlService {
     );
   }
 
-  private generateFormGroup(question: Question, required: boolean): any {
+  private generateFormGroup(question: FormDetail.Question, required: boolean): any {
     const group: { [key: string]: FormControl } = {};
     question.answers.forEach((answer) => {
       group[answer.id] = new FormControl(answer.checked);
@@ -100,7 +100,7 @@ export class QuestionControlService {
     return formGroup;
   }
 
-  private generateFormArray(question: Question, required: boolean): FormArray {
+  private generateFormArray(question: FormDetail.Question, required: boolean): FormArray {
     const array: FormGroup[] = [];
     question.questionChildren.forEach((section) => {
       const group: { [key: string]: FormControl | FormGroup | FormArray } = {};

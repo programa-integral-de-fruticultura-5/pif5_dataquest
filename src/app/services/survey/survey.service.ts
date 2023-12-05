@@ -1,96 +1,90 @@
 import { Injectable } from '@angular/core';
-import { Form } from 'src/app/models/form';
+import { FormDetail } from '@models/FormDetail.namespace';
 import { StorageService } from '../storage/storage.service';
 import { ApiService } from '../api/api.service';
 import { Network } from '@capacitor/network';
 import { AlertController } from '@ionic/angular';
-
-const ENDPOINT = 'uploadSurveys';
+import { Observable, catchError, forkJoin, from, mergeMap, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SurveyService {
-  private surveys: Form[];
+  private online!: boolean;
+  private surveys!: FormDetail.Form[];
 
   constructor(
     private apiService: ApiService,
     private alertController: AlertController,
     private storageService: StorageService
   ) {
-    this.surveys = [];
-    this.loadSurveys();
+    this.listenToNetworkStatus();
+    this.getLocalSurveys();
   }
 
-  public pushSurvey(survey: Form): void {
+  public pushSurvey(survey: FormDetail.Form): void {
     const copy = { ...survey };
     this.surveys.push(copy);
+    this.saveSurveys();
   }
 
-  public loadSurveys(): void {
-    this.storageService.get('surveys')?.then((surveys) => {
-      if (surveys) {
-        this.surveys = surveys;
-      }
+  private listenToNetworkStatus(): void {
+    Network.addListener('networkStatusChange', (status) => {
+      this.online = status.connected;
     });
   }
 
-  public getSurveys(): Form[] {
+  public getLocalSurveys(): void {
+    this.storageService.get(SURVEYS_STORAGE_KEY).then((surveys) => {
+      this.surveys = surveys || [];
+    });
+  }
+
+  public getSurveys(): FormDetail.Form[] {
     return this.surveys;
   }
 
   public saveSurveys(): void {
-    this.storageService.set('surveys', this.surveys);
+    this.storageService.set(SURVEYS_STORAGE_KEY, this.surveys);
   }
 
-  async syncSurveys() {
-    const { connected } = await Network.getStatus();
-    if (connected) {
-      this.surveys.forEach((survey) => {
-        if (!survey.sync) {
-          this.uploadSurvey(survey)
-        }
-      })
-      this.saveSurveys()
-    } else {
-      const noInternetAlert = await this.alertController.create({
-        header: 'No hay conexión a internet',
-        message:
-          'No se pudo establecer una conexión a internet. Por favor, verifica tu conexión a internet y vuelve a intentarlo.',
-        buttons: ['OK'],
+  public syncSurveys(): void {
+    if (this.online) {
+      const surveysToSync: FormDetail.Form[] = this.surveys.filter((survey) => !survey.sync);
+      const syncRequests: Observable<FormDetail.Form | undefined>[] = surveysToSync.map((survey) => {
+        return from(this.apiService.post(ENDPOINT, survey)).pipe(
+          mergeMap((response) => {
+            console.log(response)
+            return of(response.status === 200 ? survey : undefined);
+          }),
+          catchError((error) => {
+            console.error(error)
+            return of(undefined)
+          })
+        );
       });
-      noInternetAlert.present();
+
+      forkJoin(syncRequests).subscribe((syncResults: (FormDetail.Form | undefined)[]) => {
+        const updatedSurveys: FormDetail.Form[] = this.surveys.map((survey) => {
+          const syncedSurvey = syncResults.find((syncResult) => syncResult?.id === survey.id);
+          if (syncedSurvey) {
+            survey.sync = true;
+          }
+          
+          return survey;
+        });
+        console.log(updatedSurveys)
+        this.surveys = updatedSurveys;
+        this.saveSurveys();
+      });
     }
   }
 
-  private changeSyncStatus(survey: Form, status: boolean): void {
+  private changeSyncStatus(survey: FormDetail.Form, status: boolean): void {
     const index = this.surveys.indexOf(survey);
     this.surveys[index].sync = status; //TODO save into storage
   }
-
-  private uploadSurvey(survey: Form): void {
-    this.apiService.post(ENDPOINT, survey).then( (res) => {
-      if (res.status === 200) {
-        this.changeSyncStatus(survey, true);
-      }/*  else {
-        const serverResponseAlert = await this.alertController.create({
-          header: 'Error en el servidor',
-          subHeader: 'Error ' + res.status,
-          message:
-            'El servidor no pudo procesar la solicitud. Por favor, intenta más tarde.',
-          buttons: ['OK'],
-        });
-        serverResponseAlert.present()
-      } */
-    })/* .catch(async (err) => {
-      const serverAlert = await this.alertController.create({
-        header: 'Problema con el servidor',
-        subHeader: 'Error ' + err.status,
-        message:
-          'No se pudo establecer una conexión con el servidor. Por favor, intenta más tarde.',
-        buttons: ['OK'],
-      })
-      serverAlert.present();
-    }); */
-  }
 }
+
+const SURVEYS_STORAGE_KEY = 'uploadSurveys';
+const ENDPOINT = SURVEYS_STORAGE_KEY;

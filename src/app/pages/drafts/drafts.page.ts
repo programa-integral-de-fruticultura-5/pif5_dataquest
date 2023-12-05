@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { FormListComponent } from 'src/app/components/form-list/form-list.component';
-import { DraftService } from 'src/app/services/draft/draft.service';
-import { FormService } from 'src/app/services/form/form.service';
+import { FormListComponent } from '@components/form-list/form-list.component';
+import { DraftService } from '@services/draft/draft.service';
+import { FormService } from '@services/form/form.service';
 
 @Component({
   selector: 'app-drafts',

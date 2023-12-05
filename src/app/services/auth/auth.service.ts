@@ -5,75 +5,52 @@ import { ApiService } from '../api/api.service';
 import { HttpResponse } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { User } from 'src/app/models/user';
-import { UserResponse } from 'src/app/types/userResponse';
+import { Authentication } from '@models/Auth.namespace';
+import { userBuilder } from '@utils/builder';
+import { Observable, from, map } from 'rxjs';
 
-const TOKEN_KEY = 'TOKEN_KEY';
-const USER_KEY = 'USER_KEY';
+const TOKEN_STORAGE_KEY = 'TOKEN_KEY';
+const USER_STORAGE_KEY = 'USER_KEY';
 const ENDPOINT = 'auth/login';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
-  user!: User;
-
+export class AuthService implements Authentication.AuthManagement {
   constructor(
     private router: Router,
-    private api: ApiService,
+    private apiService: ApiService,
     private jwtHelperService: JwtHelperService
-  ) { }
-
-  public saveToken(token: string) {
-    this.removeToken();
-    const options = { key: TOKEN_KEY, value: token };
-    Preferences.set(options);
-  }
-
-  public saveUser(user: UserResponse) {
-    this.removeUser();
-    const newUser = new User(
-      user.id,
-      user.name,
-      user.email,
-      user.email_verified_at,
-      user.cedula,
-      user.roles,
-      user.types,
-      user.zone,
-      user.created_at,
-      user.updated_at
-    );
-    this.user = newUser;
-    console.log(this.user);
-    this.storeUser(newUser);
-  }
+  ) {}
 
   public async getToken(): Promise<string | null> {
-    const token = await Preferences.get({ key: TOKEN_KEY });
+    const token = await Preferences.get({ key: TOKEN_STORAGE_KEY });
     return token.value || null;
   }
 
-  public loadUser(): void{
-    Preferences.get({ key: USER_KEY }).then(
-      (response) => (
-        console.log(response),
-        this.user = JSON.parse(response.value!)
-      )
-    ).catch((error) => console.log(error));
+  public async getUser(): Promise<Authentication.User> {
+    const { value } = await Preferences.get({ key: USER_STORAGE_KEY })
+    return JSON.parse(value!) as Authentication.User;
   }
 
-  public removeToken() {
-    Preferences.remove({ key: TOKEN_KEY });
-  }
-
-  private storeUser(user: User) {
-    const options = { key: USER_KEY, value: JSON.stringify(user) };
+  private setUser(user: Authentication.User) {
+    this.removeUser();
+    const options = { key: USER_STORAGE_KEY, value: JSON.stringify(user) };
     Preferences.set(options);
   }
 
   private removeUser() {
-    Preferences.remove({ key: USER_KEY });
+    Preferences.remove({ key: USER_STORAGE_KEY });
+  }
+
+  private setToken(token: string) {
+    this.removeToken();
+    const options = { key: TOKEN_STORAGE_KEY, value: token };
+    Preferences.set(options);
+  }
+
+  public removeToken() {
+    Preferences.remove({ key: TOKEN_STORAGE_KEY });
   }
 
   public async decodeToken(token: string): Promise<boolean> {
@@ -83,11 +60,24 @@ export class AuthService {
     return false;
   }
 
-  public login(credentials: {
-    email: string;
-    password: string;
-  }): Promise<HttpResponse> {
-    return this.api.post(ENDPOINT, credentials);
+  public async login(
+    authParams: Authentication.AuthParams
+  ): Promise<Authentication.User> {
+    const response: HttpResponse = await this.apiService.post(
+      ENDPOINT,
+      authParams
+    );
+    console.log(response);
+    if (response.status !== 200) {
+      throw new Error(response.data.error);
+    }
+    const authResponse: Authentication.AuthResponse =
+      response.data as Authentication.AuthResponse;
+    this.setToken(authResponse.token);
+    const user: Authentication.User = userBuilder(authResponse.user);
+    this.setUser(user);
+    this.router.navigate(['/home']);
+    return user;
   }
 
   public logout(): void {

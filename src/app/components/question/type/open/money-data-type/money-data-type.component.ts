@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 import { maskitoNumberOptionsGenerator, maskitoParseNumber } from '@maskito/kit';
 import { MaskitoModule } from '@maskito/angular';
 import { MaskitoElementPredicateAsync, MaskitoOptions } from '@maskito/core';
@@ -20,7 +20,7 @@ import { MaskitoElementPredicateAsync, MaskitoOptions } from '@maskito/core';
   imports: [MaskitoModule, IonicModule, ReactiveFormsModule],
 })
 export class MoneyDataTypeComponent {
-  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 

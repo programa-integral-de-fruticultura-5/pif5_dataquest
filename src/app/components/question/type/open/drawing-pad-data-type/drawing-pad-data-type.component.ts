@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import SignaturePad from 'signature_pad';
 import { IonicModule } from '@ionic/angular';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -13,7 +13,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class DrawingPadDataTypeComponent {
   private signaturePad!: SignaturePad;
-  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { DetailedFormComponent } from 'src/app/components/detailed-form/detailed-form.component';
+import { DetailedFormComponent } from '@components/detailed-form/detailed-form.component';
 
 @Component({
   selector: 'app-detail',

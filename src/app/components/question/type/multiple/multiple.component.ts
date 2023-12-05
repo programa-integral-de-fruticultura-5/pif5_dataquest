@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Answer } from 'src/app/models/answer';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 
 @Component({
   selector: 'app-multiple',
@@ -14,7 +13,7 @@ import { Question } from 'src/app/models/question';
 })
 export class MultipleComponent implements OnInit {
 
-  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 
@@ -24,11 +23,11 @@ export class MultipleComponent implements OnInit {
 
   ngOnInit() {}
 
-  getAnswers(): Answer[] {
+  getAnswers(): FormDetail.Answer[] {
     return this.question.answers;
   }
 
-  isChecked(answer: Answer): boolean {
+  isChecked(answer: FormDetail.Answer): boolean {
     const formGroup: FormGroup = this.formGroup.get(`${this.question.id}`) as FormGroup;
 
     const formControl: AbstractControl | null = formGroup.get(answer.id.toString());
@@ -88,8 +87,8 @@ export class MultipleComponent implements OnInit {
   }
 
   private isLastAnswer(id: string): boolean {
-    const answers: Answer[] = this.getAnswers();
-    const lastAnswer: Answer = answers[answers.length - 1];
+    const answers: FormDetail.Answer[] = this.getAnswers();
+    const lastAnswer: FormDetail.Answer = answers[answers.length - 1];
     return Number(id) === lastAnswer.id;
   }
 }

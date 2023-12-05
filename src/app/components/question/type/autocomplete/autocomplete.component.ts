@@ -12,15 +12,13 @@ import {
   FormGroup,
   FormGroupDirective,
 } from '@angular/forms';
-import { IonModal, IonicModule } from '@ionic/angular';
-import { TypeaheadComponent } from 'src/app/components/typeahead/typeahead.component';
-import { Answer } from 'src/app/models/answer';
-import { Association } from 'src/app/models/beneficiary/association';
-import { Producer } from 'src/app/models/beneficiary/producer';
-import { Question } from 'src/app/models/question';
-import { AssociationService } from 'src/app/services/association/association.service';
-import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
-import { ProducerService } from 'src/app/services/producer/producer.service';
+import { AlertController, IonModal, IonicModule } from '@ionic/angular';
+import { TypeaheadComponent } from '@components/typeahead/typeahead.component';
+import { FormDetail } from '@models/FormDetail.namespace';
+import { Beneficiary } from '@models/Beneficiary.namespace';
+import { AssociationService } from '@services/association/association.service';
+import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
+import { ProducerService } from '@services/producer/producer.service';
 
 @Component({
   selector: 'app-autocomplete',
@@ -31,30 +29,28 @@ import { ProducerService } from 'src/app/services/producer/producer.service';
 })
 export class AutocompleteComponent implements OnInit {
   @ViewChild('modal', { static: true }) modal!: IonModal;
-  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ transform: booleanAttribute }) open!: boolean;
   @Input() title = 'Selecciona uno';
   @Input({ required: true }) disabled!: boolean;
 
   selection!: string;
-  public answersData!: Answer[];
-  public producersData!: Producer[];
-  public associationsData!: Association[];
-  public data!: string[];
+
+  public data: string[] = [];
 
   constructor(
     private producersService: ProducerService,
-    private associationService: AssociationService,
+    private alertController: AlertController,
     private detailedFormService: DetailedFormService
   ) {}
 
   ngOnInit() {
     this.selection = this.getQuestionValue();
-    this.data = this.getData();
   }
 
   openModal(): void {
+    this.data = this.getData();
     this.modal.present();
   }
 
@@ -89,12 +85,10 @@ export class AutocompleteComponent implements OnInit {
   private getData(): string[] {
     let result: string[] = [];
     if (this.open) {
-      const producers: Producer[] = (this.producersData = this.getProducers());
-      const associations: Association[] = (this.associationsData =
-        this.getAssociations());
+      const producers: Beneficiary.Producer[] = this.producersService.getProducers();
       result = producers.map((producer) => producer.id);
     } else {
-      const answers: Answer[] = (this.answersData = this.getAnswers());
+      const answers = this.getAnswers();
       result = answers.map((answer) => answer.value);
     }
     return result;
@@ -104,23 +98,18 @@ export class AutocompleteComponent implements OnInit {
     return this.question.answers;
   }
 
-  getProducers() {
-    return this.producersService.getProducers();
-  }
-
-  getAssociations() {
-    return this.associationService.getAssociations();
-  }
-
   selectionChanged(selection: string) {
-    this.selection = selection;
 
     if (this.open) {
-      this.assignBeneficiary(selection);
-      const formControl: FormControl = this.formGroup.get(
-        `${this.question.id}`
-      ) as FormControl;
-      formControl.setValue(selection);
+      if (this.assignBeneficiary(selection)) {
+        const formControl: FormControl = this.formGroup.get(
+          `${this.question.id}`
+        ) as FormControl;
+        formControl.setValue(selection);
+      } else {
+        this.showBeneficiaryAlert();
+        return;
+      }
     } else {
       const formGroup: FormGroup = this.formGroup.get(
         `${this.question.id}`
@@ -128,6 +117,7 @@ export class AutocompleteComponent implements OnInit {
       const answerId: string = this.getAnswerId(selection);
       this.setCheckedValue(formGroup, answerId);
     }
+    this.selection = selection;
     this.modal.dismiss();
   }
 
@@ -141,21 +131,26 @@ export class AutocompleteComponent implements OnInit {
     }
   }
 
-  private assignBeneficiary(id: string): void {
-    const beneficiary: Producer | undefined = this.producersData.find(
+  private assignBeneficiary(id: string): boolean {
+    const producers: Beneficiary.Producer[] = this.producersService.getProducers();
+    const beneficiary: Beneficiary.Producer = producers.find(
       (producer) => producer.id === id
-    );
+    )!;
 
-    beneficiary ? this.detailedFormService.setBeneficiary(beneficiary) : null;
+    return this.detailedFormService.setBeneficiary(beneficiary);
+  }
+
+  private async showBeneficiaryAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Beneficiario ya tiene formulario especializado',
+      message: 'Elimina el formulario respectivo o escoge otro beneficiario',
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   private getAnswerId(value: string): string {
-    let id: string = '';
-    this.answersData.find((answer) => {
-      if (answer.value === value) {
-        id = answer.id.toString();
-      }
-    });
-    return id;
+    const answer = this.getAnswers().find((answer) => answer.value === value);
+    return answer ? answer.id.toString() : '';
   }
 }

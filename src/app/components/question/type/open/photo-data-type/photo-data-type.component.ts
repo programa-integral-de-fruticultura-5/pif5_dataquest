@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Question } from 'src/app/models/question';
-import { PhotoService } from 'src/app/services/detailed-form/question/photo/photo.service';
+import { FormDetail } from '@models/FormDetail.namespace'
+import { PhotoService } from '@services/detailed-form/question/photo/photo.service';
 
 @Component({
   selector: 'app-photo-data-type',
@@ -13,7 +13,7 @@ import { PhotoService } from 'src/app/services/detailed-form/question/photo/phot
 })
 export class PhotoDataTypeComponent  implements OnInit {
 
-  @Input({ required: true }) question!: Question
+  @Input({ required: true }) question!: FormDetail.Question
   @Input({ required: true }) formGroup!: FormGroup
   @Input({ required: true }) disabled!: boolean
 

@@ -1,18 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 import { TypeComponent } from '../type.component';
 import { FormArray, FormGroup } from '@angular/forms';
-import { AnswerRelationService } from 'src/app/services/detailed-form/question/answer-relation/answer-relation.service';
-import { QuestionControlService } from 'src/app/services/detailed-form/control/question-control.service';
+import { AnswerRelationService } from '@services/detailed-form/question/answer-relation/answer-relation.service';
+import { QuestionControlService } from '@services/detailed-form/control/question-control.service';
+import { RxFor } from "@rx-angular/template/for";
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, TypeComponent],
+  imports: [CommonModule, IonicModule, TypeComponent, RxFor],
 })
 export class TableComponent {
   @Input({ required: true }) question!: any;
@@ -30,7 +31,7 @@ export class TableComponent {
     const formArray: FormArray = this.formGroup.controls[
       this.question.id
     ] as FormArray;
-    let base: Question[] = this.question.questionChildren[0];
+    let base: FormDetail.Question[] = this.question.questionChildren[0];
     const newFormGroup: FormGroup = this.questionControlService.toFormGroup(
       base
     );
@@ -49,7 +50,7 @@ export class TableComponent {
     }
   }
 
-  getQuestionChildren(): Question[][] {
+  getQuestionChildren(): FormDetail.Question[][] {
     return this.question.questionChildren;
   }
 
@@ -62,7 +63,7 @@ export class TableComponent {
   }
 
   getCategory(): string {
-    return this.question.question_category.name;
+    return this.question.questionCategory.name;
   }
 
   getFormGroup(index: number): FormGroup {
@@ -72,7 +73,7 @@ export class TableComponent {
     return formArray.at(index) as FormGroup;
   }
 
-  showQuestion(currentQuestion: Question, i: number) {
+  showQuestion(currentQuestion: FormDetail.Question, i: number) {
     const checkedAnswersRelation: boolean =
       this.answerRelationService.checkAnswerRelation(
         currentQuestion,
@@ -93,11 +94,11 @@ export class TableComponent {
     return enabled
   } */
 
-  private enableQuestion(question: Question, formGroup: FormGroup): void {
+  private enableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
     this.answerRelationService.enableQuestion(question, formGroup);
   }
 
-  private disableQuestion(question: Question, formGroup: FormGroup): void {
+  private disableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
     this.answerRelationService.disableQuestion(question, formGroup);
   }
 }

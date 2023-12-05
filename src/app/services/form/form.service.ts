@@ -1,104 +1,69 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../api/api.service';
-import { Form } from 'src/app/models/form';
+import { ApiService } from '@services/api/api.service';
+import { FormDetail } from '@models/FormDetail.namespace';
 import { HttpResponse } from '@capacitor/core';
-import { Question } from 'src/app/models/question';
 import { StorageService } from '../storage/storage.service';
 import { Network } from '@capacitor/network';
-
-const ENDPOINT = 'form-detail';
+import { Observable, from } from 'rxjs';
+import { tap, map, switchMap } from 'rxjs/operators';
+import { formBuilder } from '@utils/builder';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FormService {
-  private forms: Form[];
-
   constructor(
     private apiService: ApiService,
     private storageService: StorageService
-  ) {
-    this.forms = [];
-    this.requestForms();
-    this.enableListner();
-  }
+  ) {}
 
-  private enableListner() {
-    Network.addListener('networkStatusChange', (status) => {
-      let connectionType = status.connectionType;
-      if (connectionType === 'wifi' || connectionType === 'cellular') {
-        this.requestForms();
-      }
-    });
-  }
+  public getForms(): Observable<FormDetail.Form[]> {
+    return from(Network.getStatus()).pipe(
+      switchMap((status) => {
+        if (!status.connected) {
+          return this.getLocalForms();
+        } else {
+          return from(this.apiService.post(ENDPOINT)).pipe(
+            map((response: HttpResponse) => {
+              const formsResponse: FormDetail.FormResponse[] = JSON.parse(
+                response.data
+              );
+              const forms: FormDetail.Form[] = formsResponse.map(
+                (form: FormDetail.FormResponse) => {
+                  const builtForm: FormDetail.Form = formBuilder(form);
+                  builtForm.questions.forEach((question) => {
+                    if (question.type === 'Tabla') {
+                      let children: FormDetail.Question[][] =
+                        this.getQuestionChildren(question, builtForm);
+                      question.questionChildren = children;
+                    }
+                  });
+                  const currentDate: Date = new Date();
+                  builtForm.fechaDescarga = currentDate.toISOString(); // Convert Date to string
 
-  public async requestForms(): Promise<void> {
-    const { connected } = await Network.getStatus();
-    if (connected) {
-      this.getLocalForms();
-      this.getRemoteForms();
-    } else {
-      this.getLocalForms();
-    }
-  }
-
-  private getLocalForms(): void {
-    this.storageService.get('forms')?.then((forms) => {
-      if (forms) {
-        this.forms = forms;
-      }
-    });
-  }
-
-  private setLocalForms(): void {
-    this.storageService.set('forms', this.forms);
-  }
-
-  private getRemoteForms(): void {
-    var response: Promise<HttpResponse> = this.apiService.post(ENDPOINT);
-
-    response.then(
-      (formsResponse) => {
-        const forms: Form[] = JSON.parse(formsResponse.data);
-        this.processForms(forms);
-        this.setLocalForms();
-      },
-      (err) => {
-        throw new Error(err);
-      }
+                  return builtForm;
+                }
+              );
+              return forms;
+            }),
+            tap((forms: FormDetail.Form[]) => {
+              this.setLocalForms(forms);
+            })
+          );
+        }
+      })
     );
   }
 
-  private processForms(forms: Form[]): void {
-    // Iterate through each form and initialize questionChildren arrays
-    forms.forEach((form: Form) => {
-      let foundForm: Form | undefined = this.forms.find(
-        (f: Form) => f.id === form.id
-      );
-      if (!foundForm) {
-        form.questions.forEach((question: Question) => {
-          if (question.type === 'Tabla') {
-            let children: Question[][] = this.getQuestionChildren(
-              question,
-              form
-            );
-            question.questionChildren = children;
-          }
-        });
-
-        const currentDate: Date = new Date();
-        form.fechaDescarga = currentDate.toISOString(); // Convert Date to string
-        this.forms.push(form);
-      }
-    });
-  }
-
-  private getQuestionChildren(question: Question, form: Form): Question[][] {
-    let children: Question[][] = [];
-    let base: Question[] = [];
+  private getQuestionChildren(
+    question: FormDetail.Question,
+    form: FormDetail.Form
+  ): FormDetail.Question[][] {
+    let children: FormDetail.Question[][] = [];
+    let base: FormDetail.Question[] = [];
 
     // Iterate through each question of the form
-    form.questions.forEach((q: Question) => {
+    form.questions.forEach((q: FormDetail.Question) => {
       // If the question is a child of the current question
       if (q.questionParentId === question.id) {
         // Add the question to the base array
@@ -112,13 +77,14 @@ export class FormService {
     return children;
   }
 
-  public getForms(): Form[] {
-    return this.forms.filter((form: Form) => {
-      const dateInit: Date = new Date(form.dateInit);
-      const dateEnd: Date = new Date(form.dateEnd);
-      const today: Date = new Date();
+  private getLocalForms(): Promise<FormDetail.Form[]> {
+    return this.storageService.get(FORMS_STORAGE_KEY);
+  }
 
-      return dateInit <= today && dateEnd >= today;
-    });
+  private setLocalForms(forms: FormDetail.Form[]): void {
+    this.storageService.set(FORMS_STORAGE_KEY, forms);
   }
 }
+
+const FORMS_STORAGE_KEY = 'forms';
+const ENDPOINT = 'form-detail';

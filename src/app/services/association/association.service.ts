@@ -1,95 +1,75 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
-import { Association } from 'src/app/models/beneficiary/association';
+import { Beneficiary } from '@models/Beneficiary.namespace';
 import { StorageService } from '../storage/storage.service';
 import { Network } from '@capacitor/network';
+import { Observable, from, map, switchMap, tap } from 'rxjs';
+import { HttpResponse } from '@capacitor/core';
+import { associationBuilder } from '@utils/builder';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AssociationService {
-  private associations: Association[];
-  private readonly ENDPOINT = 'associations';
+
+  associations: Beneficiary.Association[] = [];
 
   constructor(
     private apiService: ApiService,
     private storageService: StorageService
   ) {
-    this.associations = [];
-    this.requestAssociations();
-    this.enableListner();
-  }
-
-  private enableListner() {
-    Network.addListener('networkStatusChange', (status) => {
-      let connectionType = status.connectionType;
-      if (connectionType === 'wifi' || connectionType === 'cellular') {
-        this.requestAssociations();
-      }
+    this.syncAssociations(true).subscribe((associations: Beneficiary.Association[]) => {
+      this.associations = associations;
     });
   }
 
-  public async requestAssociations(): Promise<void> {
-    const { connected } = await Network.getStatus();
-    if (connected) {
-      this.getLocalAssociations();
-      this.getRemoteAssociations();
-    } else {
-      this.getLocalAssociations();
-    }
-  }
-
-  private getRemoteAssociations(): void {
-    this.apiService.post(this.ENDPOINT).then(
-      (response) => {
-        const associations = JSON.parse(response.data);
-        this.processAssociations(associations);
-        this.setLocalAssociations();
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-
-  public getAssociations(): any[] {
+  public getAssociations(): Beneficiary.Association[] {
+    console.log(this.associations);
     return this.associations;
   }
 
-  private setLocalAssociations(): void {
-    this.storageService.set('associations', this.associations);
+  private syncAssociations(forceRefresh: boolean = false): Observable<Beneficiary.Association[]> {
+    return from(Network.getStatus()).pipe(
+      switchMap((status) => {
+        console.log('status')
+        console.log(status.connected)
+        if (!status.connected || !forceRefresh) {
+          return from(this.getLocalAssociations());
+        } else {
+          console.log('syncAssociations')
+          return from(this.apiService.post(ENDPOINT)).pipe(
+            map((response: HttpResponse) => {
+              const associationResponse: Beneficiary.AssociationResponse[] = JSON.parse(
+                response.data
+              );
+              console.log('associationResponse');
+              console.log(associationResponse);
+              const associations: Beneficiary.Association[] = associationResponse.map(
+                (association) => associationBuilder(association)
+              );
+              return associations;
+            }),
+            tap((associations: Beneficiary.Association[]) => {
+              this.setLocalAssociations(associations);
+            })
+          );
+        }
+      })
+    );
   }
 
-  private getLocalAssociations(): void {
-    this.storageService.get('associations')?.then((associations) => {
-      if (associations) {
-        this.associations = associations;
-      }
-    });
+  private setLocalAssociations(associations: Beneficiary.Association[]): void {
+    this.storageService.set('associations', associations);
   }
 
-  private processAssociations(associations: any[]): void {
-    associations.forEach((association) => {
-      const foundAssociation = this.associations.find(
-        (a) => a.id === association.identification
-      );
-
-      if (!foundAssociation) {
-        const newAssociation = new Association(
-          association.id,
-          association.nit,
-          association.name,
-          association.identification,
-          association.zone,
-          association.farming
-        );
-
-        this.associations.push(newAssociation);
-      }
-    });
+  private getLocalAssociations(): Promise<Beneficiary.Association[]> {
+    return this.storageService.get(ASSOCIATIONS_STORAGE_KEY)
   }
 
-  public getAssociationById(id: number): Association | undefined {
+  public getAssociationById(id: number): Beneficiary.Association | undefined {
     return this.associations.find((association) => association.id === id);
   }
 }
+
+const ASSOCIATIONS_STORAGE_KEY = 'associations';
+const ENDPOINT = ASSOCIATIONS_STORAGE_KEY;

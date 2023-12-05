@@ -1,96 +1,67 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { StorageService } from '../storage/storage.service';
-import { Producer } from 'src/app/models/beneficiary/producer';
+import { Beneficiary } from '@models/Beneficiary.namespace';
 import { Network } from '@capacitor/network';
+import { Observable, from } from 'rxjs';
+import { tap, map, switchMap } from 'rxjs/operators';
+import { HttpResponse } from '@capacitor/core';
+import { producerBuilder } from '@utils/builder';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProducerService {
-  private producers: Producer[];
-  private readonly ENDPOINT = 'producers';
+
+  producers: Beneficiary.Producer[] = [];
 
   constructor(
     private apiService: ApiService,
-    private storageService: StorageService
+    private storageService: StorageService,
   ) {
-    this.producers = [];
-    this.requestProducers();
-    this.enableListener();
-  }
-
-  private enableListener() {
-    Network.addListener('networkStatusChange', (status) => {
-      let connectionType = status.connectionType;
-      if (connectionType === 'wifi' || connectionType === 'cellular') {
-        this.requestProducers();
-      }
+    this.syncProducers(true).subscribe((producers: Beneficiary.Producer[]) => {
+      this.producers = producers;
     });
   }
 
-  public async requestProducers(): Promise<void> {
-    const { connected } = await Network.getStatus();
-    if (connected) {
-      this.getLocalProducers();
-      this.getRemoteProducers();
-    } else {
-      this.getLocalProducers();
-    }
+  public getProducers(): Beneficiary.Producer[] {
+    return this.producers;
   }
 
-  private getLocalProducers(): void {
-    this.storageService.get('producers')?.then((producers) => {
-      if (producers) {
-        this.producers = producers;
-      }
-    });
-  }
-
-  private setLocalProducers(): void {
-    this.storageService.set('producers', this.producers);
-  }
-
-  private getRemoteProducers(): void {
-    this.apiService.post(this.ENDPOINT).then(
-      (response) => {
-        const producers = JSON.parse(response.data);
-        this.processProducers(producers);
-        this.setLocalProducers();
-      },
-      (err) => {
-        console.log(err);
-      }
+  private syncProducers(
+    forceRefresh: boolean = false
+  ): Observable<Beneficiary.Producer[]> {
+    return from(Network.getStatus()).pipe(
+      switchMap((status) => {
+        if (!status.connected || !forceRefresh) {
+          return this.getLocalProducers();
+        } else {
+          return from(this.apiService.post(ENDPOINT)).pipe(
+            map((response: HttpResponse) => {
+              const producerResponse: Beneficiary.ProducerResponse[] =
+                JSON.parse(response.data);
+              const producers: Beneficiary.Producer[] = producerResponse.map(
+                (producer) => producerBuilder(producer)
+              );
+              return producers;
+            }),
+            tap((producers: Beneficiary.Producer[]) => {
+              this.setLocalProducers(producers);
+            })
+          );
+        }
+      })
     );
   }
 
-  private processProducers(producers: any[]): void {
-    producers.forEach((producer) => {
-      const foundProducer = this.producers.find(
-        (p) => p.id === producer.identification
-      );
-
-      if (!foundProducer) {
-        const newProducer = new Producer(
-          producer.cedula,
-          producer.primer_nombre,
-          producer.segundo_nombre,
-          producer.primer_apellido,
-          producer.segundo_apellido,
-          producer.identification,
-          producer.has_especializada,
-          producer.at_p5,
-          producer.pd_p5,
-          producer.cm_p5,
-          producer.insumo_p5,
-          producer.association_id
-        );
-        this.producers.push(newProducer);
-      }
-    });
+  private getLocalProducers(): Promise<Beneficiary.Producer[]> {
+    return this.storageService.get(PRODUCERS_STORAGE_KEY);
   }
 
-  public getProducers(): any[] {
-    return this.producers;
+  private setLocalProducers(producers: Beneficiary.Producer[]): void {
+    this.storageService.set(ENDPOINT, producers);
   }
 }
+
+const PRODUCERS_STORAGE_KEY = 'producers';
+const ENDPOINT = PRODUCERS_STORAGE_KEY;

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, booleanAttribute } from '@angular/core';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { QuestionService } from 'src/app/services/detailed-form/question/question.service';
+import { QuestionService } from '@services/detailed-form/question/question.service';
 import { Router } from '@angular/router';
 
 @Component({

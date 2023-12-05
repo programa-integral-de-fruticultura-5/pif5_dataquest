@@ -1,43 +1,45 @@
 import { Injectable } from '@angular/core';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace';
 import { FormGroup } from '@angular/forms';
 import { QuestionControlService } from '../control/question-control.service';
 import { AuthService } from '../../auth/auth.service';
+import { AnswerRelationService } from './answer-relation/answer-relation.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuestionService {
-  private filteredQuestions!: Question[];
-  private originalQuestions!: Question[];
+  private filteredQuestions!: FormDetail.Question[];
+  private originalQuestions!: FormDetail.Question[];
   private progress: number = 0;
 
   constructor(
     private questionControlService: QuestionControlService,
-    private authService: AuthService
+    private answerRelationService: AnswerRelationService,
+    private authService: AuthService,
   ) {}
 
-  /*   getFilteredQuestions(): Question[] {
-    let filteredQuestions: Question[] = this.originalQuestions.filter(
+  /*   getFilteredQuestions(): FormDetail.Question[] {
+    let filteredQuestions: FormDetail.Question[] = this.originalQuestions.filter(
       (question) => question.questionParentId === null
     );
     return filteredQuestions;
   } */
 
-  getOriginalQuestions(): Question[] {
+  getOriginalQuestions(): FormDetail.Question[] {
     return this.originalQuestions;
   }
 
-  setQuestions(questions: Question[]): void {
+  setQuestions(questions: FormDetail.Question[]): void {
     this.originalQuestions = questions;
     this.filteredQuestions = this.originalQuestions.filter(
       (question) => question.questionParentId === null
     );
-    console.log(this.authService.user);
     this.filteredQuestions = this.filteredQuestions.filter(
-      (question) =>
-        question.user_type_restriction === this.authService.user.type ||
-        question.user_type_restriction === null
+      async (question) =>
+        question.userTypeRestriction ===
+          (await this.authService.getUser()).type ||
+        question.userTypeRestriction === null
     );
     console.log(this.filteredQuestions);
   }
@@ -50,47 +52,84 @@ export class QuestionService {
     return this.filteredQuestions.length;
   }
 
-  getFirst(): Question {
-    let firstQuestion: Question = this.filteredQuestions[0];
+  getFirst(): FormDetail.Question {
+    let firstQuestion: FormDetail.Question = this.filteredQuestions[0];
     return firstQuestion;
   }
 
-  getLast(): Question {
+  getLast(): FormDetail.Question {
     let lastIndex: number = this.filteredQuestions.length - 1;
-    let lastQuestion: Question = this.filteredQuestions[lastIndex];
+    let lastQuestion: FormDetail.Question = this.filteredQuestions[lastIndex];
     return lastQuestion;
   }
 
-  nextQuestion(current: Question): Question | null {
+  private getNextQuestion(current: FormDetail.Question): FormDetail.Question | null {
     if (current !== this.getLast()) {
-      let next: Question =
+      let next: FormDetail.Question =
         this.filteredQuestions[this.getCurrentIndex(current) + 1];
-      this.updateProgress(next);
       return next;
     }
     return null;
   }
 
-  getCurrentIndex(current: Question): number {
+  toggleNextQuestionFrom(question: FormDetail.Question, formGroup: FormGroup): FormDetail.Question | null {
+    const nextQuestion: FormDetail.Question | null =
+      this.getNextQuestion(question);
+    if (!nextQuestion) {
+      return null;
+    }
+    const checkedAnswersRelation: boolean =
+      this.answerRelationService.checkAnswerRelation(nextQuestion, formGroup);
+
+    if (checkedAnswersRelation) {
+      this.enableQuestion(nextQuestion, formGroup);
+      this.updateProgress(nextQuestion);
+      return nextQuestion;
+    } else {
+      this.disableQuestion(nextQuestion, formGroup);
+      return this.toggleNextQuestionFrom(nextQuestion, formGroup);
+    }
+  }
+
+  getCurrentIndex(current: FormDetail.Question): number {
     let currentIndex: number = this.filteredQuestions.indexOf(current);
     return currentIndex;
   }
 
-  previousQuestion(current: Question): Question | null {
+  private getPreviousQuestion(current: FormDetail.Question): FormDetail.Question | null {
     if (current !== this.getFirst()) {
-      let previous: Question =
+      let previous: FormDetail.Question =
         this.filteredQuestions[this.getCurrentIndex(current) - 1];
-      this.updateProgress(previous);
       return previous;
     }
     return null;
+  }
+
+  getPreviousValidQuestionFrom(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ): FormDetail.Question | null {
+    const previousQuestion: FormDetail.Question | null =
+      this.getPreviousQuestion(question);
+    if (!previousQuestion) {
+      return null;
+    }
+    const id: string = previousQuestion.id.toString();
+    const disabled: boolean = formGroup.get(id)!.disabled;
+
+    if (disabled) {
+      return this.getPreviousValidQuestionFrom(previousQuestion, formGroup);
+    } else {
+      this.updateProgress(previousQuestion);
+      return previousQuestion;
+    }
   }
 
   getProgress(): number {
     return this.progress;
   }
 
-  updateProgress(currentQuestion: Question): void {
+  updateProgress(currentQuestion: FormDetail.Question): void {
     let currentPosition: number = this.getCurrentIndex(currentQuestion) + 1;
     let length: number = this.getFilteredLength();
     let currentProgress: number = currentPosition / length;
@@ -99,5 +138,13 @@ export class QuestionService {
 
   getFormGroup(): FormGroup {
     return this.questionControlService.toFormGroup(this.filteredQuestions);
+  }
+
+  private enableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
+    this.answerRelationService.enableQuestion(question, formGroup);
+  }
+
+  private disableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
+    this.answerRelationService.disableQuestion(question, formGroup);
   }
 }

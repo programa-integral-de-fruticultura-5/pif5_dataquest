@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputChangeEventDetail, InputCustomEvent, IonicModule } from '@ionic/angular';
-import { Answer } from 'src/app/models/answer';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
-import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
-import { AssociationService } from 'src/app/services/association/association.service';
+import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
+import { AssociationService } from '@services/association/association.service';
+import { Beneficiary } from '@models/Beneficiary.namespace';
+import { QuestionService } from '@services/detailed-form/question/question.service';
 
 @Component({
   selector: 'app-unique',
@@ -21,7 +22,7 @@ import { AssociationService } from 'src/app/services/association/association.ser
   ],
 })
 export class UniqueComponent implements OnInit {
-  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 
@@ -30,12 +31,13 @@ export class UniqueComponent implements OnInit {
 
   constructor(
     private detailedFormService: DetailedFormService,
+    private questionService: QuestionService,
     private assoaciationService: AssociationService
   ) {}
 
   ngOnInit() {}
 
-  getAnswers(): Answer[] {
+  getAnswers(): FormDetail.Answer[] {
     return this.question.answers;
   }
 
@@ -47,6 +49,7 @@ export class UniqueComponent implements OnInit {
     const id: string = event.detail.value;
 
     this.setCheckedValue(formGroup, id, true);
+    this.questionService.toggleNextQuestionFrom(this.question, this.formGroup);
   }
 
   getValue(): string {
@@ -99,7 +102,7 @@ export class UniqueComponent implements OnInit {
   private preloadFarmingValue(answersFormGroup: FormGroup): void {
     const isFarmingQuestion: boolean =
       this.question.text === 'Cultivo Priorizado';
-    if (isFarmingQuestion) {
+        if (isFarmingQuestion) {
       const answerIdToCheck: string = this.searchAnswerIdByFarming();
       this.setCheckedValue(answersFormGroup, answerIdToCheck, true);
       this.farming = true;
@@ -112,11 +115,14 @@ export class UniqueComponent implements OnInit {
     const associationId: number =
       this.detailedFormService.getForm().beneficiary.associationId;
 
-    const associationFarming: string =
-      this.assoaciationService.getAssociationById(associationId)!.farming;
+    const association: Beneficiary.Association | undefined =
+      this.assoaciationService.getAssociationById(associationId);
 
-    const answer: Answer = this.question.answers.find(
-      (answer) => answer.value === associationFarming
+    const associationFarming: string =
+      association!.farming;
+
+    const answer: FormDetail.Answer = this.question.answers.find(
+      (answer) => answer.value.toLowerCase() === associationFarming.toLowerCase()
     )!;
 
     return answer.id.toString();
@@ -211,8 +217,8 @@ export class UniqueComponent implements OnInit {
   }
 
   private isLastAnswer(id: string): boolean {
-    const answers: Answer[] = this.getAnswers();
-    const lastAnswer: Answer = answers[answers.length - 1];
+    const answers: FormDetail.Answer[] = this.getAnswers();
+    const lastAnswer: FormDetail.Answer = answers[answers.length - 1];
     return Number(id) === lastAnswer.id;
   }
 }

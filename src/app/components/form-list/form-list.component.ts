@@ -1,15 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, booleanAttribute } from '@angular/core';
+import { Component, Input, booleanAttribute } from '@angular/core';
 import { Router } from '@angular/router';
 import { Platform, AlertController, IonicModule, ToastController } from '@ionic/angular';
-import { Form } from 'src/app/models/form';
-import { AssociationService } from 'src/app/services/association/association.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
-import { DraftService } from 'src/app/services/draft/draft.service';
-import { FormService } from 'src/app/services/form/form.service';
-import { ProducerService } from 'src/app/services/producer/producer.service';
-import { SurveyService } from 'src/app/services/survey/survey.service';
+import { FormDetail } from '@models/FormDetail.namespace';
+import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
+import { DraftService } from '@services/draft/draft.service';
+import { FormService } from '@services/form/form.service';
+import { SurveyService } from '@services/survey/survey.service';
 
 @Component({
   selector: 'app-form-list',
@@ -18,20 +15,17 @@ import { SurveyService } from 'src/app/services/survey/survey.service';
   standalone: true,
   imports: [ CommonModule, IonicModule ],
 })
-export class FormListComponent implements OnInit {
+export class FormListComponent {
 
-  @Input({ required: true }) forms!: Form[];
+  @Input({ required: true }) forms!: FormDetail.Form[];
   @Input({ transform: booleanAttribute }) form: boolean = false;
   @Input({ transform: booleanAttribute }) draft: boolean = false;
   @Input({ transform: booleanAttribute }) survey: boolean = false;
 
   constructor(
-    private authService: AuthService,
     private formsService: FormService,
     private draftService: DraftService,
     private surveyService: SurveyService,
-    private producersService: ProducerService,
-    private associationService: AssociationService,
     private detailedFormService: DetailedFormService,
     private router: Router,
     private platform: Platform,
@@ -43,7 +37,7 @@ export class FormListComponent implements OnInit {
     this.requestData();
   }
 
-  async navigate(formToSend: Form) {
+  async navigate(formToSend: FormDetail.Form) {
     if (this.platform.is('mobile')) {
       this.detailedFormService.setForm(formToSend, this.form, this.draft, this.survey);
       this.router.navigate(['detail']);
@@ -92,12 +86,13 @@ export class FormListComponent implements OnInit {
   }
 
   private requestData() {
-    this.formsService.requestForms();
-    this.draftService.loadDrafts();
-    this.surveyService.loadSurveys();
-    this.producersService.requestProducers();
-    this.associationService.requestAssociations();
-    this.authService.loadUser();
-    console.log(this.authService.user);
+    if (this.form) {
+      this.formsService.getForms().subscribe((forms) => {
+        this.forms = forms;
+      });
+    }
+    if (this.draft) {
+      this.draftService.loadDrafts();
+    }
   }
 }

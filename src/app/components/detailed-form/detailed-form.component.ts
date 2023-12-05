@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { AlertController, IonicModule, NavController } from '@ionic/angular';
-import { FormService } from 'src/app/services/form/form.service';
+import { FormService } from '@services/form/form.service';
 import { Geolocation, Position } from '@capacitor/geolocation';
-import { DetailedFormService } from 'src/app/services/detailed-form/detailed-form.service';
-import { Form } from 'src/app/models/form';
-import { QuestionComponent } from '../question/question.component';
-import { DataquestHeaderComponent } from '../header/dataquest-header/dataquest-header.component';
+import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
+import { FormDetail } from '@models/FormDetail.namespace';
+import { QuestionComponent } from '@components/question/question.component';
+import { DataquestHeaderComponent } from '@components/header/dataquest-header/dataquest-header.component';
 
 @Component({
   selector: 'app-detailed-form',
@@ -30,7 +30,7 @@ export class DetailedFormComponent {
     private navController: NavController
   ) {}
 
-  getForm(): Form {
+  getForm(): FormDetail.Form {
     return this.detailedFormService.getForm();
   }
 

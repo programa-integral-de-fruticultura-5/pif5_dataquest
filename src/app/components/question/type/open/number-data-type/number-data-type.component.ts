@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 
 @Component({
   selector: 'app-number-data-type',
@@ -16,7 +16,7 @@ import { Question } from 'src/app/models/question';
   imports: [IonicModule, ReactiveFormsModule],
 })
 export class NumberDataTypeComponent {
-  @Input({ required: true }) question!: Question;
+  @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 

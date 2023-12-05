@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AnswerRelation } from 'src/app/models/answerRelation';
-import { Question } from 'src/app/models/question';
+import { FormDetail } from '@models/FormDetail.namespace'
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +9,11 @@ export class AnswerRelationService {
   constructor() {}
 
   public checkAnswerRelation(
-    question: Question,
+    question: FormDetail.Question,
     formGroup: FormGroup
   ): boolean {
-    const answerRelation: AnswerRelation[] = question.answers_relation;
-    var answerRelationType: string = answerRelation[0]?.pivot.type;
+    const answerRelation: FormDetail.AnswerRelation[] = question.answersRelation;
+    var answerRelationType: string = answerRelation[0]?.answerPivot.type;
     if (answerRelationType === 'and') {
       return this.checkAndRelation(answerRelation, formGroup);
     } else if (answerRelationType === 'or') {
@@ -24,18 +23,18 @@ export class AnswerRelationService {
     }
   }
 
-  private checkAndRelation(answerRelation: any, formGroup: FormGroup): boolean {
+  private checkAndRelation(answerRelation: FormDetail.AnswerRelation[], formGroup: FormGroup): boolean {
     const everyAnswerIsSelected: boolean = answerRelation.every(
-      (relation: any) => {
+      (relation: FormDetail.AnswerRelation) => {
         return this.areSelected(relation, formGroup);
       }
     );
     return everyAnswerIsSelected;
   }
 
-  private checkOrRelation(answerRelation: any, formGroup: FormGroup): boolean {
+  private checkOrRelation(answerRelation: FormDetail.AnswerRelation[], formGroup: FormGroup): boolean {
     const someAnswerIsSelected: boolean = answerRelation.some(
-      (relation: any) => {
+      (relation: FormDetail.AnswerRelation) => {
         return this.areSelected(relation, formGroup);
       }
     );
@@ -43,9 +42,9 @@ export class AnswerRelationService {
     return someAnswerIsSelected;
   }
 
-  private areSelected(relation: any, formGroup: FormGroup): boolean {
-    const questionId: number = relation.question_id;
-    const answerId: number = relation.pivot.answer_id;
+  private areSelected(relation: FormDetail.AnswerRelation, formGroup: FormGroup): boolean {
+    const questionId: number = relation.questionId;
+    const answerId: number = relation.answerPivot.answerId;
 
     const value: boolean = formGroup
       .get(questionId.toString())!
@@ -54,13 +53,13 @@ export class AnswerRelationService {
     return value;
   }
 
-  public disableQuestion(question: Question, formGroup: FormGroup): void {
+  public disableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
     const questionId: string = question.id.toString();
     formGroup.get(questionId)?.reset();
     formGroup.get(questionId)?.disable();
   }
 
-  public enableQuestion(question: Question, formGroup: FormGroup): void {
+  public enableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
     const questionId: string = question.id.toString();
     formGroup.get(questionId)?.enable();
   }
