@@ -10,15 +10,15 @@ import { Observable, catchError, forkJoin, from, mergeMap, of } from 'rxjs';
   providedIn: 'root',
 })
 export class SurveyService {
-  private online!: boolean;
-  private surveys!: FormDetail.Form[];
+  private online: boolean = false;
+  private surveys: FormDetail.Form[] = [];
 
   constructor(
     private apiService: ApiService,
     private alertController: AlertController,
     private storageService: StorageService
   ) {
-    this.listenToNetworkStatus();
+    this.getNetworkStatus();
     this.getLocalSurveys();
   }
 
@@ -28,9 +28,11 @@ export class SurveyService {
     this.saveSurveys();
   }
 
-  private listenToNetworkStatus(): void {
-    Network.addListener('networkStatusChange', (status) => {
+  public getNetworkStatus(): void {
+    Network.getStatus().then((status) => {
+      console.log('Network status:', status.connected);
       this.online = status.connected;
+      console.log('Online status is:', this.online);
     });
   }
 
@@ -70,7 +72,7 @@ export class SurveyService {
           if (syncedSurvey) {
             survey.sync = true;
           }
-          
+
           return survey;
         });
         console.log(updatedSurveys)

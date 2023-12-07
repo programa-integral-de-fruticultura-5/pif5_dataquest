@@ -14,6 +14,7 @@ export class SurveysPage {
   constructor(private surveyService: SurveyService) {}
 
   ionViewWillEnter() {
+    this.surveyService.getNetworkStatus();
     this.surveyService.getLocalSurveys();
   }
 
