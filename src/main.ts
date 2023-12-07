@@ -12,6 +12,8 @@ import {
 } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { CurrencyPipe } from '@angular/common';
+import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+import { Drivers } from '@ionic/storage';
 
 if (environment.production) {
   enableProdMode();
@@ -23,7 +25,9 @@ bootstrapApplication(AppComponent, {
     { provide: CurrencyPipe, useClass: CurrencyPipe },
     importProvidersFrom(
       IonicModule.forRoot({}),
-      IonicStorageModule.forRoot(),
+      IonicStorageModule.forRoot({
+        driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB]
+      }),
       JwtModule.forRoot({
         config: {
           tokenGetter: tokenGetter,
