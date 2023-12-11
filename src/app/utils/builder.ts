@@ -43,7 +43,7 @@ function questionBuilder(
   question: FormDetail.QuestionResponse
 ): FormDetail.Question {
   return {
-    id: question.id,
+    id: question.id.toString(),
     text: question.text,
     type: question.type,
     required: question.required,
@@ -51,7 +51,7 @@ function questionBuilder(
     order: question.order,
     answerLength: 0,
     extendable: false,
-    questionParentId: question.questionParentId,
+    questionParentId: question.questionParentId?.toString(),
     answers: question.answers.map((answer) => answerBuilder(answer)),
     questionCategoryId: question.question_category_id,
     questionCategory: questionCategoryBuilder(question.question_category),
@@ -68,7 +68,7 @@ function questionBuilder(
 function answerBuilder(answer: FormDetail.AnswerResponse): FormDetail.Answer {
   return {
     id: answer.id,
-    questionId: answer.question_id,
+    questionId: answer.question_id.toString(),
     value: answer.value,
     order: answer.order,
     checked: false,
@@ -89,7 +89,7 @@ function answerRelationBuilder(
 ): FormDetail.AnswerRelation {
   return {
     id: relation.id,
-    questionId: relation.question_id,
+    questionId: relation.question_id.toString(),
     answerPivot: answerPivotBuilder(relation.pivot),
   };
 }
@@ -98,7 +98,7 @@ function answerPivotBuilder(
   pivot: FormDetail.AnswerPivotResponse
 ): FormDetail.AnswerPivot {
   return {
-    questionId: pivot.question_id,
+    questionId: pivot.question_id.toString(),
     answerId: pivot.answer_id,
     type: pivot.type,
   };

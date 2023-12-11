@@ -33,7 +33,7 @@ export class QuestionService {
   setQuestions(questions: FormDetail.Question[]): void {
     this.originalQuestions = questions;
     this.filteredQuestions = this.originalQuestions.filter(
-      (question) => question.questionParentId === null
+      (question) => question.questionParentId === null || question.questionParentId === undefined
     );
     this.filteredQuestions = this.filteredQuestions.filter(
       async (question) =>

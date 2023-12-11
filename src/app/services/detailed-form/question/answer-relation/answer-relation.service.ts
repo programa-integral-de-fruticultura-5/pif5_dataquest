@@ -43,11 +43,10 @@ export class AnswerRelationService {
   }
 
   private areSelected(relation: FormDetail.AnswerRelation, formGroup: FormGroup): boolean {
-    const questionId: number = relation.questionId;
+    const questionId: string = relation.questionId;
     const answerId: number = relation.answerPivot.answerId;
-
     const value: boolean = formGroup
-      .get(questionId.toString())!
+      .get(questionId)!
       .get(answerId.toString())!.value;
 
     return value;

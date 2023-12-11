@@ -10,18 +10,18 @@
     <ion-card-content>
       <ion-accordion-group [multiple]="true" [value]="0">
         <ion-accordion
-          *rxFor="let questionsSection of getQuestionChildren(); index as i"
-          [value]="i"
+          *rxFor="let questionsSection of getQuestionChildren(); index as sectionIndex"
+          [value]="sectionIndex"
         >
           <ion-item slot="header" color="light">
-            <ion-label>Sección {{ i + 1 }}</ion-label>
+            <ion-label>Sección {{ sectionIndex + 1 }}</ion-label>
           </ion-item>
-          <ng-container *rxFor="let questionChild of questionsSection">
+          <ng-container *rxFor="let questionChild of questionsSection, index as childIndex">
             <app-type
               [disabled]="disabled"
-              *ngIf="showQuestion(questionChild, i)"
-              [formGroup]="getFormGroup(i)"
-              [question]="questionChild"
+              *ngIf="showQuestion(childIndex, sectionIndex)"
+              [formGroup]="getFormGroup(sectionIndex)"
+              [question]="getChildQuestion(sectionIndex, childIndex)"
               slot="content"
             ></app-type>
           </ng-container>

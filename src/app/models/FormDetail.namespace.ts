@@ -36,7 +36,7 @@ export namespace FormDetail {
   }
 
   export interface Question {
-    id: number,
+    id: string,
     text: string,
     type: string,
     required: number,
@@ -44,7 +44,7 @@ export namespace FormDetail {
     order: number,
     answerLength: number,
     extendable: boolean,
-    questionParentId: number,
+    questionParentId: string,
     answers: Array<Answer>,
     questionCategoryId: number,
     questionCategory: QuestionCategory,
@@ -84,7 +84,7 @@ export namespace FormDetail {
   export interface Answer {
     id: number,
     order: number,
-    questionId: number,
+    questionId: string,
     checked: boolean,
     value: string,
   }
@@ -98,7 +98,7 @@ export namespace FormDetail {
 
   export interface AnswerRelation {
     id: number,
-    questionId: number,
+    questionId: string,
     answerPivot: AnswerPivot,
   }
 
@@ -109,7 +109,7 @@ export namespace FormDetail {
   }
 
   export interface AnswerPivot {
-    questionId: number,
+    questionId: string,
     answerId: number,
     type: string,
   }

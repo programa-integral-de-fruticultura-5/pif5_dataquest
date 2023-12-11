@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FormDetail } from '@models/FormDetail.namespace'
@@ -10,16 +10,18 @@ import { FormDetail } from '@models/FormDetail.namespace'
   standalone: true,
   imports: [IonicModule, ReactiveFormsModule],
 })
-export class DateDataTypeComponent implements OnInit {
+export class DateDataTypeComponent {
   @Input({ required: true }) question!: FormDetail.Question;
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 
   constructor() {}
 
-  ngOnInit() {}
-
   getValue(): string {
+    const formControl: FormControl = this.formGroup.get(
+      `${this.question.id}`
+    ) as FormControl;
+    console.log('formControl: ', formControl)
     const stringDate: string = this.formGroup.get(`${this.question.id}`)?.value;
     console.log('stringDate: ', stringDate);
     if (!stringDate) {

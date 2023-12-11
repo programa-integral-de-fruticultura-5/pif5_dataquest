@@ -1,14 +1,14 @@
 <ion-datetime-button
   class="ion-padding"
   [disabled]="disabled"
-  datetime="datetime"
+  [datetime]="question.id"
 ></ion-datetime-button>
 
 <ion-modal [keepContentsMounted]="true">
   <ng-template>
     <ion-datetime
       showDefaultButtons
-      id="datetime"
+      [id]="question.id"
       [disabled]="disabled"
       [value]="getValue()"
       (ionChange)="setValue($event)"

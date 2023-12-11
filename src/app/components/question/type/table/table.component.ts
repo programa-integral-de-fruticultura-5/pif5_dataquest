@@ -31,13 +31,28 @@ export class TableComponent {
     const formArray: FormArray = this.formGroup.controls[
       this.question.id
     ] as FormArray;
-    let base: FormDetail.Question[] = this.question.questionChildren[0];
+    let baseArrayCopy: FormDetail.Question[] = JSON.parse(JSON.stringify(this.question.questionChildren[0]));
+    this.changeQuestionId(baseArrayCopy);
     const newFormGroup: FormGroup = this.questionControlService.toFormGroup(
-      base
+      baseArrayCopy
     );
     newFormGroup.reset();
     formArray.push(newFormGroup);
-    this.question.questionChildren.push([...base]);
+    this.question.questionChildren.push(baseArrayCopy);
+  }
+
+  private changeQuestionId(base: FormDetail.Question[]) {
+    base.forEach((question) => {
+      const newId: string = `${this.question.questionChildren.length}-${question.id}`;
+      base.forEach((q) => {
+        q.answersRelation.forEach((ar) => {
+          if (ar.questionId === question.id) {
+            ar.questionId = newId
+          }
+        })
+      })
+      question.id = newId
+    });
   }
 
   removeSection() {
@@ -73,16 +88,23 @@ export class TableComponent {
     return formArray.at(index) as FormGroup;
   }
 
-  showQuestion(currentQuestion: FormDetail.Question, i: number) {
+  getChildQuestion(sectionIndex: number, childIndex: number): FormDetail.Question {
+    const questionChildren: FormDetail.Question[][] = this.question.questionChildren;
+    return questionChildren[sectionIndex][childIndex];
+  }
+
+  showQuestion(childIndex: number, sectionIndex: number) {
+    const childQuestion: FormDetail.Question = this.getChildQuestion(sectionIndex, childIndex);
+    const sectionFormGroup: FormGroup = this.getFormGroup(sectionIndex);
     const checkedAnswersRelation: boolean =
       this.answerRelationService.checkAnswerRelation(
-        currentQuestion,
-        this.getFormGroup(i)
+        childQuestion,
+        sectionFormGroup
       );
 
     checkedAnswersRelation
-      ? this.enableQuestion(currentQuestion, this.getFormGroup(i))
-      : this.disableQuestion(currentQuestion, this.getFormGroup(i));
+      ? this.enableQuestion(childQuestion, sectionFormGroup)
+      : this.disableQuestion(childQuestion, sectionFormGroup);
 
     return checkedAnswersRelation;
   }
