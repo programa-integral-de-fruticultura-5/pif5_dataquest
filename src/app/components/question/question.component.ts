@@ -8,15 +8,14 @@ import {
 import { QuestionService } from '@services/detailed-form/question/question.service';
 import { FormDetail } from '@models/FormDetail.namespace';
 import { DataquestHeaderComponent } from '../header/dataquest-header/dataquest-header.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { TableComponent } from './type/table/table.component';
 import { TypeComponent } from './type/type.component';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AnswerRelationService } from '@services/detailed-form/question/answer-relation/answer-relation.service';
 import { DraftService } from '@services/draft/draft.service';
 import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
 import { Platform } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-question',
@@ -37,6 +36,7 @@ export class QuestionComponent {
   formGroup!: FormGroup;
   disabled: boolean = false;
   alertShown: boolean = false;
+  private backButtonSubscription!: Subscription;
 
   constructor(
     private draftService: DraftService,
@@ -46,7 +46,7 @@ export class QuestionComponent {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private platform: Platform,
-    private router: Router
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -55,15 +55,25 @@ export class QuestionComponent {
     if (this.isSurvey()) {
       this.disabled = true;
     }
-    this.platform.backButton.subscribeWithPriority(10, () => {
+    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, () => {
       this.confirmExit();
     });
   }
 
-  async confirmExit() {
+  ngOnDestroy() {
+    this.backButtonSubscription.unsubscribe();
+  }
+
+  private async confirmExit() {
+    var message: string = ''
+    if (this.isForm())
+      message = 'Si sale, su progreso se guardará como borrador. ¿Desea salir?';
+    else if (this.isDraft())
+      message = 'Si sale, se guardará el borrador. ¿Desea salir?';
+
     const alert = await this.alertController.create({
       header: '¿Desea salir?',
-      message: 'Si sale, su progreso se guardará como borrador.',
+      message: message,
       buttons: [
         {
           text: 'Cancelar',
@@ -75,17 +85,13 @@ export class QuestionComponent {
           role: 'confirm',
           cssClass: 'danger',
           handler: () => {
-            this.router.navigate(['/home']);
+            this.location.back();
           },
         },
       ],
     });
 
     await alert.present();
-  }
-
-  ionViewWillLeave() {
-    this.confirmExit();
   }
 
   async nextQuestion() {
@@ -289,6 +295,10 @@ export class QuestionComponent {
       let answer = question.answers[0];
       answer.value = formResponse;
     }
+  }
+
+  isForm(): boolean {
+    return this.detailedFormService.isForm();
   }
 
   isDraft(): boolean {

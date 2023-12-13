@@ -30,6 +30,10 @@ export class DetailedFormComponent {
     private navController: NavController
   ) {}
 
+  ngOnDestroy() {
+    this.detailedFormService.setQuestionsPage(false);
+  }
+
   getForm(): FormDetail.Form {
     return this.detailedFormService.getForm();
   }
@@ -49,14 +53,15 @@ export class DetailedFormComponent {
   startForm(): void {
     this.getLocation();
     this.detailedFormService.startDraft();
+    this.detailedFormService.setQuestionsPage(true);
   }
 
   viewSurvey(): void {
-
+    this.detailedFormService.setQuestionsPage(true);
   }
 
   resumeDraft(): void {
-
+    this.detailedFormService.setQuestionsPage(true);
   }
 
   private async getLocation(): Promise<void> {

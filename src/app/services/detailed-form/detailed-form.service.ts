@@ -16,6 +16,7 @@ export class DetailedFormService {
   private form!: boolean;
   private draft!: boolean;
   private survey!: boolean;
+  private questionsPage!: boolean;
 
   constructor(
     private formService: FormService,
@@ -53,6 +54,14 @@ export class DetailedFormService {
     if (this.isDraft() || this.isSurvey()) {
       this.setQuestions();
     }
+  }
+
+  public setQuestionsPage(questionPage: boolean): void {
+    this.questionsPage = questionPage;
+  }
+
+  public isQuestionsPage(): boolean {
+    return this.questionsPage;
   }
 
   public setBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean {
