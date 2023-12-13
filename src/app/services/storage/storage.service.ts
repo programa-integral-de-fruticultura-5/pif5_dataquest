@@ -23,6 +23,7 @@ export class StorageService {
     this.keys().then((keys) => {
       console.log('Storage keys:', keys);
     });
+    this.showStorage();
   }
 
   async set(key: string, value: any) {
@@ -43,5 +44,13 @@ export class StorageService {
 
   async keys() {
     return await this._storage?.keys();
+  }
+
+  showStorage() {
+    this._storage?.forEach((value, key, index) => {
+      console.log('Key:', key);
+      console.log('Index:', index);
+      console.log('Value:', value);
+    });
   }
 }

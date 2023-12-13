@@ -9,11 +9,10 @@ import { Beneficiary } from '@models/Beneficiary.namespace';
 })
 export class DraftService {
 
-  private drafts: FormDetail.Form[];
+  private drafts: FormDetail.Form[] = [];
 
   constructor(private storageService: StorageService) {
-    this.drafts = [];
-    this.loadDrafts();
+    this.getLocalDrafts();
   }
 
   public pushDraft(draft: FormDetail.Form): void {
@@ -29,7 +28,7 @@ export class DraftService {
     const beneficiary: Beneficiary.Producer = removedDraft.beneficiary;
     if (removedDraft.id === 1 && beneficiary.specialized)
       beneficiary.specialized = false;
-    
+
     this.saveDrafts();
   }
 
@@ -41,8 +40,8 @@ export class DraftService {
     return draft;
   }
 
-  public loadDrafts(): void {
-    this.storageService.get('drafts')?.then((drafts) => {
+  public getLocalDrafts(): void {
+    this.storageService.get('drafts').then((drafts) => {
       if (drafts) {
         this.drafts = drafts;
         this.removeOldDrafts();

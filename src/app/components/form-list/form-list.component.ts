@@ -52,32 +52,6 @@ export class FormListComponent {
     }
   }
 
-  async deleteDraft(index: number) {
-    const deletionAlert = await this.alertController.create({
-      header: '¿Estás seguro?',
-      message: 'Esta acción no se puede deshacer',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Eliminar',
-          handler: async () => {
-            this.draftService.deleteDraft(index);
-            const deletedToast = await this.toastController.create({
-              message: 'Borrador eliminado exitosamente',
-              duration: 2000,
-            });
-            await deletedToast.present();
-          },
-        },
-      ],
-    });
-    await deletionAlert.present();
-
-  }
-
   handleRefresh(event: any) {
     setTimeout(() => {
       this.requestData()
@@ -90,9 +64,6 @@ export class FormListComponent {
       this.formsService.getForms().subscribe((forms) => {
         this.forms = forms;
       });
-    }
-    if (this.draft) {
-      this.draftService.loadDrafts();
     }
   }
 }
