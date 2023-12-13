@@ -1,3 +1,73 @@
-<ion-content>
-  <app-form-list survey [forms]="getSurveys()"></app-form-list>
-</ion-content>
+<ion-accordion-group value="syncedSurveys" expand="inset">
+  <ion-accordion value="syncedSurveys">
+    <ion-item slot="header" color="light">
+      <ion-label>
+        <ion-text color="success">
+          <h1>Sincronizadas {{ getSyncedRatio() }}</h1>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+    <ion-card
+      *ngFor="let syncedSurvey of getSyncedSurveys(), index as i"
+      slot="content"
+    >
+      <ion-icon
+        class="ion-padding"
+        name="checkmark-circle"
+        color="success"
+      ></ion-icon>
+      <ion-card-header>
+        <ion-card-subtitle id="uuid" color="danger"
+          ># {{ syncedSurvey.uuid }}</ion-card-subtitle
+        >
+        <ion-card-title>{{ syncedSurvey.name }}</ion-card-title>
+        <ion-card-subtitle
+          >Finaliza el {{ syncedSurvey.dateEnd }}</ion-card-subtitle
+        >
+        <ion-card-subtitle
+          >{{ syncedSurvey.questions[0].answers[0].value }}</ion-card-subtitle
+        >
+      </ion-card-header>
+      <ion-card-content> {{ syncedSurvey.description }} </ion-card-content>
+      <ion-button fill="clear" (click)="goToDetail(syncedSurvey)">
+        <ion-icon name="log-in-outline"></ion-icon>
+      </ion-button>
+    </ion-card>
+  </ion-accordion>
+  <ion-accordion value="unsyncedSurvey" [readonly]="getUnsyncedSurveys().length === 0">
+    <ion-item slot="header" color="light">
+      <ion-label>
+        <ion-text color="danger">
+          <h1>Sin sincronizar {{ getUnsyncedRatio() }}</h1>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+    <ion-card
+      *ngFor="let unsyncedSurvey of getUnsyncedSurveys(), index as i"
+      slot="content"
+    >
+      <ion-icon
+        class="ion-padding"
+        name="checkmark-circle"
+        color="success"
+        *ngIf="unsyncedSurvey.sync"
+      ></ion-icon>
+      <ion-card-header>
+        <ion-card-subtitle id="uuid" color="danger"
+          ># {{ unsyncedSurvey.uuid }}</ion-card-subtitle
+        >
+        <ion-card-title>{{ unsyncedSurvey.name }}</ion-card-title>
+        <ion-card-subtitle
+          >Finaliza el {{ unsyncedSurvey.dateEnd }}</ion-card-subtitle
+        >
+        <ion-card-subtitle
+          >{{ unsyncedSurvey.questions[0].answers[0].value }}</ion-card-subtitle
+        >
+      </ion-card-header>
+      <ion-card-content> {{ unsyncedSurvey.description }} </ion-card-content>
+      <ion-button fill="clear" (click)="goToDetail(unsyncedSurvey)">
+        <ion-icon name="log-in-outline"></ion-icon>
+      </ion-button>
+    </ion-card>
+  </ion-accordion>
+</ion-accordion-group>

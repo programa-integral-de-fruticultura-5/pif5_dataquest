@@ -1,0 +1,13 @@
+#uuid {
+  font-size: x-small;
+}
+
+ion-icon {
+  float: right;
+  font-size: xx-large;
+}
+
+ion-accordion::part(content) {
+  height: 67vh;
+  overflow-y: scroll;
+}
