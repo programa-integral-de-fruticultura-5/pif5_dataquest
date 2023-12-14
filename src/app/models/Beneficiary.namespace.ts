@@ -13,6 +13,7 @@ export namespace Beneficiary {
     greenhouse: boolean;
     supplies: boolean;
     associationId: number;
+    recommendedActions: SelectedQuestions
   }
 
   export const ProducerBaseParams = {
@@ -28,6 +29,7 @@ export namespace Beneficiary {
     greenhouse: false,
     supplies: false,
     associationId: 0,
+    recommendedActions: {}
   };
 
   export type ProducerResponse = {
@@ -43,7 +45,10 @@ export namespace Beneficiary {
     cm_p5: number;          // casa malla (invernadero espacial)
     insumo_p5: number;      // insumos
     association_id: number; // id de la asociacion
+    selectedQuestionIds: SelectedQuestions
   }
+
+  export type SelectedQuestions = { [questionId: string] : boolean };
 
   export interface Association {
     id: number;

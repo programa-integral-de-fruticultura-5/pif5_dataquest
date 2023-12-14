@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { FormDetail } from '@models/FormDetail.namespace'
+import { FormDetail } from '@models/FormDetail.namespace';
 import { TypeComponent } from '../type.component';
 import { FormArray, FormGroup } from '@angular/forms';
 import { AnswerRelationService } from '@services/detailed-form/question/answer-relation/answer-relation.service';
 import { QuestionControlService } from '@services/detailed-form/control/question-control.service';
-import { RxFor } from "@rx-angular/template/for";
+import { RxFor } from '@rx-angular/template/for';
+import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
+import { Beneficiary } from '@models/Beneficiary.namespace';
 
 @Component({
   selector: 'app-table',
@@ -22,20 +24,48 @@ export class TableComponent {
 
   constructor(
     private answerRelationService: AnswerRelationService,
-    private questionControlService: QuestionControlService
+    private questionControlService: QuestionControlService,
+    private detailedFormService: DetailedFormService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.question.order === 5) {
+      this.disabled = true;
+      this.preloadSelectedAnswers();
+    } else {
+      this.disabled = false;
+    }
+  }
+
+  private preloadSelectedAnswers() {
+    const selectedAnswers: Beneficiary.SelectedQuestions =
+      this.detailedFormService.getForm().beneficiary.recommendedActions;
+    const formArray: FormArray = this.formGroup.controls[
+      this.question.id
+    ] as FormArray;
+    const sectionFormGroup: FormGroup = formArray.at(0) as FormGroup;
+    console.log('selectedAnswers', selectedAnswers);
+    Object.keys(sectionFormGroup.controls).forEach((key) => {
+      const answersFormGroup: FormGroup = sectionFormGroup.get(
+        key
+      ) as FormGroup;
+      const answersControls: string[] = Object.keys(answersFormGroup.controls);
+      const answerFormGroupKey: string = selectedAnswers[key] ? answersControls[0]  : answersControls[1];
+      answersFormGroup.get(answerFormGroupKey)?.setValue(true);
+      console.log('selectedAnswer', selectedAnswers[key]);
+    });
+  }
 
   addSection() {
     const formArray: FormArray = this.formGroup.controls[
       this.question.id
     ] as FormArray;
-    let baseArrayCopy: FormDetail.Question[] = JSON.parse(JSON.stringify(this.question.questionChildren[0]));
-    this.changeQuestionId(baseArrayCopy);
-    const newFormGroup: FormGroup = this.questionControlService.toFormGroup(
-      baseArrayCopy
+    let baseArrayCopy: FormDetail.Question[] = JSON.parse(
+      JSON.stringify(this.question.questionChildren[0])
     );
+    this.changeQuestionId(baseArrayCopy);
+    const newFormGroup: FormGroup =
+      this.questionControlService.toFormGroup(baseArrayCopy);
     newFormGroup.reset();
     formArray.push(newFormGroup);
     this.question.questionChildren.push(baseArrayCopy);
@@ -47,11 +77,11 @@ export class TableComponent {
       base.forEach((q) => {
         q.answersRelation.forEach((ar) => {
           if (ar.questionId === question.id) {
-            ar.questionId = newId
+            ar.questionId = newId;
           }
-        })
-      })
-      question.id = newId
+        });
+      });
+      question.id = newId;
     });
   }
 
@@ -88,13 +118,20 @@ export class TableComponent {
     return formArray.at(index) as FormGroup;
   }
 
-  getChildQuestion(sectionIndex: number, childIndex: number): FormDetail.Question {
-    const questionChildren: FormDetail.Question[][] = this.question.questionChildren;
+  getChildQuestion(
+    sectionIndex: number,
+    childIndex: number
+  ): FormDetail.Question {
+    const questionChildren: FormDetail.Question[][] =
+      this.question.questionChildren;
     return questionChildren[sectionIndex][childIndex];
   }
 
   showQuestion(childIndex: number, sectionIndex: number) {
-    const childQuestion: FormDetail.Question = this.getChildQuestion(sectionIndex, childIndex);
+    const childQuestion: FormDetail.Question = this.getChildQuestion(
+      sectionIndex,
+      childIndex
+    );
     const sectionFormGroup: FormGroup = this.getFormGroup(sectionIndex);
     const checkedAnswersRelation: boolean =
       this.answerRelationService.checkAnswerRelation(
@@ -116,11 +153,17 @@ export class TableComponent {
     return enabled
   } */
 
-  private enableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
+  private enableQuestion(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ): void {
     this.answerRelationService.enableQuestion(question, formGroup);
   }
 
-  private disableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
+  private disableQuestion(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ): void {
     this.answerRelationService.disableQuestion(question, formGroup);
   }
 }

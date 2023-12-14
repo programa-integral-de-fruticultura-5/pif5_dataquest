@@ -120,6 +120,7 @@ export function producerBuilder(
     greenhouse: producer.cm_p5 === 1,
     supplies: producer.insumo_p5 === 1,
     associationId: producer.association_id,
+    recommendedActions: producer.selectedQuestionIds,
   };
 }
 
