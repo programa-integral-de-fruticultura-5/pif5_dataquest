@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FormDetail } from '@models/FormDetail.namespace'
+import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
 
 @Component({
   selector: 'app-date-data-type',
@@ -15,7 +16,20 @@ export class DateDataTypeComponent {
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) disabled!: boolean;
 
-  constructor() {}
+  constructor(private detailedFormService: DetailedFormService) {}
+
+  ngOnInit() {
+    const transplantDate: string = this.detailedFormService.getForm().beneficiary.transplantDate;
+    if (this.question.id === '170' && transplantDate) {
+      this.disabled = true;
+      this.preloadTransplantDate(transplantDate);
+    }
+  }
+
+  private preloadTransplantDate(transplantDate: string) {
+    const formControl: FormControl = this.formGroup.get(`${this.question.id}`) as FormControl;
+    formControl.setValue(transplantDate);
+  }
 
   getValue(): string {
     const formControl: FormControl = this.formGroup.get(

@@ -13,6 +13,7 @@ export namespace Beneficiary {
     greenhouse: boolean;
     supplies: boolean;
     associationId: number;
+    transplantDate: string;
     recommendedActions: SelectedQuestions
   }
 
@@ -29,6 +30,7 @@ export namespace Beneficiary {
     greenhouse: false,
     supplies: false,
     associationId: 0,
+    transplantDate: '',
     recommendedActions: {}
   };
 
@@ -45,6 +47,7 @@ export namespace Beneficiary {
     cm_p5: number;          // casa malla (invernadero espacial)
     insumo_p5: number;      // insumos
     association_id: number; // id de la asociacion
+    transplantDate: string;
     selectedQuestionIds: SelectedQuestions
   }
 
