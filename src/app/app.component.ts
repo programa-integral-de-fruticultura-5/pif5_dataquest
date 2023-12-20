@@ -1,6 +1,8 @@
 import { Component, EnvironmentInjector, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, Platform } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import { SurveyService } from '@services/survey/survey.service';
+import { DraftService } from '@services/draft/draft.service';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +12,22 @@ import { CommonModule } from '@angular/common';
   imports: [IonicModule, CommonModule],
 })
 export class AppComponent {
-
   public environmentInjector = inject(EnvironmentInjector);
 
-  constructor() {}
+  constructor(
+    private surveyService: SurveyService,
+    private draftService: DraftService,
+    private platform: Platform
+  ) {
+    this.initializeApp();
+  }
+
+  private initializeApp() {
+    this.platform.ready().then(() => {
+      this.surveyService.getNetworkStatus();
+      this.surveyService.getLocalSurveys();
+      this.draftService.getLocalDrafts();
+    });
+  }
+
 }
