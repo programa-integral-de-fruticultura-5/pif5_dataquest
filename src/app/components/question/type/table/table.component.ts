@@ -32,8 +32,6 @@ export class TableComponent {
     if (this.question.order === 5) {
       this.disabled = true;
       this.preloadSelectedAnswers();
-    } else {
-      this.disabled = false;
     }
   }
 
