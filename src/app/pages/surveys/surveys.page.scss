@@ -8,6 +8,7 @@ ion-icon {
 }
 
 ion-accordion::part(content) {
-  height: 67vh;
+  min-height: fit-content;
+  max-height: 67vh;
   overflow-y: scroll;
 }
