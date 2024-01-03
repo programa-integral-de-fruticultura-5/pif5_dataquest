@@ -101,15 +101,13 @@ export class AutocompleteComponent implements OnInit {
   selectionChanged(selection: string) {
 
     if (this.open) {
-      if (this.assignBeneficiary(selection)) {
-        const formControl: FormControl = this.formGroup.get(
-          `${this.question.id}`
-        ) as FormControl;
-        formControl.setValue(selection);
-      } else {
-        this.showBeneficiaryAlert();
+      const formControl: FormControl = this.formGroup.get(
+        `${this.question.id}`
+      ) as FormControl;
+      if (!this.assignBeneficiary(selection)) {
         return;
       }
+      formControl.setValue(selection);
     } else {
       const formGroup: FormGroup = this.formGroup.get(
         `${this.question.id}`
@@ -138,15 +136,6 @@ export class AutocompleteComponent implements OnInit {
     )!;
 
     return this.detailedFormService.setBeneficiary(beneficiary);
-  }
-
-  private async showBeneficiaryAlert(): Promise<void> {
-    const alert = await this.alertController.create({
-      header: 'Beneficiario ya tiene formulario especializado',
-      message: 'Elimina el formulario respectivo o escoge otro beneficiario',
-      buttons: ['OK'],
-    });
-    await alert.present();
   }
 
   private getAnswerId(value: string): string {

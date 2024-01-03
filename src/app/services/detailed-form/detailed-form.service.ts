@@ -7,6 +7,7 @@ import { QuestionService } from './question/question.service';
 import { DraftService } from '../draft/draft.service';
 import { SurveyService } from '../survey/survey.service';
 import { Beneficiary } from '@models/Beneficiary.namespace';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,8 @@ export class DetailedFormService {
     private formService: FormService,
     private draftService: DraftService,
     private surveyService: SurveyService,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private alertController: AlertController
   ) {}
 
   public getForm(): FormDetail.Form {
@@ -65,15 +67,45 @@ export class DetailedFormService {
   }
 
   public setBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean {
-    if (this.selectedForm.beneficiary === selectedBeneficiary)
+    if (this.selectedForm.beneficiary === selectedBeneficiary) {
       return true;
-    else if (this.selectedForm.id === 1 && selectedBeneficiary.specialized)
-      return false;
-    else if (this.selectedForm.id === 1 && !selectedBeneficiary.specialized)
-      selectedBeneficiary.specialized = true;
+    }
 
-    this.selectedForm.beneficiary = selectedBeneficiary;
-    return true;
+    const canSet =
+      (this.selectedForm.id === 1 && !selectedBeneficiary.specialized) ||
+      (this.selectedForm.id === 2 && selectedBeneficiary.specialized);
+
+    if (canSet) {
+      if (this.selectedForm.id === 1) {
+        selectedBeneficiary.specialized = true;
+      }
+      this.selectedForm.beneficiary = selectedBeneficiary;
+      return true;
+    } else if (this.selectedForm.id === 1) {
+      this.showAlreadySpecializedBeneficiaryAlert();
+      return false;
+    } else {
+      this.showNoSpecializedBeneficiaryAlert();
+      return false;
+    }
+  }
+
+  private async showAlreadySpecializedBeneficiaryAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Beneficiario ya tiene formulario especializado',
+      message: 'Elimina el formulario respectivo o escoge otro beneficiario',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  private async showNoSpecializedBeneficiaryAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Sin formulario especializado',
+      message: 'Debes realizar un formulario especializado primero a este beneficiario',
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   public setQuestions(): void {
