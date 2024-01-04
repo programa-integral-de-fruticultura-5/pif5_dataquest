@@ -67,13 +67,18 @@ export class DetailedFormService {
   }
 
   public setBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean {
+    const previousBeneficiary: Beneficiary.Producer = this.selectedForm.beneficiary;
+    const isSpecializedForm: boolean = this.selectedForm.id === 1;
+    if (isSpecializedForm && previousBeneficiary) {
+      previousBeneficiary.specialized = false;
+    }
     if (this.selectedForm.beneficiary === selectedBeneficiary) {
       return true;
     }
 
     const canSet =
-      (this.selectedForm.id === 1 && !selectedBeneficiary.specialized) ||
-      (this.selectedForm.id === 2 && selectedBeneficiary.specialized);
+      (isSpecializedForm && !selectedBeneficiary.specialized) ||
+      (!isSpecializedForm && selectedBeneficiary.specialized);
 
     if (canSet) {
       if (this.selectedForm.id === 1) {
