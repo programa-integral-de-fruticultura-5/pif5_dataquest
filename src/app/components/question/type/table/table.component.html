@@ -30,7 +30,7 @@
     </ion-card-content>
   </ion-card>
   <ion-fab
-    [hidden]="question.extends === 0"
+    [hidden]="!question.extendable || disabled"
     slot="fixed"
     vertical="bottom"
     horizontal="end"
