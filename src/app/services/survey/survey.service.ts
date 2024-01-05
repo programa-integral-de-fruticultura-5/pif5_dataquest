@@ -23,7 +23,7 @@ export class SurveyService {
   }
 
   public pushSurvey(survey: FormDetail.Form): void {
-    const copy = { ...survey };
+    const copy = JSON.parse(JSON.stringify(survey));
     this.surveys.push(copy);
     this.saveSurveys();
   }
