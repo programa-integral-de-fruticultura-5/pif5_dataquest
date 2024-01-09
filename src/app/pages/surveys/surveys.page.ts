@@ -23,7 +23,6 @@ export class SurveysPage {
   ) {}
 
   ionViewWillEnter() {
-    this.surveyService.getNetworkStatus();
     this.surveyService.getLocalSurveys();
   }
 

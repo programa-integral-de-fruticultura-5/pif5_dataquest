@@ -17,10 +17,7 @@ export class SurveyService {
     private apiService: ApiService,
     private alertController: AlertController,
     private storageService: StorageService
-  ) {
-    this.getNetworkStatus();
-    this.getLocalSurveys();
-  }
+  ) { }
 
   public pushSurvey(survey: FormDetail.Form): void {
     const copy = JSON.parse(JSON.stringify(survey));
@@ -28,12 +25,24 @@ export class SurveyService {
     this.saveSurveys();
   }
 
-  public getNetworkStatus(): void {
+  public addNetworkChangeListener(): void {
+    Network.addListener('networkStatusChange', (status) => {
+      console.log('Network status changed', status);
+      this.online = status.connected;
+      console.log('Online status is:', this.online);
+    });
+  }
+
+  private getNetworkStatus(): void {
     Network.getStatus().then((status) => {
       console.log('Network status:', status.connected);
       this.online = status.connected;
       console.log('Online status is:', this.online);
     });
+  }
+
+  public removeAllListeners(): void {
+    Network.removeAllListeners();
   }
 
   public getLocalSurveys(): void {
