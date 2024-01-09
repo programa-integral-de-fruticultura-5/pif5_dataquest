@@ -79,7 +79,19 @@ export class SurveyService {
         this.surveys = updatedSurveys;
         this.saveSurveys();
       });
+    } else {
+      this.presentAlert();
     }
+  }
+
+  private async presentAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'No hay conexión a internet',
+      message: 'Por favor, conéctese a internet para sincronizar las encuestas',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
   private changeSyncStatus(survey: FormDetail.Form, status: boolean): void {
