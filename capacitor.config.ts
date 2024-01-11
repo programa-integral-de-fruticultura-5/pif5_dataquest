@@ -20,8 +20,9 @@ const config: CapacitorConfig = {
   },
   android: {
       buildOptions: {
-        keystorePath: 'c:\Projects\dataquest-keystore.jks',
+        keystorePath: 'dataquest-keystore.jks',
         keystoreAlias: 'dataquest',
+        releaseType: 'AAB'
       }
   }
   };

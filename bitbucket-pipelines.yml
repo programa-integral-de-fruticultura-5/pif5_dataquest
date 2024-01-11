@@ -30,12 +30,15 @@ definitions:
           - docker load --input "${IMAGE_NAME}.tar"
           - BRANCH=${BITBUCKET_BRANCH}
           - if [ $BRANCH =~ master ]; then
-          -   STAGE="prod-V"
+          -   STAGE="prod-"
           - else
-          -   STAGE="test-V"
+          -   STAGE="test-"
           - fi
-          - VERSION="${STAGE}${BITBUCKET_BUILD_NUMBER}"
+          - VERSION="${STAGE}V${BITBUCKET_BUILD_NUMBER}"
           - IMAGE=${DOCKERHUB_NAMESPACE}/${IMAGE_NAME}
+          - docker tag "${IMAGE_NAME}" "${IMAGE}:${VERSION}"
+          - docker push "${IMAGE}:${VERSION}"
+          - VERSION="${STAGE}latest"
           - docker tag "${IMAGE_NAME}" "${IMAGE}:${VERSION}"
           - docker push "${IMAGE}:${VERSION}"
         services:
@@ -60,4 +63,16 @@ pipelines:
     release/*:
       - step: *build
       - step: *push
+      - step:
+          name: Generate AAB
+          deployment: test
+          image:
+            name: $DOCKERHUB_NAMESPACE/pif5_dataquest:test-latest
+            username: $DOCKERHUB_USERNAME
+            password: $DOCKERHUB_PASSWORD
+            email: $DOCKERHUB_EMAIL
+          script:
+            - npx cap build android --keystorealiaspass="Tyrion_Lannister" --keystorepass="Tyrion_Lannister"
+          artifacts:
+            - "/www/app/android/app/build/outputs/bundle/release/app-release-signed.aab"
 
