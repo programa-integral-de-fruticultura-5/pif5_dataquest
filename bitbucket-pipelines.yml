@@ -67,7 +67,7 @@ pipelines:
           name: Generate AAB
           deployment: test
           image:
-            name: $DOCKERHUB_NAMESPACE/pif5_dataquest:test-latest
+            name: $DOCKERHUB_NAMESPACE/pif5_dataquest:test-V7
             username: $DOCKERHUB_USERNAME
             password: $DOCKERHUB_PASSWORD
             email: $DOCKERHUB_EMAIL
