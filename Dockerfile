@@ -17,7 +17,7 @@ COPY . /www/app/
 EXPOSE 8100
 
 # Entry point
-ENTRYPOINT ["ionic"]
+# ENTRYPOINT ["ionic"]
 
 # Run the app
-CMD ["serve", "--external", "--no-open"]
+# CMD ["serve", "--external", "--no-open"]

@@ -8,10 +8,10 @@
 
 image: atlassian/default-image:3
 
-pipelines:
-  default:
-    - step:
-        name: Build and Test
+definitions:
+  steps:
+    - step: &build
+        name: Build
         script:
           - IMAGE_NAME=$BITBUCKET_REPO_SLUG
           - docker build . --file Dockerfile --tag ${IMAGE_NAME}
@@ -22,16 +22,42 @@ pipelines:
           - docker
         artifacts:
           - "*.tar"
-    - step:
-        name: Deploy to Production
-        deployment: Production
+    - step: &push
+        name: Push to Dockerhub
         script:
           - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
           - IMAGE_NAME=$BITBUCKET_REPO_SLUG
           - docker load --input "${IMAGE_NAME}.tar"
-          - VERSION="prod-0.1.${BITBUCKET_BUILD_NUMBER}"
+          - BRANCH=${BITBUCKET_BRANCH}
+          - if [ $BRANCH =~ master ]; then
+          -   STAGE="prod-V"
+          - else
+          -   STAGE="test-V"
+          - fi;;
+          - VERSION="${STAGE}${BITBUCKET_BUILD_NUMBER}"
           - IMAGE=${DOCKERHUB_NAMESPACE}/${IMAGE_NAME}
           - docker tag "${IMAGE_NAME}" "${IMAGE}:${VERSION}"
           - docker push "${IMAGE}:${VERSION}"
         services:
           - docker
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: Build and Test
+            script:
+              - IMAGE_NAME=$BITBUCKET_REPO_SLUG
+              - docker build . --file Dockerfile --tag ${IMAGE_NAME}
+            services:
+              - docker
+            caches:
+              - docker
+  branches:
+    master:
+      - step: *build
+      - step: *push
+    release/*:
+      - step: *build
+      - step: *push
+
