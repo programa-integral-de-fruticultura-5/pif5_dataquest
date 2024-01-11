@@ -33,7 +33,7 @@ definitions:
           -   STAGE="prod-V"
           - else
           -   STAGE="test-V"
-          - fi;;
+          - fi
           - VERSION="${STAGE}${BITBUCKET_BUILD_NUMBER}"
           - IMAGE=${DOCKERHUB_NAMESPACE}/${IMAGE_NAME}
           - docker tag "${IMAGE_NAME}" "${IMAGE}:${VERSION}"
