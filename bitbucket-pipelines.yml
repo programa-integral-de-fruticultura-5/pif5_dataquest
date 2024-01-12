@@ -15,7 +15,7 @@ definitions:
         script:
           - IMAGE_NAME=$BITBUCKET_REPO_SLUG
           - docker build . --file Dockerfile --tag ${IMAGE_NAME}
-          - docker save ${IMAGE_NAME} --output "${IMAGE_NAME}.tar"
+          - docker save --output "${IMAGE_NAME}.tar" ${IMAGE_NAME}
         services:
           - docker
         caches:
