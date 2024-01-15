@@ -28,7 +28,8 @@ export class FormService {
               const formsResponse: FormDetail.FormResponse[] = JSON.parse(
                 response.data
               );
-              const forms: FormDetail.Form[] = formsResponse.map(
+              const currentDate: Date = new Date();
+              var forms: FormDetail.Form[] = formsResponse.map(
                 (form: FormDetail.FormResponse) => {
                   const builtForm: FormDetail.Form = formBuilder(form);
                   builtForm.questions.forEach((question) => {
@@ -38,12 +39,16 @@ export class FormService {
                       question.questionChildren = children;
                     }
                   });
-                  const currentDate: Date = new Date();
                   builtForm.fechaDescarga = currentDate.toISOString(); // Convert Date to string
 
                   return builtForm;
                 }
               );
+              forms = forms.filter((form) => {
+                const initialDate: Date = new Date(form.dateInit);
+                const finalDate: Date = new Date(form.dateEnd);
+                return currentDate >= initialDate && currentDate <= finalDate;
+              })
               return forms;
             }),
             tap((forms: FormDetail.Form[]) => {
