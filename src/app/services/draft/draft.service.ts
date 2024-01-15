@@ -3,21 +3,24 @@ import { FormDetail } from '@models/FormDetail.namespace';
 import { StorageService } from '../storage/storage.service';
 import { v4 as uuidv4 } from 'uuid';
 import { Beneficiary } from '@models/Beneficiary.namespace';
+import { ProducerService } from '@services/producer/producer.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DraftService {
-
   private drafts: FormDetail.Form[] = [];
 
-  constructor(private storageService: StorageService) {
+  constructor(
+    private storageService: StorageService,
+    private producersService: ProducerService
+  ) {
     this.getLocalDrafts();
   }
 
   public pushDraft(draft: FormDetail.Form): void {
     const currentDate: Date = new Date();
-    const formattedDate: string = currentDate.toISOString()
+    const formattedDate: string = currentDate.toISOString();
     draft.fechaInicial = formattedDate;
     draft.fechaUltimoCambio = formattedDate;
     this.drafts.push(draft);
@@ -25,11 +28,20 @@ export class DraftService {
 
   public deleteDraft(index: number) {
     const removedDraft: FormDetail.Form = this.drafts.splice(index, 1).pop()!;
-    const beneficiary: Beneficiary.Producer = removedDraft.beneficiary;
-    if (removedDraft.id === 1 && beneficiary.specialized)
-      beneficiary.specialized = false;
+    const producer: Beneficiary.Producer = removedDraft.beneficiary;
+    if (removedDraft.id === 1 && producer.specialized)
+      this.changeSpecialized(producer);
 
     this.saveDrafts();
+  }
+
+  private changeSpecialized(producer: Beneficiary.Producer): void {
+    const producers: Beneficiary.Producer[] =
+      this.producersService.getProducers();
+    const beneficiary: Beneficiary.Producer = producers.find(
+      (p) => p.id === producer.id
+    )!;
+    beneficiary.specialized = false;
   }
 
   public removeDraft(draft: FormDetail.Form): FormDetail.Form {
@@ -74,7 +86,7 @@ export class DraftService {
     const index = this.drafts.findIndex((d) => d.id === draft.id);
     if (index > -1) {
       const currentDate: Date = new Date();
-      const formattedDate: string = currentDate.toISOString()
+      const formattedDate: string = currentDate.toISOString();
       this.drafts[index].fechaUltimoCambio = formattedDate;
     }
   }
