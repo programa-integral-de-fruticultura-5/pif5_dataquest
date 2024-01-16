@@ -18,14 +18,16 @@ export class ProducerService {
   constructor(
     private apiService: ApiService,
     private storageService: StorageService,
-  ) {
-    this.syncProducers(true).subscribe((producers: Beneficiary.Producer[]) => {
-      this.producers = producers;
-    });
-  }
+  ) { }
 
   public getProducers(): Beneficiary.Producer[] {
     return this.producers;
+  }
+
+  public updateProducers(): void {
+    this.syncProducers(true).subscribe((producers) => {
+      this.producers = producers;
+    });
   }
 
   private syncProducers(

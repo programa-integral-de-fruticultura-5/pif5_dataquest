@@ -4,6 +4,7 @@ import { Authentication } from '@models/Auth.namespace';
 import { AuthService } from '@services/auth/auth.service';
 import { SurveyService } from '@services/survey/survey.service';
 import { App } from '@capacitor/app';
+import { ProducerService } from '@services/producer/producer.service';
 
 @Component({
   selector: 'app-home',
@@ -22,10 +23,12 @@ export class HomePage {
   constructor(
     private surveyService: SurveyService,
     private alertController: AlertController,
-    private authService: AuthService
+    private authService: AuthService,
+    private producerService: ProducerService,
   ) {}
 
   ngOnInit() {
+    this.loadProducers();
     this.loadUser();
     App.getInfo().then((info) => {
       this.appVersion = info.version;
@@ -82,6 +85,10 @@ export class HomePage {
     this.authService.getUser().then((user) => {
       this.user = user;
     });
+  }
+
+  private loadProducers(): void {
+    this.producerService.updateProducers();
   }
 
   getAppVersion(): string {
