@@ -50,7 +50,7 @@ function questionBuilder(
     dataType: question.dataType,
     order: question.order,
     answerLength: 0,
-    extendable: false,
+    extendable: question.extends === 1,
     questionParentId: question.questionParentId?.toString(),
     answers: question.answers.map((answer) => answerBuilder(answer)),
     questionCategoryId: question.question_category_id,
