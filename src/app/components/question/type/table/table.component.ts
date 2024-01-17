@@ -48,7 +48,9 @@ export class TableComponent {
         key
       ) as FormGroup;
       const answersControls: string[] = Object.keys(answersFormGroup.controls);
-      const answerFormGroupKey: string = selectedAnswers[key] ? answersControls[0]  : answersControls[1];
+      const answerFormGroupKey: string = selectedAnswers[key]
+        ? answersControls[0]
+        : answersControls[1];
       answersFormGroup.get(answerFormGroupKey)?.setValue(true);
       console.log('selectedAnswer', selectedAnswers[key]);
     });
@@ -131,15 +133,17 @@ export class TableComponent {
       childIndex
     );
     const sectionFormGroup: FormGroup = this.getFormGroup(sectionIndex);
-    const checkedAnswersRelation: boolean =
-      this.answerRelationService.checkAnswerRelation(
+    let checkedAnswersRelation: boolean = false;
+    if (childQuestion) {
+      checkedAnswersRelation = this.answerRelationService.checkAnswerRelation(
         childQuestion,
         sectionFormGroup
       );
 
-    checkedAnswersRelation
-      ? this.enableQuestion(childQuestion, sectionFormGroup)
-      : this.disableQuestion(childQuestion, sectionFormGroup);
+      checkedAnswersRelation
+        ? this.enableQuestion(childQuestion, sectionFormGroup)
+        : this.disableQuestion(childQuestion, sectionFormGroup);
+    }
 
     return checkedAnswersRelation;
   }
