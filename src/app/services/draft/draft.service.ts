@@ -45,7 +45,7 @@ export class DraftService {
   }
 
   public removeDraft(draft: FormDetail.Form): FormDetail.Form {
-    const index = this.drafts.findIndex((d) => d.id === draft.id);
+    const index = this.drafts.findIndex((d) => d.uuid === draft.uuid);
     if (index > -1) {
       return this.drafts.splice(index, 1)[0];
     }
