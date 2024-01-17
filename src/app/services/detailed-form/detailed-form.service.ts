@@ -8,6 +8,7 @@ import { DraftService } from '../draft/draft.service';
 import { SurveyService } from '../survey/survey.service';
 import { Beneficiary } from '@models/Beneficiary.namespace';
 import { AlertController } from '@ionic/angular';
+import _ from 'lodash';
 
 @Injectable({
   providedIn: 'root',
@@ -67,7 +68,8 @@ export class DetailedFormService {
   }
 
   public setBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean {
-    const previousBeneficiary: Beneficiary.Producer = this.selectedForm.beneficiary;
+    const previousBeneficiary: Beneficiary.Producer =
+      this.selectedForm.beneficiary;
     const isSpecializedForm: boolean = this.selectedForm.id === 1;
     if (isSpecializedForm && previousBeneficiary) {
       previousBeneficiary.specialized = false;
@@ -77,6 +79,8 @@ export class DetailedFormService {
     }
 
     const canSet =
+      (isSpecializedForm &&
+        !this.existsProducerWithSpecializedForm(selectedBeneficiary)) ||
       (isSpecializedForm && !selectedBeneficiary.specialized) ||
       (!isSpecializedForm && selectedBeneficiary.specialized);
 
@@ -95,6 +99,35 @@ export class DetailedFormService {
     }
   }
 
+  private existsProducerWithSpecializedForm(
+    producerToSearch: Beneficiary.Producer
+  ): boolean {
+    var exists = false;
+
+    const drafts: FormDetail.Form[] = this.draftService.getDrafts();
+    const surveys: FormDetail.Form[] = this.surveyService.getSurveys();
+
+    drafts.some((draft) => {
+      if (draft.beneficiary.id === producerToSearch.id) {
+        exists = true;
+        return true;
+      }
+
+      return false;
+    });
+
+    surveys.some((survey) => {
+      if (survey.beneficiary.id === producerToSearch.id) {
+        exists = true;
+        return true;
+      }
+
+      return false;
+    });
+
+    return exists;
+  }
+
   private async showAlreadySpecializedBeneficiaryAlert(): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Beneficiario ya tiene formulario especializado',
@@ -107,7 +140,8 @@ export class DetailedFormService {
   private async showNoSpecializedBeneficiaryAlert(): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Sin formulario especializado',
-      message: 'Debes realizar un formulario especializado primero a este beneficiario',
+      message:
+        'Debes realizar un formulario especializado primero a este beneficiario',
       buttons: ['OK'],
     });
     await alert.present();
@@ -133,11 +167,12 @@ export class DetailedFormService {
   }
 
   public startDraft(): void {
-    const copy: FormDetail.Form = JSON.parse(JSON.stringify(this.selectedForm));
+    const copy: FormDetail.Form = _.cloneDeep(this.selectedForm);
+    copy.uuid = uuidv4();
+    this.draftService.pushDraft(copy);
     this.selectedForm = copy;
-    this.selectedForm.uuid = uuidv4();
-    this.draftService.pushDraft(this.selectedForm);
     this.setQuestions();
+    this.draftService.saveDrafts();
   }
 
   public saveSurvey(): void {
