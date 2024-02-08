@@ -39,6 +39,9 @@ export class FormService {
                       question.questionChildren = children;
                     }
                   });
+                  builtForm.questions = builtForm.questions.filter(
+                    (question) => question.questionParentId === null || question.questionParentId === undefined
+                  );
                   builtForm.fechaDescarga = currentDate.toISOString(); // Convert Date to string
 
                   return builtForm;
