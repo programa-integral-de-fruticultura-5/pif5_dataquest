@@ -195,6 +195,8 @@ Local and remote forms are handled here</p>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Constructor. Dependencies are injected here</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -203,6 +205,7 @@ Local and remote forms are handled here</p>
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -217,6 +220,10 @@ Local and remote forms are handled here</p>
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>For making requests to the server</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>storageService</td>
@@ -229,6 +236,10 @@ Local and remote forms are handled here</p>
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>For saving and retrieving forms from the local storage</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -266,19 +277,29 @@ Local and remote forms are handled here</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="24"
-                                    class="link-to-prism">src/app/services/form/form.service.ts:24</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/app/services/form/form.service.ts:39</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Retrieves the forms from the server or local storage based on network connectivity.
+If the device is offline, it retrieves the forms from local storage.
+If the device is online, it makes a POST request to the server to fetch the forms.
+The forms are then processed and filtered based on the current date.
+Finally, the forms are stored in local storage and returned as an Observable.</p>
+</div>
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="../interfaces/Form.html" target="_self" >Observable&lt;FormDetail.Form[]&gt;</a></code>
 
                         </div>
+                            <div class="io-description">
+                                <p>An Observable of FormDetail.Form[] representing the retrieved forms.</p>
+
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -305,19 +326,25 @@ Local and remote forms are handled here</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="92"
-                                    class="link-to-prism">src/app/services/form/form.service.ts:92</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="120"
+                                    class="link-to-prism">src/app/services/form/form.service.ts:120</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Retrieves the local forms from the storage service.</p>
+</div>
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="../interfaces/Form.html" target="_self" >Promise&lt;FormDetail.Form[]&gt;</a></code>
 
                         </div>
+                            <div class="io-description">
+                                <p>A promise that resolves to an array of FormDetail.Form type.</p>
+
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -344,14 +371,18 @@ Local and remote forms are handled here</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="70"
-                                    class="link-to-prism">src/app/services/form/form.service.ts:70</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/app/services/form/form.service.ts:94</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Retrieves the children questions of a
+given question in a form only when its
+type is &quot;Tabla&quot;.</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -362,6 +393,7 @@ Local and remote forms are handled here</p>
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
+                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -376,6 +408,12 @@ Local and remote forms are handled here</p>
                                             </td>
 
 
+                                            <td>
+                                                    <ul>
+<li>The parent question.</li>
+</ul>
+
+                                            </td>
                                         </tr>
                                         <tr>
                                                 <td>form</td>
@@ -388,6 +426,12 @@ Local and remote forms are handled here</p>
                                             </td>
 
 
+                                            <td>
+                                                    <ul>
+<li>The form containing the questions.</li>
+</ul>
+
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -397,7 +441,8 @@ Local and remote forms are handled here</p>
 
                         </div>
                             <div class="io-description">
-                                
+                                <p>An array of arrays of questions representing the children questions.</p>
+
                             </div>
                 </td>
             </tr>
@@ -425,14 +470,16 @@ Local and remote forms are handled here</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="96"
-                                    class="link-to-prism">src/app/services/form/form.service.ts:96</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="129"
+                                    class="link-to-prism">src/app/services/form/form.service.ts:129</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Sets the local forms in the storage.</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -443,6 +490,7 @@ Local and remote forms are handled here</p>
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
+                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -457,6 +505,12 @@ Local and remote forms are handled here</p>
                                             </td>
 
 
+                                            <td>
+                                                    <ul>
+<li>The forms to be stored locally.</li>
+</ul>
+
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -496,11 +550,26 @@ import { formBuilder } from &#x27;@utils/builder&#x27;;
   providedIn: &#x27;root&#x27;,
 })
 export class FormService {
+
+  /**
+   * Constructor. Dependencies are injected here
+   * @param apiService For making requests to the server
+   * @param storageService For saving and retrieving forms from the local storage
+   */
   constructor(
     private apiService: ApiService,
     private storageService: StorageService
   ) {}
 
+  /**
+   * Retrieves the forms from the server or local storage based on network connectivity.
+   * If the device is offline, it retrieves the forms from local storage.
+   * If the device is online, it makes a POST request to the server to fetch the forms.
+   * The forms are then processed and filtered based on the current date.
+   * Finally, the forms are stored in local storage and returned as an Observable.
+   *
+   * @returns An Observable of FormDetail.Form[] representing the retrieved forms.
+   */
   public getForms(): Observable&lt;FormDetail.Form[]&gt; {
     return from(Network.getStatus()).pipe(
       switchMap((status) &#x3D;&gt; {
@@ -547,6 +616,15 @@ export class FormService {
     );
   }
 
+  /**
+   * Retrieves the children questions of a
+   * given question in a form only when its
+   * type is &quot;Tabla&quot;.
+   *
+   * @param question - The parent question.
+   * @param form - The form containing the questions.
+   * @returns An array of arrays of questions representing the children questions.
+   */
   private getQuestionChildren(
     question: FormDetail.Question,
     form: FormDetail.Form
@@ -569,16 +647,31 @@ export class FormService {
     return children;
   }
 
+  /**
+   * Retrieves the local forms from the storage service.
+   * @returns A promise that resolves to an array of FormDetail.Form type.
+   */
   private getLocalForms(): Promise&lt;FormDetail.Form[]&gt; {
     return this.storageService.get(FORMS_STORAGE_KEY);
   }
 
+  /**
+   * Sets the local forms in the storage.
+   *
+   * @param forms - The forms to be stored locally.
+   */
   private setLocalForms(forms: FormDetail.Form[]): void {
     this.storageService.set(FORMS_STORAGE_KEY, forms);
   }
 }
 
+/**
+ * The key used to store forms in local storage.
+ */
 const FORMS_STORAGE_KEY &#x3D; &#x27;forms&#x27;;
+/**
+ * The endpoint for form details.
+ */
 const ENDPOINT &#x3D; &#x27;form-detail&#x27;;
 </code></pre>
     </div>
