@@ -1,0 +1,887 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>pif5_dataquest documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">pif5_dataquest documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  SurveysPage</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/surveys/surveys.page.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-surveys</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">Standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>IonicModule</code>
+                            <code>CommonModule</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>surveys.page.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>surveys.page.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getSurveys" >getSurveys</a>
+                            </li>
+                            <li>
+                                <a href="#getSyncedRatio" >getSyncedRatio</a>
+                            </li>
+                            <li>
+                                <a href="#getSyncedSurveys" >getSyncedSurveys</a>
+                            </li>
+                            <li>
+                                <a href="#getUnsyncedRatio" >getUnsyncedRatio</a>
+                            </li>
+                            <li>
+                                <a href="#getUnsyncedSurveys" >getUnsyncedSurveys</a>
+                            </li>
+                            <li>
+                                <a href="#goToDetail" >goToDetail</a>
+                            </li>
+                            <li>
+                                <a href="#ionViewWillEnter" >ionViewWillEnter</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(surveyService: <a href="../injectables/SurveyService.html" target="_self">SurveyService</a>, detailedFormService: <a href="../injectables/DetailedFormService.html" target="_self">DetailedFormService</a>, router: Router)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/pages/surveys/surveys.page.ts:17</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>surveyService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SurveyService.html" target="_self" >SurveyService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>detailedFormService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/DetailedFormService.html" target="_self" >DetailedFormService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSurveys"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getSurveys</b></span>
+                        <a href="#getSurveys"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getSurveys()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/app/pages/surveys/surveys.page.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Form.html" target="_self" >FormDetail.Form[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSyncedRatio"></a>
+                    <span class="name">
+                        <span ><b>getSyncedRatio</b></span>
+                        <a href="#getSyncedRatio"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSyncedRatio()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/app/pages/surveys/surveys.page.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSyncedSurveys"></a>
+                    <span class="name">
+                        <span ><b>getSyncedSurveys</b></span>
+                        <a href="#getSyncedSurveys"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSyncedSurveys()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/app/pages/surveys/surveys.page.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Form.html" target="_self" >FormDetail.Form[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUnsyncedRatio"></a>
+                    <span class="name">
+                        <span ><b>getUnsyncedRatio</b></span>
+                        <a href="#getUnsyncedRatio"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUnsyncedRatio()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="54"
+                                    class="link-to-prism">src/app/pages/surveys/surveys.page.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUnsyncedSurveys"></a>
+                    <span class="name">
+                        <span ><b>getUnsyncedSurveys</b></span>
+                        <a href="#getUnsyncedSurveys"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUnsyncedSurveys()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="38"
+                                    class="link-to-prism">src/app/pages/surveys/surveys.page.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Form.html" target="_self" >FormDetail.Form[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToDetail"></a>
+                    <span class="name">
+                        <span ><b>goToDetail</b></span>
+                        <a href="#goToDetail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goToDetail(survey: <a href="../interfaces/Form.html" target="_self">FormDetail.Form</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="43"
+                                    class="link-to-prism">src/app/pages/surveys/surveys.page.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>survey</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Form.html" target="_self" >FormDetail.Form</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ionViewWillEnter"></a>
+                    <span class="name">
+                        <span ><b>ionViewWillEnter</b></span>
+                        <a href="#ionViewWillEnter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ionViewWillEnter()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="25"
+                                    class="link-to-prism">src/app/pages/surveys/surveys.page.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { IonicModule } from &#x27;@ionic/angular&#x27;;
+import { FormListComponent } from &#x27;@components/form-list/form-list.component&#x27;;
+import { SurveyService } from &#x27;@services/survey/survey.service&#x27;;
+import { FormDetail } from &#x27;@models/FormDetail.namespace&#x27;;
+import { DetailedFormService } from &#x27;@services/detailed-form/detailed-form.service&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+
+@Component({
+  selector: &#x27;app-surveys&#x27;,
+  templateUrl: &#x27;surveys.page.html&#x27;,
+  styleUrls: [&#x27;surveys.page.scss&#x27;],
+  standalone: true,
+  imports: [ IonicModule, CommonModule ],
+})
+export class SurveysPage {
+
+  constructor(
+    private surveyService: SurveyService,
+    private detailedFormService: DetailedFormService,
+    private router: Router
+  ) {}
+
+  ionViewWillEnter() {
+    this.surveyService.getLocalSurveys();
+  }
+
+  private getSurveys(): FormDetail.Form[] {
+    return this.surveyService.getSurveys();
+  }
+
+  getSyncedSurveys(): FormDetail.Form[] {
+    const surveys: FormDetail.Form[] &#x3D; this.getSurveys();
+    return surveys.filter((survey) &#x3D;&gt; survey.sync);
+  }
+
+  getUnsyncedSurveys(): FormDetail.Form[] {
+    const surveys: FormDetail.Form[] &#x3D; this.getSurveys();
+    return surveys.filter((survey) &#x3D;&gt; !survey.sync);
+  }
+
+  goToDetail(survey: FormDetail.Form): void {
+    this.detailedFormService.setForm(survey, false, false, true);
+    this.router.navigate([&#x27;detail&#x27;]);
+  }
+
+  getSyncedRatio(): string {
+    const surveys: FormDetail.Form[] &#x3D; this.getSurveys();
+    const syncedSurveys: FormDetail.Form[] &#x3D; this.getSyncedSurveys();
+    return &#x60;${syncedSurveys.length} / ${surveys.length}&#x60;;
+  }
+
+  getUnsyncedRatio(): string {
+    const surveys: FormDetail.Form[] &#x3D; this.getSurveys();
+    const unsyncedSurveys: FormDetail.Form[] &#x3D; this.getUnsyncedSurveys();
+    return &#x60;${unsyncedSurveys.length} / ${surveys.length}&#x60;;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;ion-accordion-group value&#x3D;&quot;syncedSurveys&quot; expand&#x3D;&quot;inset&quot;&gt;
+  &lt;ion-accordion value&#x3D;&quot;syncedSurveys&quot;&gt;
+    &lt;ion-item slot&#x3D;&quot;header&quot; color&#x3D;&quot;light&quot;&gt;
+      &lt;ion-label&gt;
+        &lt;ion-text color&#x3D;&quot;success&quot;&gt;
+          &lt;h1&gt;Sincronizadas {{ getSyncedRatio() }}&lt;/h1&gt;
+        &lt;/ion-text&gt;
+      &lt;/ion-label&gt;
+    &lt;/ion-item&gt;
+    &lt;ion-card
+      *ngFor&#x3D;&quot;let syncedSurvey of getSyncedSurveys(), index as i&quot;
+      slot&#x3D;&quot;content&quot;
+    &gt;
+      &lt;ion-icon
+        class&#x3D;&quot;ion-padding&quot;
+        name&#x3D;&quot;checkmark-circle&quot;
+        color&#x3D;&quot;success&quot;
+      &gt;&lt;/ion-icon&gt;
+      &lt;ion-card-header&gt;
+        &lt;ion-card-subtitle id&#x3D;&quot;uuid&quot; color&#x3D;&quot;danger&quot;
+          &gt;# {{ syncedSurvey.uuid }}&lt;/ion-card-subtitle
+        &gt;
+        &lt;ion-card-title&gt;{{ syncedSurvey.name }}&lt;/ion-card-title&gt;
+        &lt;ion-card-subtitle
+          &gt;Finaliza el {{ syncedSurvey.dateEnd }}&lt;/ion-card-subtitle
+        &gt;
+        &lt;ion-card-subtitle
+          &gt;{{ syncedSurvey.questions[0].answers[0].value }}&lt;/ion-card-subtitle
+        &gt;
+      &lt;/ion-card-header&gt;
+      &lt;ion-card-content&gt; {{ syncedSurvey.description }} &lt;/ion-card-content&gt;
+      &lt;ion-button fill&#x3D;&quot;clear&quot; (click)&#x3D;&quot;goToDetail(syncedSurvey)&quot;&gt;
+        &lt;ion-icon name&#x3D;&quot;log-in-outline&quot;&gt;&lt;/ion-icon&gt;
+      &lt;/ion-button&gt;
+    &lt;/ion-card&gt;
+  &lt;/ion-accordion&gt;
+  &lt;ion-accordion value&#x3D;&quot;unsyncedSurvey&quot; [readonly]&#x3D;&quot;getUnsyncedSurveys().length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+    &lt;ion-item slot&#x3D;&quot;header&quot; color&#x3D;&quot;light&quot;&gt;
+      &lt;ion-label&gt;
+        &lt;ion-text color&#x3D;&quot;danger&quot;&gt;
+          &lt;h1&gt;Sin sincronizar {{ getUnsyncedRatio() }}&lt;/h1&gt;
+        &lt;/ion-text&gt;
+      &lt;/ion-label&gt;
+    &lt;/ion-item&gt;
+    &lt;ion-card
+      *ngFor&#x3D;&quot;let unsyncedSurvey of getUnsyncedSurveys(), index as i&quot;
+      slot&#x3D;&quot;content&quot;
+    &gt;
+      &lt;ion-icon
+        class&#x3D;&quot;ion-padding&quot;
+        name&#x3D;&quot;checkmark-circle&quot;
+        color&#x3D;&quot;success&quot;
+        *ngIf&#x3D;&quot;unsyncedSurvey.sync&quot;
+      &gt;&lt;/ion-icon&gt;
+      &lt;ion-card-header&gt;
+        &lt;ion-card-subtitle id&#x3D;&quot;uuid&quot; color&#x3D;&quot;danger&quot;
+          &gt;# {{ unsyncedSurvey.uuid }}&lt;/ion-card-subtitle
+        &gt;
+        &lt;ion-card-title&gt;{{ unsyncedSurvey.name }}&lt;/ion-card-title&gt;
+        &lt;ion-card-subtitle
+          &gt;Finaliza el {{ unsyncedSurvey.dateEnd }}&lt;/ion-card-subtitle
+        &gt;
+        &lt;ion-card-subtitle
+          &gt;{{ unsyncedSurvey.questions[0].answers[0].value }}&lt;/ion-card-subtitle
+        &gt;
+      &lt;/ion-card-header&gt;
+      &lt;ion-card-content&gt; {{ unsyncedSurvey.description }} &lt;/ion-card-content&gt;
+      &lt;ion-button fill&#x3D;&quot;clear&quot; (click)&#x3D;&quot;goToDetail(unsyncedSurvey)&quot;&gt;
+        &lt;ion-icon name&#x3D;&quot;log-in-outline&quot;&gt;&lt;/ion-icon&gt;
+      &lt;/ion-button&gt;
+    &lt;/ion-card&gt;
+  &lt;/ion-accordion&gt;
+&lt;/ion-accordion-group&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>surveys.page.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">#uuid {
+  font-size: x-small;
+}
+
+ion-icon {
+  float: right;
+  font-size: xx-large;
+}
+
+ion-accordion::part(content) {
+  min-height: fit-content;
+  max-height: 67vh;
+  overflow-y: scroll;
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><ion-accordion-group value="syncedSurveys" expand="inset">  <ion-accordion value="syncedSurveys">    <ion-item slot="header" color="light">      <ion-label>        <ion-text color="success">          <h1>Sincronizadas {{ getSyncedRatio() }}</h1>        </ion-text>      </ion-label>    </ion-item>    <ion-card      *ngFor="let syncedSurvey of getSyncedSurveys(), index as i"      slot="content"    >      <ion-icon        class="ion-padding"        name="checkmark-circle"        color="success"      ></ion-icon>      <ion-card-header>        <ion-card-subtitle id="uuid" color="danger"          ># {{ syncedSurvey.uuid }}</ion-card-subtitle        >        <ion-card-title>{{ syncedSurvey.name }}</ion-card-title>        <ion-card-subtitle          >Finaliza el {{ syncedSurvey.dateEnd }}</ion-card-subtitle        >        <ion-card-subtitle          >{{ syncedSurvey.questions[0].answers[0].value }}</ion-card-subtitle        >      </ion-card-header>      <ion-card-content> {{ syncedSurvey.description }} </ion-card-content>      <ion-button fill="clear" (click)="goToDetail(syncedSurvey)">        <ion-icon name="log-in-outline"></ion-icon>      </ion-button>    </ion-card>  </ion-accordion>  <ion-accordion value="unsyncedSurvey" [readonly]="getUnsyncedSurveys().length === 0">    <ion-item slot="header" color="light">      <ion-label>        <ion-text color="danger">          <h1>Sin sincronizar {{ getUnsyncedRatio() }}</h1>        </ion-text>      </ion-label>    </ion-item>    <ion-card      *ngFor="let unsyncedSurvey of getUnsyncedSurveys(), index as i"      slot="content"    >      <ion-icon        class="ion-padding"        name="checkmark-circle"        color="success"        *ngIf="unsyncedSurvey.sync"      ></ion-icon>      <ion-card-header>        <ion-card-subtitle id="uuid" color="danger"          ># {{ unsyncedSurvey.uuid }}</ion-card-subtitle        >        <ion-card-title>{{ unsyncedSurvey.name }}</ion-card-title>        <ion-card-subtitle          >Finaliza el {{ unsyncedSurvey.dateEnd }}</ion-card-subtitle        >        <ion-card-subtitle          >{{ unsyncedSurvey.questions[0].answers[0].value }}</ion-card-subtitle        >      </ion-card-header>      <ion-card-content> {{ unsyncedSurvey.description }} </ion-card-content>      <ion-button fill="clear" (click)="goToDetail(unsyncedSurvey)">        <ion-icon name="log-in-outline"></ion-icon>      </ion-button>    </ion-card>  </ion-accordion></ion-accordion-group></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteComponent', 'selector': 'app-autocomplete'},{'name': 'DataquestHeaderComponent', 'selector': 'app-dataquest-header'},{'name': 'DateDataTypeComponent', 'selector': 'app-date-data-type'},{'name': 'DetailedFormComponent', 'selector': 'app-detailed-form'},{'name': 'DetailPage', 'selector': 'app-detail'},{'name': 'DraftsPage', 'selector': 'app-drafts'},{'name': 'DrawingPadDataTypeComponent', 'selector': 'app-drawing-pad-data-type'},{'name': 'EmailDataTypeComponent', 'selector': 'app-email-data-type'},{'name': 'FormListComponent', 'selector': 'app-form-list'},{'name': 'FormsPage', 'selector': 'app-forms'},{'name': 'HomePage', 'selector': 'app-home'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'MoneyDataTypeComponent', 'selector': 'app-money-data-type'},{'name': 'MonthDataTypeComponent', 'selector': 'app-month-data-type'},{'name': 'MultipleComponent', 'selector': 'app-multiple'},{'name': 'NumberDataTypeComponent', 'selector': 'app-number-data-type'},{'name': 'OpenComponent', 'selector': 'app-open'},{'name': 'PercentageDataTypeComponent', 'selector': 'app-percentage-data-type'},{'name': 'PhoneDataTypeComponent', 'selector': 'app-phone-data-type'},{'name': 'PhotoDataTypeComponent', 'selector': 'app-photo-data-type'},{'name': 'QuestionComponent', 'selector': 'app-question'},{'name': 'SurveysPage', 'selector': 'app-surveys'},{'name': 'TableComponent', 'selector': 'app-table'},{'name': 'TextAreaDataTypeComponent', 'selector': 'app-text-area-data-type'},{'name': 'TextDataTypeComponent', 'selector': 'app-text-data-type'},{'name': 'TypeaheadComponent', 'selector': 'app-typeahead'},{'name': 'TypeComponent', 'selector': 'app-type'},{'name': 'UniqueComponent', 'selector': 'app-unique'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'SurveysPage'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SurveysPage.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

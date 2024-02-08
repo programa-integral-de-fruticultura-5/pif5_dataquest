@@ -1,0 +1,2050 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>pif5_dataquest documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">pif5_dataquest documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  QuestionComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/question/question.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-question</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">Standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>IonicModule</code>
+                                <code><a href="../components/TypeComponent.html" target="_self" >TypeComponent</a></code>
+                                <code><a href="../components/TableComponent.html" target="_self" >TableComponent</a></code>
+                                <code><a href="../components/DataquestHeaderComponent.html" target="_self" >DataquestHeaderComponent</a></code>
+                                <code><a href="../interfaces/Form.html" target="_self" >ReactiveFormsModule</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./question.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./question.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#alertShown" >alertShown</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#backButtonSubscription" >backButtonSubscription</a>
+                            </li>
+                            <li>
+                                <a href="#currentQuestion" >currentQuestion</a>
+                            </li>
+                            <li>
+                                <a href="#disabled" >disabled</a>
+                            </li>
+                            <li>
+                                <a href="#formGroup" >formGroup</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#confirmExit" >confirmExit</a>
+                            </li>
+                            <li>
+                                <a href="#getCategory" >getCategory</a>
+                            </li>
+                            <li>
+                                <a href="#getType" >getType</a>
+                            </li>
+                            <li>
+                                <a href="#isDraft" >isDraft</a>
+                            </li>
+                            <li>
+                                <a href="#isFirstQuestion" >isFirstQuestion</a>
+                            </li>
+                            <li>
+                                <a href="#isForm" >isForm</a>
+                            </li>
+                            <li>
+                                <a href="#isLastQuestion" >isLastQuestion</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isQuestionValid" >isQuestionValid</a>
+                            </li>
+                            <li>
+                                <a href="#isSurvey" >isSurvey</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isValid" >isValid</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#nextQuestion" >nextQuestion</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmit" >onSubmit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#presentAlert" >presentAlert</a>
+                            </li>
+                            <li>
+                                <a href="#previousQuestion" >previousQuestion</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveOpenResponse" >saveOpenResponse</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveResponse" >saveResponse</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveSelection" >saveSelection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveTableResponse" >saveTableResponse</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(draftService: <a href="../injectables/DraftService.html" target="_self">DraftService</a>, detailedFormService: <a href="../injectables/DetailedFormService.html" target="_self">DetailedFormService</a>, questionService: <a href="../injectables/QuestionService.html" target="_self">QuestionService</a>, navCtrl: NavController, alertController: AlertController, loadingController: LoadingController, platform: Platform, location: Location)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/components/question/question.component.ts:39</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>draftService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/DraftService.html" target="_self" >DraftService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>detailedFormService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/DetailedFormService.html" target="_self" >DetailedFormService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>questionService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/QuestionService.html" target="_self" >QuestionService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>navCtrl</td>
+                                                  
+                                                        <td>
+                                                                    <code>NavController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>alertController</td>
+                                                  
+                                                        <td>
+                                                                    <code>AlertController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>loadingController</td>
+                                                  
+                                                        <td>
+                                                                    <code>LoadingController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>platform</td>
+                                                  
+                                                        <td>
+                                                                    <code>Platform</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>location</td>
+                                                  
+                                                        <td>
+                                                                    <code>Location</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmExit"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>confirmExit</b></span>
+                        <a href="#confirmExit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>confirmExit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCategory"></a>
+                    <span class="name">
+                        <span ><b>getCategory</b></span>
+                        <a href="#getCategory"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getCategory()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="183"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:183</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getType"></a>
+                    <span class="name">
+                        <span ><b>getType</b></span>
+                        <a href="#getType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getType()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:187</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isDraft"></a>
+                    <span class="name">
+                        <span ><b>isDraft</b></span>
+                        <a href="#isDraft"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isDraft()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="304"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:304</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFirstQuestion"></a>
+                    <span class="name">
+                        <span ><b>isFirstQuestion</b></span>
+                        <a href="#isFirstQuestion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isFirstQuestion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="210"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:210</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isForm"></a>
+                    <span class="name">
+                        <span ><b>isForm</b></span>
+                        <a href="#isForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="300"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:300</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isLastQuestion"></a>
+                    <span class="name">
+                        <span ><b>isLastQuestion</b></span>
+                        <a href="#isLastQuestion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isLastQuestion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="199"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:199</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isQuestionValid"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isQuestionValid</b></span>
+                        <a href="#isQuestionValid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isQuestionValid()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="191"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:191</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isSurvey"></a>
+                    <span class="name">
+                        <span ><b>isSurvey</b></span>
+                        <a href="#isSurvey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isSurvey()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="308"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:308</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isValid"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isValid</b></span>
+                        <a href="#isValid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isValid()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="195"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:195</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nextQuestion"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>nextQuestion</b></span>
+                        <a href="#nextQuestion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>nextQuestion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="97"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:97</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="63"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <span ><b>onSubmit</b></span>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="173"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:173</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="presentAlert"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>presentAlert</b></span>
+                        <a href="#presentAlert"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>presentAlert(isTable: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="159"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:159</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>isTable</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="previousQuestion"></a>
+                    <span class="name">
+                        <span ><b>previousQuestion</b></span>
+                        <a href="#previousQuestion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>previousQuestion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="149"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:149</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveOpenResponse"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>saveOpenResponse</b></span>
+                        <a href="#saveOpenResponse"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveOpenResponse(question: FormDetail.Question, formGroup: <a href="../interfaces/Form.html" target="_self">FormGroup</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="281"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:281</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>question</td>
+                                            <td>
+                                                        <code>FormDetail.Question</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>formGroup</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Form.html" target="_self" >FormGroup</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveResponse"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>saveResponse</b></span>
+                        <a href="#saveResponse"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveResponse(question: FormDetail.Question, formGroup: <a href="../interfaces/Form.html" target="_self">FormGroup</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="216"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:216</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>question</td>
+                                            <td>
+                                                        <code>FormDetail.Question</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>formGroup</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Form.html" target="_self" >FormGroup</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveSelection"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>saveSelection</b></span>
+                        <a href="#saveSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveSelection(question: FormDetail.Question, answersFormGroup: <a href="../interfaces/Form.html" target="_self">FormGroup</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="253"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:253</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>question</td>
+                                            <td>
+                                                        <code>FormDetail.Question</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>answersFormGroup</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Form.html" target="_self" >FormGroup</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveTableResponse"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>saveTableResponse</b></span>
+                        <a href="#saveTableResponse"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveTableResponse(question: FormDetail.Question, formGroup: <a href="../interfaces/Form.html" target="_self">FormGroup</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="236"
+                                    class="link-to-prism">src/app/components/question/question.component.ts:236</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>question</td>
+                                            <td>
+                                                        <code>FormDetail.Question</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>formGroup</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Form.html" target="_self" >FormGroup</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="alertShown"></a>
+                    <span class="name">
+                        <span ><b>alertShown</b></span>
+                        <a href="#alertShown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/components/question/question.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="backButtonSubscription"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>backButtonSubscription</b></span>
+                        <a href="#backButtonSubscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Subscription</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/components/question/question.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentQuestion"></a>
+                    <span class="name">
+                        <span ><b>currentQuestion</b></span>
+                        <a href="#currentQuestion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormDetail.Question</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/components/question/question.component.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="disabled"></a>
+                    <span class="name">
+                        <span ><b>disabled</b></span>
+                        <a href="#disabled"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/components/question/question.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formGroup"></a>
+                    <span class="name">
+                        <span ><b>formGroup</b></span>
+                        <a href="#formGroup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Form.html" target="_self" >FormGroup</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/components/question/question.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import {
+  AlertController,
+  IonicModule,
+  LoadingController,
+  NavController,
+} from &#x27;@ionic/angular&#x27;;
+import { QuestionService } from &#x27;@services/detailed-form/question/question.service&#x27;;
+import { FormDetail } from &#x27;@models/FormDetail.namespace&#x27;;
+import { DataquestHeaderComponent } from &#x27;../header/dataquest-header/dataquest-header.component&#x27;;
+import { CommonModule, Location } from &#x27;@angular/common&#x27;;
+import { TableComponent } from &#x27;./type/table/table.component&#x27;;
+import { TypeComponent } from &#x27;./type/type.component&#x27;;
+import { FormArray, FormGroup, ReactiveFormsModule } from &#x27;@angular/forms&#x27;;
+import { DraftService } from &#x27;@services/draft/draft.service&#x27;;
+import { DetailedFormService } from &#x27;@services/detailed-form/detailed-form.service&#x27;;
+import { Platform } from &#x27;@ionic/angular&#x27;;
+import { Subscription } from &#x27;rxjs&#x27;;
+
+@Component({
+  selector: &#x27;app-question&#x27;,
+  templateUrl: &#x27;./question.component.html&#x27;,
+  styleUrls: [&#x27;./question.component.scss&#x27;],
+  imports: [
+    CommonModule,
+    IonicModule,
+    TypeComponent,
+    TableComponent,
+    DataquestHeaderComponent,
+    ReactiveFormsModule,
+  ],
+  standalone: true,
+})
+export class QuestionComponent {
+  currentQuestion!: FormDetail.Question;
+  formGroup!: FormGroup;
+  disabled: boolean &#x3D; false;
+  alertShown: boolean &#x3D; false;
+  private backButtonSubscription!: Subscription;
+
+  constructor(
+    private draftService: DraftService,
+    private detailedFormService: DetailedFormService,
+    private questionService: QuestionService,
+    private navCtrl: NavController,
+    private alertController: AlertController,
+    private loadingController: LoadingController,
+    private platform: Platform,
+    private location: Location
+  ) {}
+
+  ngOnInit() {
+    this.formGroup &#x3D; this.questionService.getFormGroup();
+    this.currentQuestion &#x3D; this.questionService.getFirst();
+    if (this.isSurvey()) {
+      this.disabled &#x3D; true;
+    }
+    this.backButtonSubscription &#x3D; this.platform.backButton.subscribeWithPriority(10, () &#x3D;&gt; {
+      this.confirmExit();
+    });
+  }
+
+  ngOnDestroy() {
+    this.backButtonSubscription.unsubscribe();
+  }
+
+  private async confirmExit() {
+    var message: string &#x3D; &#x27;&#x27;
+    if (this.isForm())
+      message &#x3D; &#x27;Si sale, su progreso se guardará como borrador. ¿Desea salir?&#x27;;
+    else if (this.isDraft())
+      message &#x3D; &#x27;Si sale, se guardará el borrador. ¿Desea salir?&#x27;;
+
+    const alert &#x3D; await this.alertController.create({
+      header: &#x27;¿Desea salir?&#x27;,
+      message: message,
+      buttons: [
+        {
+          text: &#x27;Cancelar&#x27;,
+          role: &#x27;cancel&#x27;,
+          cssClass: &#x27;secondary&#x27;,
+        },
+        {
+          text: &#x27;Salir&#x27;,
+          role: &#x27;confirm&#x27;,
+          cssClass: &#x27;danger&#x27;,
+          handler: () &#x3D;&gt; {
+            this.location.back();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async nextQuestion() {
+    const loading &#x3D; await this.loadingController.create({
+      message: &#x27;Cargando...&#x27;,
+    });
+    await loading.present();
+    if (this.isQuestionValid()) {
+      this.saveResponse(this.currentQuestion, this.formGroup);
+      this.draftService.saveDrafts();
+      const nextQuestion &#x3D; this.questionService.toggleNextQuestionFrom(
+        this.currentQuestion,
+        this.formGroup
+      );
+      if (nextQuestion) {
+        this.currentQuestion &#x3D; nextQuestion;
+        if (
+          this.currentQuestion.questionCategory.name &#x3D;&#x3D;&#x3D;
+            &#x27;Capital social individual&#x27; &amp;&amp;
+          !this.alertShown
+        ) {
+          this.alertShown &#x3D; true;
+          this.alertController
+            .create({
+              header: &#x27;Atención&#x27;,
+              subHeader: &#x27;Capital social individual&#x27;,
+              message:
+                &#x27;A continuación, pasamos a las preguntas que corresponden al componente del capital social individual del índice de desarrollo socio-organizacional.&#x27;,
+              buttons: [&#x27;OK&#x27;],
+            })
+            .then((alert) &#x3D;&gt; alert.present());
+        }
+      }
+    } else {
+      const type: string &#x3D; this.currentQuestion.type;
+      const isTable: boolean &#x3D; type &#x3D;&#x3D;&#x3D; &#x27;Tabla&#x27;;
+      this.presentAlert(isTable);
+    }
+    await loading.dismiss();
+  }
+
+  // private getLastAnsweredQuestion(): FormDetail.Question {
+  //   let lastAnsweredQuestion: FormDetail.Question &#x3D;
+  //     this.questionService.getFirst();
+  //   const formGroup: FormGroup &#x3D; this.formGroup;
+  //   while (formGroup.controls[lastAnsweredQuestion.id.toString()].valid) {
+  //     lastAnsweredQuestion &#x3D; this.questionService.getNextValidQuestionFrom(
+  //       lastAnsweredQuestion,
+  //       this.formGroup
+  //     )!;
+  //   }
+  //   return lastAnsweredQuestion;
+  // }
+
+  previousQuestion(): void {
+    const previousQuestion &#x3D; this.questionService.getPreviousValidQuestionFrom(
+      this.currentQuestion,
+      this.formGroup
+    );
+    if (previousQuestion) {
+      this.currentQuestion &#x3D; previousQuestion;
+    }
+  }
+
+  async presentAlert(isTable: boolean) {
+    const tableMessage: string &#x3D;
+      &#x27;Por favor, responda todas las preguntas de las secciones para continuar.&#x27;;
+    const genericMessage: string &#x3D;
+      &#x27;Por favor, responda la pregunta para continuar.&#x27;;
+    const alert &#x3D; await this.alertController.create({
+      header: &#x27;Pregunta requerida&#x27;,
+      message: isTable ? tableMessage : genericMessage,
+      buttons: [&#x27;OK&#x27;],
+    });
+
+    await alert.present();
+  }
+
+  onSubmit() {
+    if (this.isValid()) {
+      this.saveResponse(this.currentQuestion, this.formGroup);
+      this.detailedFormService.saveSurvey();
+      this.navCtrl.pop();
+    } else {
+      this.presentAlert(false);
+    }
+  }
+
+  getCategory(): string {
+    return this.currentQuestion?.questionCategory.name;
+  }
+
+  getType(): string {
+    return this.currentQuestion?.type;
+  }
+
+  private isQuestionValid() {
+    return this.formGroup.controls[this.currentQuestion.id].valid;
+  }
+
+  private isValid() {
+    return this.formGroup.valid;
+  }
+
+  isLastQuestion(): boolean {
+    let question: FormDetail.Question &#x3D; this.currentQuestion;
+    const nextQuestion: FormDetail.Question | null &#x3D;
+      this.questionService.toggleNextQuestionFrom(question, this.formGroup);
+    if (!nextQuestion) {
+      return true;
+    }
+
+    return this.formGroup.controls[nextQuestion.id]!.disabled;
+  }
+
+  isFirstQuestion(): boolean {
+    let question: FormDetail.Question &#x3D; this.currentQuestion;
+    let firstQuestion: FormDetail.Question &#x3D; this.questionService.getFirst();
+    return question?.id &#x3D;&#x3D;&#x3D; firstQuestion.id;
+  }
+
+  private saveResponse(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ): void {
+    switch (question.type) {
+      case &#x27;Abierta&#x27;:
+        this.saveOpenResponse(question, formGroup);
+        break;
+      case &#x27;Tabla&#x27;:
+        this.saveTableResponse(question, formGroup);
+        break;
+      default:
+        const questionFormGroup: FormGroup &#x3D; formGroup.controls[
+          question.id
+        ] as FormGroup;
+        this.saveSelection(question, questionFormGroup);
+    }
+    this.detailedFormService.updateModifyDate();
+  }
+
+  private saveTableResponse(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ) {
+    let questionFormArray: FormArray &#x3D; formGroup.controls[
+      question.id
+    ] as FormArray;
+    this.currentQuestion.questionChildren.forEach((section, index) &#x3D;&gt; {
+      let sectionFormGroup: FormGroup &#x3D; questionFormArray.at(
+        index
+      ) as FormGroup;
+      section.forEach((child) &#x3D;&gt; {
+        this.saveResponse(child, sectionFormGroup);
+      });
+    });
+  }
+
+  private saveSelection(
+    question: FormDetail.Question,
+    answersFormGroup: FormGroup
+  ) {
+    question.answers.forEach((answer) &#x3D;&gt; {
+      const value: boolean &#x3D;
+        answersFormGroup.controls[answer.id.toString()].value;
+      answer.checked &#x3D; value;
+    });
+    if (
+      question.type &#x3D;&#x3D;&#x3D; &#x27;Múltiple respuesta con otro&#x27; ||
+      question.type &#x3D;&#x3D;&#x3D; &#x27;Única respuesta con otro&#x27;
+    ) {
+      const textAnswered: string &#x3D; answersFormGroup.controls[&#x27;other&#x27;].value;
+      const fullSavedString: string &#x3D;
+        question.answers[question.answers.length - 1].value;
+      const savedStringArray: string[] &#x3D; fullSavedString.split(&#x27;:&#x27;);
+
+      if (savedStringArray.length &#x3D;&#x3D;&#x3D; 2) {
+        savedStringArray[1] &#x3D; textAnswered;
+      } else {
+        savedStringArray.push(textAnswered);
+      }
+      question.answers[question.answers.length - 1].value &#x3D;
+        savedStringArray.join(&#x27;:&#x27;);
+    }
+  }
+
+  private saveOpenResponse(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ) {
+    if (question.dataType &#x3D;&#x3D;&#x3D; &#x27;tel&#x27;) {
+      let answersGroup: FormGroup &#x3D; formGroup.controls[
+        question.id
+      ] as FormGroup;
+      question.answers.forEach((answer) &#x3D;&gt; {
+        const value: string &#x3D; answersGroup.controls[answer.order].value;
+        answer.value &#x3D; value;
+      });
+    } else {
+      let formResponse &#x3D; formGroup.controls[question.id].value;
+      let answer &#x3D; question.answers[0];
+      answer.value &#x3D; formResponse;
+    }
+  }
+
+  isForm(): boolean {
+    return this.detailedFormService.isForm();
+  }
+
+  isDraft(): boolean {
+    return this.detailedFormService.isDraft();
+  }
+
+  isSurvey(): boolean {
+    return this.detailedFormService.isSurvey();
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;app-dataquest-header progressBar&gt;&lt;/app-dataquest-header&gt;
+&lt;ion-content class&#x3D;&quot;ion-padding&quot;&gt;
+  &lt;ng-container [formGroup]&#x3D;&quot;formGroup&quot; (ngSubmit)&#x3D;&quot;onSubmit()&quot;&gt;
+    &lt;app-type
+      [disabled]&#x3D;&quot;disabled&quot;
+      [question]&#x3D;&quot;currentQuestion&quot;
+      [formGroup]&#x3D;&quot;formGroup&quot;
+      *ngIf&#x3D;&quot;getType() !&#x3D;&#x3D; &#x27;Tabla&#x27;&quot;
+    &gt;&lt;/app-type&gt;
+    &lt;app-table
+      [disabled]&#x3D;&quot;disabled&quot;
+      [question]&#x3D;&quot;currentQuestion&quot;
+      [formGroup]&#x3D;&quot;formGroup&quot;
+      *ngIf&#x3D;&quot;getType() &#x3D;&#x3D;&#x3D; &#x27;Tabla&#x27;&quot;
+    &gt;&lt;/app-table&gt;
+  &lt;/ng-container&gt;
+&lt;/ion-content&gt;
+&lt;ion-footer&gt;
+  &lt;ion-toolbar&gt;
+    &lt;ion-buttons slot&#x3D;&quot;start&quot; *ngIf&#x3D;&quot;!isFirstQuestion()&quot;&gt;
+      &lt;ion-button color&#x3D;&quot;primary&quot; (click)&#x3D;&quot;previousQuestion()&quot;&gt;
+        Anterior
+      &lt;/ion-button&gt;
+    &lt;/ion-buttons&gt;
+    &lt;ion-buttons slot&#x3D;&quot;primary&quot; *ngIf&#x3D;&quot;formGroup.valid &amp;&amp; !isSurvey()&quot;&gt;
+      &lt;ion-button color&#x3D;&quot;secondary&quot; (click)&#x3D;&quot;onSubmit()&quot;&gt;
+        Guardar
+      &lt;/ion-button&gt;
+    &lt;/ion-buttons&gt;
+    &lt;ion-buttons slot&#x3D;&quot;end&quot; *ngIf&#x3D;&quot;!isLastQuestion()&quot;&gt;
+      &lt;ion-button color&#x3D;&quot;primary&quot; (click)&#x3D;&quot;nextQuestion()&quot;&gt;
+        Siguiente
+      &lt;/ion-button&gt;
+    &lt;/ion-buttons&gt;
+  &lt;/ion-toolbar&gt;
+&lt;/ion-footer&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./question.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">ion-icon {
+  font-size: 2.5em;
+  color: gray;
+  margin: 0 0.5em;
+  cursor: pointer;
+  transition: 0.3s;
+  &amp;:hover {
+    color: #f4f4f4;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><app-dataquest-header progressBar></app-dataquest-header><ion-content class="ion-padding">  <ng-container [formGroup]="formGroup" (ngSubmit)="onSubmit()">    <app-type      [disabled]="disabled"      [question]="currentQuestion"      [formGroup]="formGroup"      *ngIf="getType() !== \'Tabla\'"    ></app-type>    <app-table      [disabled]="disabled"      [question]="currentQuestion"      [formGroup]="formGroup"      *ngIf="getType() === \'Tabla\'"    ></app-table>  </ng-container></ion-content><ion-footer>  <ion-toolbar>    <ion-buttons slot="start" *ngIf="!isFirstQuestion()">      <ion-button color="primary" (click)="previousQuestion()">        Anterior      </ion-button>    </ion-buttons>    <ion-buttons slot="primary" *ngIf="formGroup.valid && !isSurvey()">      <ion-button color="secondary" (click)="onSubmit()">        Guardar      </ion-button>    </ion-buttons>    <ion-buttons slot="end" *ngIf="!isLastQuestion()">      <ion-button color="primary" (click)="nextQuestion()">        Siguiente      </ion-button>    </ion-buttons>  </ion-toolbar></ion-footer></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteComponent', 'selector': 'app-autocomplete'},{'name': 'DataquestHeaderComponent', 'selector': 'app-dataquest-header'},{'name': 'DateDataTypeComponent', 'selector': 'app-date-data-type'},{'name': 'DetailedFormComponent', 'selector': 'app-detailed-form'},{'name': 'DetailPage', 'selector': 'app-detail'},{'name': 'DraftsPage', 'selector': 'app-drafts'},{'name': 'DrawingPadDataTypeComponent', 'selector': 'app-drawing-pad-data-type'},{'name': 'EmailDataTypeComponent', 'selector': 'app-email-data-type'},{'name': 'FormListComponent', 'selector': 'app-form-list'},{'name': 'FormsPage', 'selector': 'app-forms'},{'name': 'HomePage', 'selector': 'app-home'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'MoneyDataTypeComponent', 'selector': 'app-money-data-type'},{'name': 'MonthDataTypeComponent', 'selector': 'app-month-data-type'},{'name': 'MultipleComponent', 'selector': 'app-multiple'},{'name': 'NumberDataTypeComponent', 'selector': 'app-number-data-type'},{'name': 'OpenComponent', 'selector': 'app-open'},{'name': 'PercentageDataTypeComponent', 'selector': 'app-percentage-data-type'},{'name': 'PhoneDataTypeComponent', 'selector': 'app-phone-data-type'},{'name': 'PhotoDataTypeComponent', 'selector': 'app-photo-data-type'},{'name': 'QuestionComponent', 'selector': 'app-question'},{'name': 'SurveysPage', 'selector': 'app-surveys'},{'name': 'TableComponent', 'selector': 'app-table'},{'name': 'TextAreaDataTypeComponent', 'selector': 'app-text-area-data-type'},{'name': 'TextDataTypeComponent', 'selector': 'app-text-data-type'},{'name': 'TypeaheadComponent', 'selector': 'app-typeahead'},{'name': 'TypeComponent', 'selector': 'app-type'},{'name': 'UniqueComponent', 'selector': 'app-unique'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'QuestionComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'QuestionComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
