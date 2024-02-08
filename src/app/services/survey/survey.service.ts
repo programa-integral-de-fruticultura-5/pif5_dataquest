@@ -6,6 +6,9 @@ import { Network } from '@capacitor/network';
 import { AlertController } from '@ionic/angular';
 import { Observable, catchError, forkJoin, from, mergeMap, of } from 'rxjs';
 
+/**
+ * Service for managing surveys.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -19,12 +22,19 @@ export class SurveyService {
     private storageService: StorageService
   ) { }
 
+  /**
+   * Pushes a survey to the list of surveys and saves them.
+   * @param survey The survey to be pushed.
+   */
   public pushSurvey(survey: FormDetail.Form): void {
     const copy = JSON.parse(JSON.stringify(survey));
     this.surveys.push(copy);
     this.saveSurveys();
   }
 
+  /**
+   * Adds a network change listener to update the online status.
+   */
   public addNetworkChangeListener(): void {
     Network.addListener('networkStatusChange', (status) => {
       console.log('Network status changed', status);
@@ -33,6 +43,9 @@ export class SurveyService {
     });
   }
 
+  /**
+   * Gets the current network status.
+   */
   private getNetworkStatus(): void {
     Network.getStatus().then((status) => {
       console.log('Network status:', status.connected);
@@ -41,24 +54,42 @@ export class SurveyService {
     });
   }
 
+  /**
+   * Removes all network change listeners.
+   */
   public removeAllListeners(): void {
     Network.removeAllListeners();
   }
 
+  /**
+   * Retrieves the surveys stored locally.
+   */
   public getLocalSurveys(): void {
     this.storageService.get(SURVEYS_STORAGE_KEY).then((surveys) => {
       this.surveys = surveys || [];
     });
   }
 
+  /**
+   * Gets the list of surveys.
+   * @returns The list of surveys.
+   */
   public getSurveys(): FormDetail.Form[] {
     return this.surveys;
   }
 
+  /**
+   * Saves the surveys to the storage.
+   */
   public saveSurveys(): void {
     this.storageService.set(SURVEYS_STORAGE_KEY, this.surveys);
   }
 
+  /**
+   * Syncs the surveys with the server.
+   * If online, it sends the unsynced surveys to the server and updates the sync status.
+   * If offline, it presents an alert.
+   */
   public syncSurveys(): void {
     if (this.online) {
       const surveysToSync: FormDetail.Form[] = this.surveys.filter((survey) => !survey.sync);
@@ -93,6 +124,9 @@ export class SurveyService {
     }
   }
 
+  /**
+   * Presents an alert when there is no internet connection.
+   */
   private async presentAlert(): Promise<void> {
     const alert = await this.alertController.create({
       header: 'No hay conexión a internet',
@@ -103,11 +137,26 @@ export class SurveyService {
     await alert.present();
   }
 
+  /**
+   * Changes the sync status of a survey.
+   * This method is useful when a survey is synced manually.
+   * The sync status is changed when the survey is synced with the server
+   * so it is not used in the current implementation.
+   *
+   * @param survey The survey to change the sync status.
+   * @param status The new sync status.
+   */
   private changeSyncStatus(survey: FormDetail.Form, status: boolean): void {
     const index = this.surveys.indexOf(survey);
     this.surveys[index].sync = status; //TODO save into storage
   }
 }
 
+/**
+ * Key used to store surveys in local storage.
+ */
 const SURVEYS_STORAGE_KEY = 'uploadSurveys';
+/**
+ * The endpoint for storing surveys.
+ */
 const ENDPOINT = SURVEYS_STORAGE_KEY;
