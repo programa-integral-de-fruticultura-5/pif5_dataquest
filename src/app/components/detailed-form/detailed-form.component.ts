@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { AlertController, IonicModule, NavController } from '@ionic/angular';
-import { FormService } from '@services/form/form.service';
-import { Geolocation, Position } from '@capacitor/geolocation';
+import { Component } from '@angular/core';
+import { AlertController, IonicModule, ToastController } from '@ionic/angular';
 import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
 import { FormDetail } from '@models/FormDetail.namespace';
 import { QuestionComponent } from '@components/question/question.component';
 import { DataquestHeaderComponent } from '@components/header/dataquest-header/dataquest-header.component';
+import { LocationService } from '@services/location/location.service';
+import { Position } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-detailed-form',
@@ -25,9 +25,9 @@ export class DetailedFormComponent {
 
   constructor(
     private detailedFormService: DetailedFormService,
-    private formService: FormService,
-    private alertController: AlertController,
-    private navController: NavController
+    private locationService: LocationService,
+    private toastController: ToastController,
+    private alertController: AlertController
   ) {}
 
   ngOnDestroy() {
@@ -52,8 +52,7 @@ export class DetailedFormComponent {
 
   startForm(): void {
     this.getLocation();
-    this.detailedFormService.startDraft();
-    this.detailedFormService.setQuestionsPage(true);
+    this.startDraft();
   }
 
   viewSurvey(): void {
@@ -64,58 +63,128 @@ export class DetailedFormComponent {
     this.detailedFormService.setQuestionsPage(true);
   }
 
-  private async getLocation(): Promise<void> {
+  private getLocation(): void {
+    this.locationService
+      .getCurrentLocation()
+      .then((position: Position | undefined) => {
+        if (position) {
+          console.log(position.coords);
+          this.getForm().position = `Latitude:${position.coords.latitude},Longitude:${position.coords.longitude}`;
+          this.getForm().altitud = position.coords.altitude ?? 0;
+          console.log(
+            `Position: ${this.getForm().position}, Altitude: ${
+              position.coords.altitude
+            }`
+          );
+          this.presentLocationToast(
+            '¡Ubicación obtenida satisfactoriamente!',
+            position
+          );
+        }
+      });
+  }
+
+  private async presentLocationToast(message: string, position: Position) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 5000,
+      position: 'bottom',
+      icon: 'navigate-circle-outline',
+      buttons: [
+        {
+          side: 'end',
+          text: 'Más info',
+          role: 'info',
+          handler: () => {
+            this.presentLocationAlert(position);
+          },
+        },
+      ],
+    });
+
+    await toast.present();
+  }
+
+  private async presentLocationAlert(position: Position): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Coordenadas',
+      message:
+        'Latitud: ' +
+        position.coords.latitude +
+        ', longitud: ' +
+        position.coords.longitude +
+        ', altitud: ' +
+        (position.coords.altitude ?? 0),
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  /*   private async getLocation(): Promise<void> {
     try {
+      // Check location permissions
       const permissions = await Geolocation.checkPermissions();
 
       if (permissions.location !== 'granted') {
-        const permissionAlert = await this.alertController.create({
-          header: 'Problema con los permisos',
-          message:
-            'No se pudo obtener los permisos de ubicación del dispositivo. Por favor, habilita los permisos de ubicación en los ajustes del dispositivo y vuelve a intentarlo.',
-          buttons: ['OK'],
-        });
-
+        // Request permissions if not granted
         const permissionResult = await Geolocation.requestPermissions();
-
         if (permissionResult.location !== 'granted') {
-          permissionAlert.present();
-          return;
+          this.presentPermissionAlert();
+          this.navController.pop();
         }
       }
-      const locationAlert = await this.alertController.create({
-        header: 'Problema con la ubicación',
-        message:
-          'No se pudo obtener la ubicación del dispositivo. Por favor, habilita la ubicación en los ajustes del dispositivo y vuelve a intentarlo.',
-        buttons: ['OK'],
-      });
 
-      const position = await Geolocation.getCurrentPosition();
+      const position = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true, // Consider enabling for precision if needed
+        timeout: 30000, // Set a timeout to prevent getting stuck
+      }).catch((error) => {
+        this.presentLocationAlert();
+        this.navController.pop();}
+      );
 
       if (position) {
         console.log(position.coords);
-        this.getForm().position =
-          position.coords.latitude + ',' + position.coords.longitude;
+        this.getForm().position = `${position.coords.latitude},${position.coords.longitude}`;
         this.getForm().altitud = position.coords.altitude ?? 0;
-        console.log(
-          'Position: ',
-          position,
-          ', Altitude: ',
-          this.getForm().altitud
-        );
+        console.log(`Position: ${position.coords.latitude},${position.coords.longitude}, Altitude: ${this.getForm().altitud}`);
+        this.startDraft();
       } else {
-        locationAlert.present();
+        this.presentLocationAlert();
+        this.navController.pop();
       }
     } catch (error) {
-      const locationAlert = await this.alertController.create({
-        header: 'Servicios de ubicación deshabilitados',
-        message:
-          'No se pudo obtener la ubicación del dispositivo. Por favor, habilita la ubicación en los ajustes del dispositivo y vuelve a intentarlo.',
-        buttons: ['OK'],
-      });
-      locationAlert.present();
+      console.log('Error getting location: ', error);
+      this.presentLocationAlert();
       this.navController.pop();
     }
+  }
+
+  private async presentPermissionAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Permiso denegado',
+      message:
+        'Por favor, habilita los permisos de ubicación en los ajustes del dispositivo.',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  private async presentLocationAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'No se pudo obtener la ubicación',
+      message:
+        'Por favor, habilita la ubicación en los ajustes del dispositivo y vuelve a intentarlo.',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  } */
+
+  private startDraft(): void {
+    this.detailedFormService.startDraft();
+    this.detailedFormService.setQuestionsPage(true);
   }
 
   getTotalQuestions(): number {
