@@ -24,6 +24,7 @@ export class AppComponent {
 
   private initializeApp() {
     this.platform.ready().then(() => {
+      this.surveyService.getNetworkStatus();
       this.surveyService.addNetworkChangeListener();
       this.surveyService.getLocalSurveys();
       this.draftService.getLocalDrafts();
