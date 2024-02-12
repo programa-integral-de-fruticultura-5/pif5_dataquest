@@ -197,10 +197,10 @@ export class SurveyService {
 
   /* private createMockSurveys(): void {
     const mockSurveys: FormDetail.Form[] = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {
       mockSurveys.push(mockForm);
     }
-    this.surveys = mockSurveys;
+    this.surveys.push(...mockSurveys);
     this.saveSurveys();
   } */
 }
