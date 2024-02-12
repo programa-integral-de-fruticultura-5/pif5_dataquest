@@ -172,7 +172,6 @@ export class DetailedFormService {
     this.draftService.pushDraft(copy);
     this.selectedForm = copy;
     this.setQuestions();
-    this.draftService.saveDrafts();
   }
 
   public saveSurvey(): void {
@@ -180,7 +179,6 @@ export class DetailedFormService {
       this.selectedForm
     );
     this.surveyService.pushSurvey(removedDraft);
-    this.draftService.saveDrafts();
   }
 
   public updateModifyDate(): void {
