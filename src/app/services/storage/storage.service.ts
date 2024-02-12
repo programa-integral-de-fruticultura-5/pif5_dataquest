@@ -38,6 +38,10 @@ export class StorageService {
     return await this._storage?.remove(key);
   }
 
+  async clear() {
+    return await this._storage?.clear();
+  }
+
   async length() {
     return await this._storage?.length();
   }
