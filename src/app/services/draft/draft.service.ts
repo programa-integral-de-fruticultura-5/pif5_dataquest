@@ -90,7 +90,7 @@ export class DraftService {
   }
 
   private getUUIDArrayFromStorage(): void {
-    this.storageService.get('uuidArray').then((uuidArray) => {
+    this.storageService.get(UUID_ARRAY_STORAGE_KEY).then((uuidArray) => {
       this.uuidArray = uuidArray || [];
     });
   }
@@ -148,4 +148,4 @@ export class DraftService {
 }
 
 const DRAFT_STORAGE_KEY = 'draft-storage';
-const UUID_ARRAY_STORAGE_KEY = 'uuid-array';
+const UUID_ARRAY_STORAGE_KEY = 'drafts-uuid-array';

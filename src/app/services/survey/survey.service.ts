@@ -49,7 +49,7 @@ export class SurveyService {
   /**
    * Gets the current network status.
    */
-  private getNetworkStatus(): void {
+  public getNetworkStatus(): void {
     Network.getStatus().then((status) => {
       console.log('Network status:', status.connected);
       this.online = status.connected;
@@ -85,7 +85,7 @@ export class SurveyService {
     var surveys: FormDetail.Form[] = [];
     for (let i = 0; i < this.uuidArray.length; i++) {
       this.storageService.get(`${SURVEY_STORAGE_KEY}-${this.uuidArray[i]}`).then((survey) => {
-        surveys.push(survey);
+        if (survey) surveys.push(survey);
       });
     }
     return surveys;
@@ -216,7 +216,7 @@ const SURVEY_STORAGE_KEY = 'survey-storage'
 /**
  * Key used to store the size of the surveys in local storage.
  */
-const UUID_ARRAY_STORAGE_KEY = 'uuid-array';
+const UUID_ARRAY_STORAGE_KEY = 'surveys-uuid-array';
 /**
  * The endpoint for storing surveys.
  */
