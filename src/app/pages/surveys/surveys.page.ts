@@ -22,9 +22,7 @@ export class SurveysPage {
     private router: Router
   ) {}
 
-  ionViewWillEnter() {
-    this.surveyService.getLocalSurveys();
-  }
+  ionViewWillEnter() { }
 
   private getSurveys(): FormDetail.Form[] {
     return this.surveyService.getSurveys();

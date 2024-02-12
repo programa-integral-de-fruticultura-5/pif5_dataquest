@@ -5,6 +5,8 @@ import { ApiService } from '../api/api.service';
 import { Network } from '@capacitor/network';
 import { AlertController } from '@ionic/angular';
 import { Observable, catchError, forkJoin, from, mergeMap, of } from 'rxjs';
+import { environment } from 'environment';
+import mockForm  from '../../../data/mock-form';
 
 /**
  * Service for managing surveys.
@@ -15,6 +17,7 @@ import { Observable, catchError, forkJoin, from, mergeMap, of } from 'rxjs';
 export class SurveyService {
   private online: boolean = false;
   private surveys: FormDetail.Form[] = [];
+  private uuidArray: string[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -29,7 +32,7 @@ export class SurveyService {
   public pushSurvey(survey: FormDetail.Form): void {
     const copy = JSON.parse(JSON.stringify(survey));
     this.surveys.push(copy);
-    this.saveSurveys();
+    this.saveSurveyInStorage(copy);
   }
 
   /**
@@ -65,8 +68,35 @@ export class SurveyService {
    * Retrieves the surveys stored locally.
    */
   public getLocalSurveys(): void {
+    this.getUUIDArrayFromLocalStorage();
     this.storageService.get(SURVEYS_STORAGE_KEY).then((surveys) => {
-      this.surveys = surveys || [];
+      this.surveys = surveys || this.getSurveysArrayFromStorage() || [];
+      /* if (!environment.production && this.surveys.length === 0)
+        this.createMockSurveys(); */
+    });
+    this.saveSurveys();
+  }
+
+  /**
+   * Retrieves the surveys stored locally.
+   * @returns The list of surveys stored locally.
+   */
+  public getSurveysArrayFromStorage(): FormDetail.Form[] {
+    var surveys: FormDetail.Form[] = [];
+    for (let i = 0; i < this.uuidArray.length; i++) {
+      this.storageService.get(`${SURVEY_STORAGE_KEY}-${this.uuidArray[i]}`).then((survey) => {
+        surveys.push(survey);
+      });
+    }
+    return surveys;
+  }
+
+  /**
+   * Retrieves the list of UUIDs from local storage.
+   */
+  private getUUIDArrayFromLocalStorage(): void {
+    this.storageService.get(UUID_ARRAY_STORAGE_KEY).then((uuidArray) => {
+      this.uuidArray = uuidArray || [];
     });
   }
 
@@ -82,7 +112,21 @@ export class SurveyService {
    * Saves the surveys to the storage.
    */
   public saveSurveys(): void {
-    this.storageService.set(SURVEYS_STORAGE_KEY, this.surveys);
+    for (let i = 0; i < this.surveys.length; i++) {
+      this.saveSurveyInStorage(this.surveys[i]);
+    }
+    this.storageService.remove(SURVEYS_STORAGE_KEY);
+  }
+
+  /**
+   * Saves a survey to the storage.
+   */
+  private saveSurveyInStorage(survey: FormDetail.Form): void {
+    this.storageService.set(`${SURVEY_STORAGE_KEY}-${survey.uuid}`, survey);
+    if (!this.uuidArray.includes(survey.uuid)) {
+      this.uuidArray.push(survey.uuid);
+      this.storageService.set(UUID_ARRAY_STORAGE_KEY, this.uuidArray);
+    }
   }
 
   /**
@@ -150,12 +194,29 @@ export class SurveyService {
     const index = this.surveys.indexOf(survey);
     this.surveys[index].sync = status; //TODO save into storage
   }
+
+  /* private createMockSurveys(): void {
+    const mockSurveys: FormDetail.Form[] = [];
+    for (let i = 0; i < 100; i++) {
+      mockSurveys.push(mockForm);
+    }
+    this.surveys = mockSurveys;
+    this.saveSurveys();
+  } */
 }
 
 /**
  * Key used to store surveys in local storage.
  */
 const SURVEYS_STORAGE_KEY = 'uploadSurveys';
+/**
+ * Key used to store individual surveys in local storage.
+ */
+const SURVEY_STORAGE_KEY = 'survey-storage'
+/**
+ * Key used to store the size of the surveys in local storage.
+ */
+const UUID_ARRAY_STORAGE_KEY = 'uuid-array';
 /**
  * The endpoint for storing surveys.
  */
