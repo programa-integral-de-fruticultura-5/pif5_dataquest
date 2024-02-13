@@ -152,7 +152,7 @@ export class SurveyService {
 
       forkJoin(syncRequests).subscribe((syncResults: (FormDetail.Form | undefined)[]) => {
         const updatedSurveys: FormDetail.Form[] = this.surveys.map((survey) => {
-          const syncedSurvey = syncResults.find((syncResult) => syncResult?.id === survey.id);
+          const syncedSurvey = syncResults.find((syncResult) => syncResult?.uuid === survey.uuid);
           if (syncedSurvey) {
             survey.sync = true;
           }
