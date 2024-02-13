@@ -35,7 +35,8 @@ export class DraftService {
     const producer: Beneficiary.Producer = removedDraft.beneficiary;
     if (removedDraft.id === 1 && producer.specialized)
       this.changeSpecialized(producer);
-
+    this.storageService.remove(`${DRAFT_STORAGE_KEY}-${removedDraft.uuid}`);
+    this.removeUUID(removedDraft.uuid);
     this.saveDrafts();
   }
 
@@ -51,12 +52,16 @@ export class DraftService {
   public removeDraft(draft: FormDetail.Form): FormDetail.Form {
     const index = this.drafts.findIndex((d) => d.uuid === draft.uuid);
     if (index > -1) {
+      this.storageService.remove(`${DRAFT_STORAGE_KEY}-${draft.uuid}`);
+      this.removeUUID(draft.uuid);
       return this.drafts.splice(index, 1)[0];
     }
-    this.storageService.remove(`${DRAFT_STORAGE_KEY}-${draft.uuid}`);
-    this.uuidArray = this.uuidArray.filter((uuid) => uuid !== draft.uuid);
-    this.storageService.set(UUID_ARRAY_STORAGE_KEY, this.uuidArray);
     return draft;
+  }
+
+  private removeUUID(uuid: string): void {
+    this.uuidArray = this.uuidArray.filter((id) => id !== uuid);
+    this.storageService.set(UUID_ARRAY_STORAGE_KEY, this.uuidArray);
   }
 
   public getLocalDrafts(): void {
