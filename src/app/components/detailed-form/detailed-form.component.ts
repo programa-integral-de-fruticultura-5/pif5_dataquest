@@ -69,7 +69,7 @@ export class DetailedFormComponent {
       .then((position: Position | undefined) => {
         if (position) {
           console.log(position.coords);
-          this.getForm().position = `Latitude:${position.coords.latitude},Longitude:${position.coords.longitude}`;
+          this.getForm().position = `${position.coords.latitude},${position.coords.longitude}`;
           this.getForm().altitud = position.coords.altitude ?? 0;
           console.log(
             `Position: ${this.getForm().position}, Altitude: ${
