@@ -103,7 +103,8 @@ export class QuestionComponent {
     await loading.present();
     if (this.isQuestionValid()) {
       this.saveResponse(this.currentQuestion, this.formGroup);
-      this.draftService.saveDraftInStorage(this.currentForm);
+      if (this.isDraft())
+        this.draftService.saveDraftInStorage(this.currentForm);
       const nextQuestion = this.questionService.toggleNextQuestionFrom(
         this.currentQuestion,
         this.formGroup
