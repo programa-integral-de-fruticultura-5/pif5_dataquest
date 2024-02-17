@@ -192,7 +192,7 @@ export class QuestionComponent {
   }
 
   private isQuestionValid() {
-    return this.formGroup.controls[this.currentQuestion.id].valid;
+    return this.isSurvey() || this.formGroup.controls[this.currentQuestion.id].valid;
   }
 
   private isValid() {
