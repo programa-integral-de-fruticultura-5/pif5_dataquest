@@ -32,6 +32,7 @@ import { Subscription } from 'rxjs';
   standalone: true,
 })
 export class QuestionComponent {
+  currentForm!: FormDetail.Form
   currentQuestion!: FormDetail.Question;
   formGroup!: FormGroup;
   disabled: boolean = false;
@@ -50,6 +51,7 @@ export class QuestionComponent {
   ) {}
 
   ngOnInit() {
+    this.currentForm = this.detailedFormService.getForm();
     this.formGroup = this.questionService.getFormGroup();
     this.currentQuestion = this.questionService.getFirst();
     if (this.isSurvey()) {
@@ -101,7 +103,8 @@ export class QuestionComponent {
     await loading.present();
     if (this.isQuestionValid()) {
       this.saveResponse(this.currentQuestion, this.formGroup);
-      this.draftService.saveDrafts();
+      if (this.isDraft())
+        this.draftService.saveDraftInStorage(this.currentForm);
       const nextQuestion = this.questionService.toggleNextQuestionFrom(
         this.currentQuestion,
         this.formGroup
@@ -189,7 +192,7 @@ export class QuestionComponent {
   }
 
   private isQuestionValid() {
-    return this.formGroup.controls[this.currentQuestion.id].valid;
+    return this.isSurvey() || this.formGroup.controls[this.currentQuestion.id].valid;
   }
 
   private isValid() {

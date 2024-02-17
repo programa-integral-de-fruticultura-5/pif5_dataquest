@@ -9,7 +9,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "compodoc": "npx compodoc -p tsconfig.doc.json -o -s -r 8090 -w"
   },
   "private": true,
   "dependencies": {
@@ -41,6 +42,7 @@
     "@maskito/core": "^1.8.1",
     "@maskito/kit": "^1.8.1",
     "@rx-angular/template": "^16.1.1",
+    "capacitor-native-settings": "^5.0.1",
     "cordova-sqlite-storage": "^6.1.0",
     "date-fns": "^2.30.0",
     "ionicons": "^7.0.0",
@@ -67,9 +69,11 @@
     "@angular/language-service": "^16.0.0",
     "@capacitor/assets": "^3.0.1",
     "@capacitor/cli": "5.5.1",
+    "@compodoc/compodoc": "^1.1.23",
     "@ionic/angular-toolkit": "^9.0.0",
     "@types/body-parser": "^1.19.5",
     "@types/jasmine": "~4.3.0",
+    "@types/lodash": "^4.14.202",
     "@types/node": "^12.11.1",
     "@types/uuid": "^9.0.4",
     "@typescript-eslint/eslint-plugin": "5.3.0",

@@ -8,6 +8,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Authentication } from '@models/Auth.namespace';
 import { userBuilder } from '@utils/builder';
 import { Observable, from, map } from 'rxjs';
+import { StorageService } from '@services/storage/storage.service';
 
 const TOKEN_STORAGE_KEY = 'TOKEN_KEY';
 const USER_STORAGE_KEY = 'USER_KEY';
@@ -20,7 +21,8 @@ export class AuthService implements Authentication.AuthManagement {
   constructor(
     private router: Router,
     private apiService: ApiService,
-    private jwtHelperService: JwtHelperService
+    private jwtHelperService: JwtHelperService,
+    private storageService: StorageService
   ) {}
 
   public async getToken(): Promise<string | null> {
@@ -82,6 +84,7 @@ export class AuthService implements Authentication.AuthManagement {
 
   public logout(): void {
     this.removeToken();
+    this.storageService.clear();
     this.router.navigate(['/login']);
   }
 

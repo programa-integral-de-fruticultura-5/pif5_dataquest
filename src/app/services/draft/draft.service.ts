@@ -4,12 +4,15 @@ import { StorageService } from '../storage/storage.service';
 import { v4 as uuidv4 } from 'uuid';
 import { Beneficiary } from '@models/Beneficiary.namespace';
 import { ProducerService } from '@services/producer/producer.service';
+import { environment } from 'environment';
+import mockForm  from '../../../data/mock-form';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DraftService {
   private drafts: FormDetail.Form[] = [];
+  private uuidArray: string[] = [];
 
   constructor(
     private storageService: StorageService,
@@ -24,6 +27,7 @@ export class DraftService {
     draft.fechaInicial = formattedDate;
     draft.fechaUltimoCambio = formattedDate;
     this.drafts.push(draft);
+    this.saveDraftInStorage(draft);
   }
 
   public deleteDraft(index: number) {
@@ -31,7 +35,8 @@ export class DraftService {
     const producer: Beneficiary.Producer = removedDraft.beneficiary;
     if (removedDraft.id === 1 && producer.specialized)
       this.changeSpecialized(producer);
-
+    this.storageService.remove(`${DRAFT_STORAGE_KEY}-${removedDraft.uuid}`);
+    this.removeUUID(removedDraft.uuid);
     this.saveDrafts();
   }
 
@@ -47,17 +52,51 @@ export class DraftService {
   public removeDraft(draft: FormDetail.Form): FormDetail.Form {
     const index = this.drafts.findIndex((d) => d.uuid === draft.uuid);
     if (index > -1) {
+      this.storageService.remove(`${DRAFT_STORAGE_KEY}-${draft.uuid}`);
+      this.removeUUID(draft.uuid);
       return this.drafts.splice(index, 1)[0];
     }
     return draft;
   }
 
+  private removeUUID(uuid: string): void {
+    this.uuidArray = this.uuidArray.filter((id) => id !== uuid);
+    this.storageService.set(UUID_ARRAY_STORAGE_KEY, this.uuidArray);
+  }
+
   public getLocalDrafts(): void {
+    this.getUUIDArrayFromStorage();
     this.storageService.get('drafts').then((drafts) => {
       if (drafts) {
         this.drafts = drafts;
         this.removeOldDrafts();
+      } else if (this.getDraftsArrayFromStorage()) {
+        this.drafts = this.getDraftsArrayFromStorage();
+      } else {
+        this.drafts = [];
       }
+      /* if (!environment.production){
+        console.log('Creating mock drafts')
+        this.createMockDrafts()
+        console.log('Drafts:', this.drafts)
+      } */
+    });
+    this.saveDrafts();
+  }
+
+  public getDraftsArrayFromStorage(): FormDetail.Form[] {
+    var drafts: FormDetail.Form[] = [];
+    for (let i = 0; i < this.uuidArray.length; i++) {
+      this.storageService.get(`${DRAFT_STORAGE_KEY}-${this.uuidArray[i]}`).then((draft) => {
+        drafts.push(draft);
+      });
+    }
+    return drafts;
+  }
+
+  private getUUIDArrayFromStorage(): void {
+    this.storageService.get(UUID_ARRAY_STORAGE_KEY).then((uuidArray) => {
+      this.uuidArray = uuidArray || [];
     });
   }
 
@@ -75,7 +114,18 @@ export class DraftService {
   }
 
   public saveDrafts(): void {
-    this.storageService.set('drafts', this.drafts);
+    for (let i = 0; i < this.drafts.length; i++) {
+      this.saveDraftInStorage(this.drafts[i]);
+    }
+    this.storageService.remove('drafts');
+  }
+
+  public saveDraftInStorage(draft: FormDetail.Form): void {
+    this.storageService.set(`${DRAFT_STORAGE_KEY}-${draft.uuid}`, draft);
+    if (!this.uuidArray.includes(draft.uuid)) {
+      this.uuidArray.push(draft.uuid);
+      this.storageService.set(UUID_ARRAY_STORAGE_KEY, this.uuidArray);
+    }
   }
 
   public generateUUID(): string {
@@ -90,4 +140,17 @@ export class DraftService {
       this.drafts[index].fechaUltimoCambio = formattedDate;
     }
   }
+
+  /* private createMockDrafts(): void {
+    const mockDrafts: FormDetail.Form[] = [];
+    for (let i = 0; i < 30; i++) {
+      console.log('Creating mock draft', i)
+      mockDrafts.push(mockForm);
+    }
+    this.drafts = mockDrafts;
+    this.saveDrafts();
+  } */
 }
+
+const DRAFT_STORAGE_KEY = 'draft-storage';
+const UUID_ARRAY_STORAGE_KEY = 'drafts-uuid-array';

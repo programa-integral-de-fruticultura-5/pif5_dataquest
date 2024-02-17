@@ -23,9 +23,7 @@ export class DraftsPage {
     private toastController: ToastController
   ) {}
 
-  ionViewWillEnter() {
-    this.draftService.getLocalDrafts();
-  }
+  ionViewWillEnter() { }
 
   getDrafts() {
     return this.draftService.getDrafts();

@@ -1,0 +1,1113 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>pif5_dataquest documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">pif5_dataquest documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  DetailedFormComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/detailed-form/detailed-form.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-detailed-form</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">Standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>IonicModule</code>
+                                <code><a href="../components/QuestionComponent.html" target="_self" >QuestionComponent</a></code>
+                                <code><a href="../components/DataquestHeaderComponent.html" target="_self" >DataquestHeaderComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./detailed-form.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./detailed-form.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#component" >component</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getForm" >getForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getLocation" >getLocation</a>
+                            </li>
+                            <li>
+                                <a href="#getTotalQuestions" >getTotalQuestions</a>
+                            </li>
+                            <li>
+                                <a href="#getTransformedDownladedDate" >getTransformedDownladedDate</a>
+                            </li>
+                            <li>
+                                <a href="#isDraft" >isDraft</a>
+                            </li>
+                            <li>
+                                <a href="#isForm" >isForm</a>
+                            </li>
+                            <li>
+                                <a href="#isSurvey" >isSurvey</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#resumeDraft" >resumeDraft</a>
+                            </li>
+                            <li>
+                                <a href="#startForm" >startForm</a>
+                            </li>
+                            <li>
+                                <a href="#viewSurvey" >viewSurvey</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(detailedFormService: <a href="../injectables/DetailedFormService.html" target="_self">DetailedFormService</a>, formService: <a href="../injectables/FormService.html" target="_self">FormService</a>, alertController: AlertController, navController: NavController)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:24</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>detailedFormService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/DetailedFormService.html" target="_self" >DetailedFormService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>formService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/FormService.html" target="_self" >FormService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>alertController</td>
+                                                  
+                                                        <td>
+                                                                    <code>AlertController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>navController</td>
+                                                  
+                                                        <td>
+                                                                    <code>NavController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getForm"></a>
+                    <span class="name">
+                        <span ><b>getForm</b></span>
+                        <a href="#getForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="37"
+                                    class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Form.html" target="_self" >FormDetail.Form</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getLocation"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getLocation</b></span>
+                        <a href="#getLocation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getLocation()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalQuestions"></a>
+                    <span class="name">
+                        <span ><b>getTotalQuestions</b></span>
+                        <a href="#getTotalQuestions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTotalQuestions()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="121"
+                                    class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:121</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTransformedDownladedDate"></a>
+                    <span class="name">
+                        <span ><b>getTransformedDownladedDate</b></span>
+                        <a href="#getTransformedDownladedDate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTransformedDownladedDate()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:125</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isDraft"></a>
+                    <span class="name">
+                        <span ><b>isDraft</b></span>
+                        <a href="#isDraft"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isDraft()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isForm"></a>
+                    <span class="name">
+                        <span ><b>isForm</b></span>
+                        <a href="#isForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="41"
+                                    class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isSurvey"></a>
+                    <span class="name">
+                        <span ><b>isSurvey</b></span>
+                        <a href="#isSurvey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isSurvey()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="49"
+                                    class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resumeDraft"></a>
+                    <span class="name">
+                        <span ><b>resumeDraft</b></span>
+                        <a href="#resumeDraft"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resumeDraft()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="63"
+                                    class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startForm"></a>
+                    <span class="name">
+                        <span ><b>startForm</b></span>
+                        <a href="#startForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>startForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="53"
+                                    class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="viewSurvey"></a>
+                    <span class="name">
+                        <span ><b>viewSurvey</b></span>
+                        <a href="#viewSurvey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>viewSurvey()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="component"></a>
+                    <span class="name">
+                        <span ><b>component</b></span>
+                        <a href="#component"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>QuestionComponent</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/components/detailed-form/detailed-form.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Component, Input } from &#x27;@angular/core&#x27;;
+import { AlertController, IonicModule, NavController } from &#x27;@ionic/angular&#x27;;
+import { FormService } from &#x27;@services/form/form.service&#x27;;
+import { Geolocation, Position } from &#x27;@capacitor/geolocation&#x27;;
+import { DetailedFormService } from &#x27;@services/detailed-form/detailed-form.service&#x27;;
+import { FormDetail } from &#x27;@models/FormDetail.namespace&#x27;;
+import { QuestionComponent } from &#x27;@components/question/question.component&#x27;;
+import { DataquestHeaderComponent } from &#x27;@components/header/dataquest-header/dataquest-header.component&#x27;;
+
+@Component({
+  selector: &#x27;app-detailed-form&#x27;,
+  templateUrl: &#x27;./detailed-form.component.html&#x27;,
+  styleUrls: [&#x27;./detailed-form.component.scss&#x27;],
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonicModule,
+    QuestionComponent,
+    DataquestHeaderComponent,
+  ],
+})
+export class DetailedFormComponent {
+  component &#x3D; QuestionComponent;
+
+  constructor(
+    private detailedFormService: DetailedFormService,
+    private formService: FormService,
+    private alertController: AlertController,
+    private navController: NavController
+  ) {}
+
+  ngOnDestroy() {
+    this.detailedFormService.setQuestionsPage(false);
+  }
+
+  getForm(): FormDetail.Form {
+    return this.detailedFormService.getForm();
+  }
+
+  isForm(): boolean {
+    return this.detailedFormService.isForm();
+  }
+
+  isDraft(): boolean {
+    return this.detailedFormService.isDraft();
+  }
+
+  isSurvey(): boolean {
+    return this.detailedFormService.isSurvey();
+  }
+
+  startForm(): void {
+    this.getLocation();
+    this.detailedFormService.startDraft();
+    this.detailedFormService.setQuestionsPage(true);
+  }
+
+  viewSurvey(): void {
+    this.detailedFormService.setQuestionsPage(true);
+  }
+
+  resumeDraft(): void {
+    this.detailedFormService.setQuestionsPage(true);
+  }
+
+  private async getLocation(): Promise&lt;void&gt; {
+    try {
+      const permissions &#x3D; await Geolocation.checkPermissions();
+
+      if (permissions.location !&#x3D;&#x3D; &#x27;granted&#x27;) {
+        const permissionAlert &#x3D; await this.alertController.create({
+          header: &#x27;Problema con los permisos&#x27;,
+          message:
+            &#x27;No se pudo obtener los permisos de ubicación del dispositivo. Por favor, habilita los permisos de ubicación en los ajustes del dispositivo y vuelve a intentarlo.&#x27;,
+          buttons: [&#x27;OK&#x27;],
+        });
+
+        const permissionResult &#x3D; await Geolocation.requestPermissions();
+
+        if (permissionResult.location !&#x3D;&#x3D; &#x27;granted&#x27;) {
+          permissionAlert.present();
+          return;
+        }
+      }
+      const locationAlert &#x3D; await this.alertController.create({
+        header: &#x27;Problema con la ubicación&#x27;,
+        message:
+          &#x27;No se pudo obtener la ubicación del dispositivo. Por favor, habilita la ubicación en los ajustes del dispositivo y vuelve a intentarlo.&#x27;,
+        buttons: [&#x27;OK&#x27;],
+      });
+
+      const position &#x3D; await Geolocation.getCurrentPosition();
+
+      if (position) {
+        console.log(position.coords);
+        this.getForm().position &#x3D;
+          position.coords.latitude + &#x27;,&#x27; + position.coords.longitude;
+        this.getForm().altitud &#x3D; position.coords.altitude ?? 0;
+        console.log(
+          &#x27;Position: &#x27;,
+          position,
+          &#x27;, Altitude: &#x27;,
+          this.getForm().altitud
+        );
+      } else {
+        locationAlert.present();
+      }
+    } catch (error) {
+      const locationAlert &#x3D; await this.alertController.create({
+        header: &#x27;Servicios de ubicación deshabilitados&#x27;,
+        message:
+          &#x27;No se pudo obtener la ubicación del dispositivo. Por favor, habilita la ubicación en los ajustes del dispositivo y vuelve a intentarlo.&#x27;,
+        buttons: [&#x27;OK&#x27;],
+      });
+      locationAlert.present();
+      this.navController.pop();
+    }
+  }
+
+  getTotalQuestions(): number {
+    return this.detailedFormService.getTotalQuestions();
+  }
+
+  getTransformedDownladedDate() {
+    const date &#x3D; new Date(this.getForm().fechaDescarga);
+
+    const options: Intl.DateTimeFormatOptions &#x3D; {
+      year: &#x27;numeric&#x27;,
+      month: &#x27;short&#x27;,
+      day: &#x27;numeric&#x27;,
+    };
+    return date.toLocaleDateString(&#x27;es-ES&#x27;, options);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;app-dataquest-header&gt;&lt;/app-dataquest-header&gt;
+&lt;ion-content&gt;
+  &lt;ion-card&gt;
+    &lt;ion-card-header&gt;
+      &lt;ion-card-subtitle&gt;Encuesta descargada el {{getTransformedDownladedDate()}}&lt;/ion-card-subtitle&gt;
+      &lt;ion-card-title&gt;{{getForm().name}}&lt;/ion-card-title&gt;
+      &lt;ion-card-subtitle&gt;Proyecto iniciado el {{getForm().dateInit}} | Finaliza el {{getForm().dateEnd}}&lt;/ion-card-subtitle&gt;
+      &lt;ion-card-subtitle&gt;Total preguntas: {{getTotalQuestions()}}&lt;/ion-card-subtitle&gt;
+    &lt;/ion-card-header&gt;
+
+    &lt;ion-card-content&gt;
+      {{getForm().description}}
+    &lt;/ion-card-content&gt;
+    &lt;ion-nav-link router-direction&#x3D;&quot;forward&quot; [component]&#x3D;&quot;component&quot;&gt;
+      &lt;ion-button fill&#x3D;&quot;clear&quot; *ngIf&#x3D;&quot;isForm()&quot; (click)&#x3D;&quot;startForm()&quot;&gt;Comenzar formulario&lt;/ion-button&gt;
+      &lt;ion-button fill&#x3D;&quot;clear&quot; *ngIf&#x3D;&quot;isSurvey()&quot; (click)&#x3D;&quot;viewSurvey()&quot;&gt;Ver encuesta&lt;/ion-button&gt;
+      &lt;ion-button fill&#x3D;&quot;clear&quot; *ngIf&#x3D;&quot;isDraft()&quot; (click)&#x3D;&quot;resumeDraft()&quot;&gt;Reanudar borrador&lt;/ion-button&gt;
+    &lt;/ion-nav-link&gt;
+  &lt;/ion-card&gt;
+&lt;/ion-content&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./detailed-form.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">#container {
+  text-align: center;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #8c8c8c;
+
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><app-dataquest-header></app-dataquest-header><ion-content>  <ion-card>    <ion-card-header>      <ion-card-subtitle>Encuesta descargada el {{getTransformedDownladedDate()}}</ion-card-subtitle>      <ion-card-title>{{getForm().name}}</ion-card-title>      <ion-card-subtitle>Proyecto iniciado el {{getForm().dateInit}} | Finaliza el {{getForm().dateEnd}}</ion-card-subtitle>      <ion-card-subtitle>Total preguntas: {{getTotalQuestions()}}</ion-card-subtitle>    </ion-card-header>    <ion-card-content>      {{getForm().description}}    </ion-card-content>    <ion-nav-link router-direction="forward" [component]="component">      <ion-button fill="clear" *ngIf="isForm()" (click)="startForm()">Comenzar formulario</ion-button>      <ion-button fill="clear" *ngIf="isSurvey()" (click)="viewSurvey()">Ver encuesta</ion-button>      <ion-button fill="clear" *ngIf="isDraft()" (click)="resumeDraft()">Reanudar borrador</ion-button>    </ion-nav-link>  </ion-card></ion-content></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteComponent', 'selector': 'app-autocomplete'},{'name': 'DataquestHeaderComponent', 'selector': 'app-dataquest-header'},{'name': 'DateDataTypeComponent', 'selector': 'app-date-data-type'},{'name': 'DetailedFormComponent', 'selector': 'app-detailed-form'},{'name': 'DetailPage', 'selector': 'app-detail'},{'name': 'DraftsPage', 'selector': 'app-drafts'},{'name': 'DrawingPadDataTypeComponent', 'selector': 'app-drawing-pad-data-type'},{'name': 'EmailDataTypeComponent', 'selector': 'app-email-data-type'},{'name': 'FormListComponent', 'selector': 'app-form-list'},{'name': 'FormsPage', 'selector': 'app-forms'},{'name': 'HomePage', 'selector': 'app-home'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'MoneyDataTypeComponent', 'selector': 'app-money-data-type'},{'name': 'MonthDataTypeComponent', 'selector': 'app-month-data-type'},{'name': 'MultipleComponent', 'selector': 'app-multiple'},{'name': 'NumberDataTypeComponent', 'selector': 'app-number-data-type'},{'name': 'OpenComponent', 'selector': 'app-open'},{'name': 'PercentageDataTypeComponent', 'selector': 'app-percentage-data-type'},{'name': 'PhoneDataTypeComponent', 'selector': 'app-phone-data-type'},{'name': 'PhotoDataTypeComponent', 'selector': 'app-photo-data-type'},{'name': 'QuestionComponent', 'selector': 'app-question'},{'name': 'SurveysPage', 'selector': 'app-surveys'},{'name': 'TableComponent', 'selector': 'app-table'},{'name': 'TextAreaDataTypeComponent', 'selector': 'app-text-area-data-type'},{'name': 'TextDataTypeComponent', 'selector': 'app-text-data-type'},{'name': 'TypeaheadComponent', 'selector': 'app-typeahead'},{'name': 'TypeComponent', 'selector': 'app-type'},{'name': 'UniqueComponent', 'selector': 'app-unique'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'DetailedFormComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'DetailedFormComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

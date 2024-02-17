@@ -1,0 +1,1834 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>pif5_dataquest documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">pif5_dataquest documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  UniqueComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/question/type/unique/unique.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-unique</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">Standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>IonicModule</code>
+                                <code><a href="../interfaces/Form.html" target="_self" >ReactiveFormsModule</a></code>
+                                <code><a href="../components/AutocompleteComponent.html" target="_self" >AutocompleteComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./unique.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./unique.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#farming" >farming</a>
+                            </li>
+                            <li>
+                                <a href="#other" >other</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#changeInputState" >changeInputState</a>
+                            </li>
+                            <li>
+                                <a href="#getAnswers" >getAnswers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getCheckedAnswerId" >getCheckedAnswerId</a>
+                            </li>
+                            <li>
+                                <a href="#getOtherErrorMessage" >getOtherErrorMessage</a>
+                            </li>
+                            <li>
+                                <a href="#getOtherPlaceholder" >getOtherPlaceholder</a>
+                            </li>
+                            <li>
+                                <a href="#getOtherValue" >getOtherValue</a>
+                            </li>
+                            <li>
+                                <a href="#getValue" >getValue</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isLastAnswer" >isLastAnswer</a>
+                            </li>
+                            <li>
+                                <a href="#isOtherInvalid" >isOtherInvalid</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#loadOtherControl" >loadOtherControl</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#preloadFarmingValue" >preloadFarmingValue</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#searchAnswerIdByFarming" >searchAnswerIdByFarming</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#setCheckedValue" >setCheckedValue</a>
+                            </li>
+                            <li>
+                                <a href="#setOtherValue" >setOtherValue</a>
+                            </li>
+                            <li>
+                                <a href="#setValue" >setValue</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#disabled" >disabled</a>
+                            </li>
+                            <li>
+                                <a href="#formGroup" >formGroup</a>
+                            </li>
+                            <li>
+                                <a href="#question" >question</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(detailedFormService: <a href="../injectables/DetailedFormService.html" target="_self">DetailedFormService</a>, questionService: <a href="../injectables/QuestionService.html" target="_self">QuestionService</a>, assoaciationService: <a href="../injectables/AssociationService.html" target="_self">AssociationService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:30</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>detailedFormService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/DetailedFormService.html" target="_self" >DetailedFormService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>questionService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/QuestionService.html" target="_self" >QuestionService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>assoaciationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AssociationService.html" target="_self" >AssociationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="disabled"></a>
+                        <b>disabled</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Required : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:27</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="formGroup"></a>
+                        <b>formGroup</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Form.html" target="_self" >FormGroup</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Required : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:26</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="question"></a>
+                        <b>question</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormDetail.Question</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Required : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:25</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeInputState"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>changeInputState</b></span>
+                        <a href="#changeInputState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>changeInputState(answerGroup: <a href="../interfaces/Form.html" target="_self">FormGroup</a>, id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="205"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:205</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>answerGroup</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Form.html" target="_self" >FormGroup</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAnswers"></a>
+                    <span class="name">
+                        <span ><b>getAnswers</b></span>
+                        <a href="#getAnswers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getAnswers()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>FormDetail.Answer[]</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCheckedAnswerId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getCheckedAnswerId</b></span>
+                        <a href="#getCheckedAnswerId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCheckedAnswerId(answersFormGroup: <a href="../interfaces/Form.html" target="_self">FormGroup</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="69"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>answersFormGroup</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Form.html" target="_self" >FormGroup</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getOtherErrorMessage"></a>
+                    <span class="name">
+                        <span ><b>getOtherErrorMessage</b></span>
+                        <a href="#getOtherErrorMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getOtherErrorMessage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="167"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:167</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getOtherPlaceholder"></a>
+                    <span class="name">
+                        <span ><b>getOtherPlaceholder</b></span>
+                        <a href="#getOtherPlaceholder"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getOtherPlaceholder()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="183"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:183</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getOtherValue"></a>
+                    <span class="name">
+                        <span ><b>getOtherValue</b></span>
+                        <a href="#getOtherValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getOtherValue()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="131"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:131</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getValue"></a>
+                    <span class="name">
+                        <span ><b>getValue</b></span>
+                        <a href="#getValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getValue()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isLastAnswer"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isLastAnswer</b></span>
+                        <a href="#isLastAnswer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isLastAnswer(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="219"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:219</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isOtherInvalid"></a>
+                    <span class="name">
+                        <span ><b>isOtherInvalid</b></span>
+                        <a href="#isOtherInvalid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isOtherInvalid()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="150"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:150</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadOtherControl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>loadOtherControl</b></span>
+                        <a href="#loadOtherControl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadOtherControl()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="192"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:192</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="38"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="preloadFarmingValue"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>preloadFarmingValue</b></span>
+                        <a href="#preloadFarmingValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>preloadFarmingValue(answersFormGroup: <a href="../interfaces/Form.html" target="_self">FormGroup</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>answersFormGroup</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Form.html" target="_self" >FormGroup</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchAnswerIdByFarming"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>searchAnswerIdByFarming</b></span>
+                        <a href="#searchAnswerIdByFarming"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>searchAnswerIdByFarming()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="114"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:114</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setCheckedValue"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>setCheckedValue</b></span>
+                        <a href="#setCheckedValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setCheckedValue(answersFormGroup: <a href="../interfaces/Form.html" target="_self">FormGroup</a>, id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="87"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:87</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>answersFormGroup</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Form.html" target="_self" >FormGroup</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setOtherValue"></a>
+                    <span class="name">
+                        <span ><b>setOtherValue</b></span>
+                        <a href="#setOtherValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setOtherValue(event: Event)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="140"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:140</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>Event</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setValue"></a>
+                    <span class="name">
+                        <span ><b>setValue</b></span>
+                        <a href="#setValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setValue(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="44"
+                                    class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="farming"></a>
+                    <span class="name">
+                        <span ><b>farming</b></span>
+                        <a href="#farming"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="other"></a>
+                    <span class="name">
+                        <span ><b>other</b></span>
+                        <a href="#other"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/components/question/type/unique/unique.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Component, Input, OnInit } from &#x27;@angular/core&#x27;;
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from &#x27;@angular/forms&#x27;;
+import { InputChangeEventDetail, InputCustomEvent, IonicModule } from &#x27;@ionic/angular&#x27;;
+import { FormDetail } from &#x27;@models/FormDetail.namespace&#x27;
+import { AutocompleteComponent } from &#x27;../autocomplete/autocomplete.component&#x27;;
+import { DetailedFormService } from &#x27;@services/detailed-form/detailed-form.service&#x27;;
+import { AssociationService } from &#x27;@services/association/association.service&#x27;;
+import { Beneficiary } from &#x27;@models/Beneficiary.namespace&#x27;;
+import { QuestionService } from &#x27;@services/detailed-form/question/question.service&#x27;;
+
+@Component({
+  selector: &#x27;app-unique&#x27;,
+  templateUrl: &#x27;./unique.component.html&#x27;,
+  styleUrls: [&#x27;./unique.component.scss&#x27;],
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonicModule,
+    ReactiveFormsModule,
+    AutocompleteComponent,
+  ],
+})
+export class UniqueComponent implements OnInit {
+  @Input({ required: true }) question!: FormDetail.Question;
+  @Input({ required: true }) formGroup!: FormGroup;
+  @Input({ required: true }) disabled!: boolean;
+
+  other: boolean &#x3D; false;
+  farming: boolean &#x3D; false;
+
+  constructor(
+    private detailedFormService: DetailedFormService,
+    private questionService: QuestionService,
+    private assoaciationService: AssociationService
+  ) {}
+
+  ngOnInit() {}
+
+  getAnswers(): FormDetail.Answer[] {
+    return this.question.answers;
+  }
+
+  setValue(event: any): void {
+    const formGroup: FormGroup &#x3D; this.formGroup.get(
+      &#x60;${this.question.id}&#x60;
+    ) as FormGroup;
+
+    const id: string &#x3D; event.detail.value;
+
+    this.setCheckedValue(formGroup, id, true);
+    this.questionService.toggleNextQuestionFrom(this.question, this.formGroup);
+  }
+
+  getValue(): string {
+    const answersFormGroup: FormGroup &#x3D; this.formGroup.get(
+      &#x60;${this.question.id}&#x60;
+    ) as FormGroup;
+
+    this.preloadFarmingValue(answersFormGroup);
+
+    const { answerId, answerValue } &#x3D; this.getCheckedAnswerId(answersFormGroup);
+    if (answerId !&#x3D;&#x3D; &#x27;other&#x27;)
+      this.changeInputState(answersFormGroup, answerId, answerValue);
+
+    return answerId;
+  }
+
+  private getCheckedAnswerId(answersFormGroup: FormGroup): {
+    answerId: string;
+    answerValue: boolean;
+  } {
+    let answerId: string &#x3D; &#x27;&#x27;;
+    let answerValue: boolean &#x3D; false;
+
+    for (const key in answersFormGroup.controls) {
+      const value &#x3D; answersFormGroup.controls[key].value;
+      if (value &amp;&amp; key !&#x3D;&#x3D; &#x27;other&#x27;) {
+        answerId &#x3D; key;
+        answerValue &#x3D; value;
+      }
+    }
+
+    return { answerId, answerValue };
+  }
+
+  private setCheckedValue(
+    answersFormGroup: FormGroup,
+    id: string,
+    value: boolean
+  ): void {
+    for (const key in answersFormGroup.controls) {
+      if (key &#x3D;&#x3D;&#x3D; id &amp;&amp; key !&#x3D;&#x3D; &#x27;other&#x27;) {
+        this.changeInputState(answersFormGroup, id, value);
+        answersFormGroup.controls[key].setValue(value);
+      } else if (key !&#x3D;&#x3D; &#x27;other&#x27;) {
+        answersFormGroup.controls[key].setValue(!value);
+      }
+    }
+  }
+
+  private preloadFarmingValue(answersFormGroup: FormGroup): void {
+    const isFarmingQuestion: boolean &#x3D;
+      this.question.text &#x3D;&#x3D;&#x3D; &#x27;Cultivo Priorizado&#x27;;
+        if (isFarmingQuestion) {
+      const answerIdToCheck: string &#x3D; this.searchAnswerIdByFarming();
+      this.setCheckedValue(answersFormGroup, answerIdToCheck, true);
+      this.farming &#x3D; true;
+    } else {
+      this.farming &#x3D; false;
+    }
+  }
+
+  private searchAnswerIdByFarming(): string {
+    const associationId: number &#x3D;
+      this.detailedFormService.getForm().beneficiary.associationId;
+
+    const association: Beneficiary.Association | undefined &#x3D;
+      this.assoaciationService.getAssociationById(associationId);
+
+    const associationFarming: string &#x3D;
+      association!.farming;
+
+    const answer: FormDetail.Answer &#x3D; this.question.answers.find(
+      (answer) &#x3D;&gt; answer.value.toLowerCase() &#x3D;&#x3D;&#x3D; associationFarming.toLowerCase()
+    )!;
+
+    return answer.id.toString();
+  }
+
+  getOtherValue(): string {
+    this.loadOtherControl();
+    const answerGroup: FormGroup &#x3D; this.formGroup.get(
+      &#x60;${this.question.id}&#x60;
+    ) as FormGroup;
+    const otherValue: string &#x3D; answerGroup.get(&#x27;other&#x27;)?.value;
+    return otherValue;
+  }
+
+  setOtherValue(event: Event): void {
+    const answerGroup: FormGroup &#x3D; this.formGroup.get(
+      &#x60;${this.question.id}&#x60;
+    ) as FormGroup;
+    const otherControl: FormControl &#x3D; answerGroup.get(&#x27;other&#x27;) as FormControl;
+    const eventTarget: HTMLIonInputElement &#x3D; event.target as HTMLIonInputElement;
+    const otherValue: string | number &#x3D; eventTarget.value!;
+    otherControl.setValue(otherValue);
+  }
+
+  isOtherInvalid(): boolean {
+    const answerGroup: FormGroup &#x3D; this.formGroup.get(
+      &#x60;${this.question.id}&#x60;
+    ) as FormGroup;
+    const otherControl: FormControl &#x3D; answerGroup.get(&#x27;other&#x27;) as FormControl;
+    const invalid: boolean &#x3D; otherControl?.invalid;
+    return invalid
+  }
+
+/*   isOtherTouched(): boolean {
+    const answerGroup: FormGroup &#x3D; this.formGroup.get(
+      &#x60;${this.question.id}&#x60;
+    ) as FormGroup;
+    const otherControl: FormControl &#x3D; answerGroup.get(&#x27;other&#x27;) as FormControl;
+    return otherControl?.touched;
+  } */
+
+  getOtherErrorMessage(): string {
+    const answerGroup: FormGroup &#x3D; this.formGroup.get(
+      &#x60;${this.question.id}&#x60;
+    ) as FormGroup;
+    const otherControl: FormControl &#x3D; answerGroup.get(&#x27;other&#x27;) as FormControl;
+    const errors: any &#x3D; otherControl?.errors;
+    if (errors?.required) {
+      return &#x27;Este campo es requerido&#x27;;
+    } else if (errors?.min) {
+      return &#x60;El valor mínimo es ${this.question.min}&#x60;;
+    } else if (errors?.max) {
+      return &#x60;El valor máximo es ${this.question.max}&#x60;;
+    }
+    return &#x27;&#x27;;
+  }
+
+  getOtherPlaceholder(): string {
+    let message: string &#x3D; &#x27;Ingrese un valor&#x27;;
+    if (this.question.min &amp;&amp; this.question.max)
+      message +&#x3D; &#x60; entre ${this.question.min} y ${this.question.max}&#x60;;
+    else if (this.question.min) message +&#x3D; &#x60; mayor a ${this.question.min}&#x60;;
+    else if (this.question.max) message +&#x3D; &#x60; menor a ${this.question.max}&#x60;;
+    return message;
+  }
+
+  private loadOtherControl(): void {
+    const answerGroup: FormGroup &#x3D; this.formGroup.get(
+      &#x60;${this.question.id}&#x60;
+    ) as FormGroup;
+    const otherFormControl: FormControl &#x3D; answerGroup.get(
+      &#x27;other&#x27;
+    ) as FormControl;
+    if (this.question.min)
+      otherFormControl.addValidators(Validators.min(this.question.min));
+    if (this.question.max)
+      otherFormControl.addValidators(Validators.max(this.question.max));
+  }
+
+  private changeInputState(
+    answerGroup: FormGroup,
+    id: string,
+    value: boolean
+  ): void {
+    if (this.isLastAnswer(id) &amp;&amp; value) {
+      this.other &#x3D; true;
+      answerGroup.get(&#x27;other&#x27;)?.enable();
+    } else {
+      this.other &#x3D; false;
+      answerGroup.get(&#x27;other&#x27;)?.disable();
+    }
+  }
+
+  private isLastAnswer(id: string): boolean {
+    const answers: FormDetail.Answer[] &#x3D; this.getAnswers();
+    const lastAnswer: FormDetail.Answer &#x3D; answers[answers.length - 1];
+    return Number(id) &#x3D;&#x3D;&#x3D; lastAnswer.id;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;ion-radio-group
+  *ngIf&#x3D;&quot;question.type &#x3D;&#x3D;&#x3D; &#x27;Única respuesta&#x27;&quot;
+  [value]&#x3D;&quot;getValue()&quot;
+  (ionChange)&#x3D;&quot;setValue($event)&quot;
+&gt;
+  &lt;ion-item class&#x3D;&quot;ion-text-wrap&quot; *ngFor&#x3D;&quot;let answer of getAnswers()&quot;&gt;
+    &lt;ion-radio
+      [disabled]&#x3D;&quot;disabled || farming&quot;
+      [value]&#x3D;&quot;answer.id.toString()&quot;
+      labelPlacement&#x3D;&quot;end&quot;
+      justify&#x3D;&quot;start&quot;
+    &gt;
+      &lt;ion-text class&#x3D;&quot;ion-text-wrap&quot;&gt;
+        {{ answer.value }}
+      &lt;/ion-text&gt;
+    &lt;/ion-radio&gt;
+  &lt;/ion-item&gt;
+&lt;/ion-radio-group&gt;
+
+&lt;ng-container *ngIf&#x3D;&quot;question.type &#x3D;&#x3D;&#x3D; &#x27;Única respuesta con otro&#x27;&quot;&gt;
+  &lt;ion-radio-group [value]&#x3D;&quot;getValue()&quot; (ionChange)&#x3D;&quot;setValue($event)&quot;&gt;
+    &lt;ion-item *ngFor&#x3D;&quot;let answer of getAnswers(); last as isLast&quot;&gt;
+      &lt;ion-radio
+        [disabled]&#x3D;&quot;disabled || farming&quot;
+        [value]&#x3D;&quot;answer.id.toString()&quot;
+        labelPlacement&#x3D;&quot;end&quot;
+        justify&#x3D;&quot;start&quot;
+      &gt;
+        &lt;ion-text class&#x3D;&quot;ion-text-wrap&quot;&gt;
+          {{ isLast ? answer.value.split(&quot;:&quot;)[0] : answer.value }}
+        &lt;/ion-text&gt;
+      &lt;/ion-radio&gt;
+    &lt;/ion-item&gt;
+  &lt;/ion-radio-group&gt;
+  &lt;ion-item *ngIf&#x3D;&quot;other &amp;&amp; question.dataType &#x3D;&#x3D;&#x3D; &#x27;text&#x27;&quot;&gt;
+    &lt;ion-input
+      [disabled]&#x3D;&quot;disabled&quot;
+      [value]&#x3D;&quot;getOtherValue()&quot;
+      (ionChange)&#x3D;&quot;setOtherValue($event)&quot;
+      [placeholder]&#x3D;&quot;getOtherPlaceholder()&quot;
+    /&gt;
+    &lt;ion-icon name&#x3D;&quot;text-outline&quot; slot&#x3D;&quot;start&quot; /&gt;
+  &lt;/ion-item&gt;
+  &lt;ion-item *ngIf&#x3D;&quot;other &amp;&amp; question.dataType &#x3D;&#x3D;&#x3D; &#x27;number&#x27;&quot;&gt;
+    &lt;ion-input
+      [disabled]&#x3D;&quot;disabled&quot;
+      labelPlacement&#x3D;&quot;floating&quot;
+      type&#x3D;&quot;number&quot;
+      [value]&#x3D;&quot;getOtherValue()&quot;
+      (ionInput)&#x3D;&quot;setOtherValue($event)&quot;
+      [placeholder]&#x3D;&quot;getOtherPlaceholder()&quot;
+    &gt;
+      &lt;div slot&#x3D;&quot;label&quot;&gt;
+        Valor
+        &lt;ion-text color&#x3D;&quot;danger&quot; *ngIf&#x3D;&quot;isOtherInvalid()&quot;
+          &gt;({{ getOtherErrorMessage() }})&lt;/ion-text
+        &gt;
+      &lt;/div&gt;
+    &lt;/ion-input&gt;
+    &lt;ion-icon name&#x3D;&quot;keypad&quot; slot&#x3D;&quot;start&quot; /&gt;
+  &lt;/ion-item&gt;
+&lt;/ng-container&gt;
+
+&lt;app-autocomplete
+  [disabled]&#x3D;&quot;disabled || farming&quot;
+  *ngIf&#x3D;&quot;question.type &#x3D;&#x3D;&#x3D; &#x27;Única respuesta con select&#x27;&quot;
+  [title]&#x3D;&quot;&#x27;Residencia&#x27;&quot;
+  [question]&#x3D;&quot;question&quot;
+  [formGroup]&#x3D;&quot;formGroup&quot;
+&gt;&lt;/app-autocomplete&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./unique.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><ion-radio-group  *ngIf="question.type === \'Única respuesta\'"  [value]="getValue()"  (ionChange)="setValue($event)">  <ion-item class="ion-text-wrap" *ngFor="let answer of getAnswers()">    <ion-radio      [disabled]="disabled || farming"      [value]="answer.id.toString()"      labelPlacement="end"      justify="start"    >      <ion-text class="ion-text-wrap">        {{ answer.value }}      </ion-text>    </ion-radio>  </ion-item></ion-radio-group><ng-container *ngIf="question.type === \'Única respuesta con otro\'">  <ion-radio-group [value]="getValue()" (ionChange)="setValue($event)">    <ion-item *ngFor="let answer of getAnswers(); last as isLast">      <ion-radio        [disabled]="disabled || farming"        [value]="answer.id.toString()"        labelPlacement="end"        justify="start"      >        <ion-text class="ion-text-wrap">          {{ isLast ? answer.value.split(":")[0] : answer.value }}        </ion-text>      </ion-radio>    </ion-item>  </ion-radio-group>  <ion-item *ngIf="other && question.dataType === \'text\'">    <ion-input      [disabled]="disabled"      [value]="getOtherValue()"      (ionChange)="setOtherValue($event)"      [placeholder]="getOtherPlaceholder()"    />    <ion-icon name="text-outline" slot="start" />  </ion-item>  <ion-item *ngIf="other && question.dataType === \'number\'">    <ion-input      [disabled]="disabled"      labelPlacement="floating"      type="number"      [value]="getOtherValue()"      (ionInput)="setOtherValue($event)"      [placeholder]="getOtherPlaceholder()"    >      <div slot="label">        Valor        <ion-text color="danger" *ngIf="isOtherInvalid()"          >({{ getOtherErrorMessage() }})</ion-text        >      </div>    </ion-input>    <ion-icon name="keypad" slot="start" />  </ion-item></ng-container><app-autocomplete  [disabled]="disabled || farming"  *ngIf="question.type === \'Única respuesta con select\'"  [title]="\'Residencia\'"  [question]="question"  [formGroup]="formGroup"></app-autocomplete></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteComponent', 'selector': 'app-autocomplete'},{'name': 'DataquestHeaderComponent', 'selector': 'app-dataquest-header'},{'name': 'DateDataTypeComponent', 'selector': 'app-date-data-type'},{'name': 'DetailedFormComponent', 'selector': 'app-detailed-form'},{'name': 'DetailPage', 'selector': 'app-detail'},{'name': 'DraftsPage', 'selector': 'app-drafts'},{'name': 'DrawingPadDataTypeComponent', 'selector': 'app-drawing-pad-data-type'},{'name': 'EmailDataTypeComponent', 'selector': 'app-email-data-type'},{'name': 'FormListComponent', 'selector': 'app-form-list'},{'name': 'FormsPage', 'selector': 'app-forms'},{'name': 'HomePage', 'selector': 'app-home'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'MoneyDataTypeComponent', 'selector': 'app-money-data-type'},{'name': 'MonthDataTypeComponent', 'selector': 'app-month-data-type'},{'name': 'MultipleComponent', 'selector': 'app-multiple'},{'name': 'NumberDataTypeComponent', 'selector': 'app-number-data-type'},{'name': 'OpenComponent', 'selector': 'app-open'},{'name': 'PercentageDataTypeComponent', 'selector': 'app-percentage-data-type'},{'name': 'PhoneDataTypeComponent', 'selector': 'app-phone-data-type'},{'name': 'PhotoDataTypeComponent', 'selector': 'app-photo-data-type'},{'name': 'QuestionComponent', 'selector': 'app-question'},{'name': 'SurveysPage', 'selector': 'app-surveys'},{'name': 'TableComponent', 'selector': 'app-table'},{'name': 'TextAreaDataTypeComponent', 'selector': 'app-text-area-data-type'},{'name': 'TextDataTypeComponent', 'selector': 'app-text-data-type'},{'name': 'TypeaheadComponent', 'selector': 'app-typeahead'},{'name': 'TypeComponent', 'selector': 'app-type'},{'name': 'UniqueComponent', 'selector': 'app-unique'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'UniqueComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'UniqueComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
