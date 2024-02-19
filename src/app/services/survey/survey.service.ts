@@ -7,6 +7,7 @@ import { AlertController } from '@ionic/angular';
 import { Observable, catchError, forkJoin, from, mergeMap, of } from 'rxjs';
 import { environment } from 'environment';
 import mockForm  from '../../../data/mock-form';
+import { FilesystemService } from '@services/filesystem/filesystem.service';
 
 /**
  * Service for managing surveys.
@@ -22,7 +23,8 @@ export class SurveyService {
   constructor(
     private apiService: ApiService,
     private alertController: AlertController,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private filesystemService: FilesystemService
   ) { }
 
   /**
@@ -69,6 +71,7 @@ export class SurveyService {
    */
   public getLocalSurveys(): void {
     this.getUUIDArrayFromLocalStorage();
+    // this.createSurveysFolder();
     this.storageService.get(SURVEYS_STORAGE_KEY).then((surveys) => {
       this.surveys = surveys || this.getSurveysArrayFromStorage() || [];
       /* if (!environment.production && this.surveys.length === 0)
@@ -127,6 +130,7 @@ export class SurveyService {
       this.uuidArray.push(survey.uuid);
       this.storageService.set(UUID_ARRAY_STORAGE_KEY, this.uuidArray);
     }
+    this.saveSurveyInFile(survey);
   }
 
   /**
@@ -193,6 +197,28 @@ export class SurveyService {
   private changeSyncStatus(survey: FormDetail.Form, status: boolean): void {
     const index = this.surveys.indexOf(survey);
     this.surveys[index].sync = status; //TODO save into storage
+  }
+
+  /**
+   * Creates the surveys folder in the device.
+   * @returns A promise that resolves when the folder is created.
+   */
+  private async createSurveysFolder(): Promise<void> {
+    const path = 'encuestas';
+    this.filesystemService.createFolder(path);
+  }
+
+  /**
+   * Saves a survey to a file.
+   * @param survey The survey to be saved.
+   * @returns A promise that resolves when the survey is saved.
+   */
+  private async saveSurveyInFile(survey: FormDetail.Form): Promise<void> {
+    const surveyId = survey.id;
+    const surveyBeneficiaryName = `${survey.beneficiary.firstname}-${survey.beneficiary.lastname}`;
+    const timestamp = survey.fechaInicial;
+    const path = `encuestas/${surveyId}-${surveyBeneficiaryName}-${timestamp}.txt`;
+    this.filesystemService.writeFile(path, JSON.stringify(survey));
   }
 
   /* private createMockSurveys(): void {

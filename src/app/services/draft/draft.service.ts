@@ -5,7 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { Beneficiary } from '@models/Beneficiary.namespace';
 import { ProducerService } from '@services/producer/producer.service';
 import { environment } from 'environment';
-import mockForm  from '../../../data/mock-form';
+import mockForm from '../../../data/mock-form';
+import { FilesystemService } from '@services/filesystem/filesystem.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +17,9 @@ export class DraftService {
 
   constructor(
     private storageService: StorageService,
-    private producersService: ProducerService
-  ) {
-    this.getLocalDrafts();
-  }
+    private producersService: ProducerService,
+    private filesystemService: FilesystemService
+  ) {}
 
   public pushDraft(draft: FormDetail.Form): void {
     const currentDate: Date = new Date();
@@ -66,6 +66,7 @@ export class DraftService {
 
   public getLocalDrafts(): void {
     this.getUUIDArrayFromStorage();
+    // this.createDraftsFolder();
     this.storageService.get('drafts').then((drafts) => {
       if (drafts) {
         this.drafts = drafts;
@@ -87,9 +88,11 @@ export class DraftService {
   public getDraftsArrayFromStorage(): FormDetail.Form[] {
     var drafts: FormDetail.Form[] = [];
     for (let i = 0; i < this.uuidArray.length; i++) {
-      this.storageService.get(`${DRAFT_STORAGE_KEY}-${this.uuidArray[i]}`).then((draft) => {
-        drafts.push(draft);
-      });
+      this.storageService
+        .get(`${DRAFT_STORAGE_KEY}-${this.uuidArray[i]}`)
+        .then((draft) => {
+          drafts.push(draft);
+        });
     }
     return drafts;
   }
@@ -126,6 +129,7 @@ export class DraftService {
       this.uuidArray.push(draft.uuid);
       this.storageService.set(UUID_ARRAY_STORAGE_KEY, this.uuidArray);
     }
+    this.saveDraftInFile(draft);
   }
 
   public generateUUID(): string {
@@ -139,6 +143,19 @@ export class DraftService {
       const formattedDate: string = currentDate.toISOString();
       this.drafts[index].fechaUltimoCambio = formattedDate;
     }
+  }
+
+  private async createDraftsFolder(): Promise<void> {
+    const path: string = 'borradores';
+    this.filesystemService.createFolder(path);
+  }
+
+  private async saveDraftInFile(draft: FormDetail.Form): Promise<void> {
+    const draftId = draft.id;
+    const draftBeneficiaryName = `${draft.beneficiary.firstname}-${draft.beneficiary.lastname}`;
+    const timestamp = draft.fechaInicial;
+    const path = `borradores/${draftId}-${draftBeneficiaryName}-${timestamp}.txt`;
+    this.filesystemService.writeFile(path, JSON.stringify(draft));
   }
 
   /* private createMockDrafts(): void {
