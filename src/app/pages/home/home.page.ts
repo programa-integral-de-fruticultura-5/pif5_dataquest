@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule, Platform } from '@ionic/angular';
 import { Authentication } from '@models/Auth.namespace';
 import { AuthService } from '@services/auth/auth.service';
 import { SurveyService } from '@services/survey/survey.service';
 import { App } from '@capacitor/app';
 import { ProducerService } from '@services/producer/producer.service';
+import { DraftService } from '@services/draft/draft.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,6 @@ import { ProducerService } from '@services/producer/producer.service';
   imports: [IonicModule],
 })
 export class HomePage {
-
   @ViewChild('modal') modal!: HTMLIonModalElement;
 
   user!: Authentication.User;
@@ -25,21 +25,36 @@ export class HomePage {
     private alertController: AlertController,
     private authService: AuthService,
     private producerService: ProducerService,
+    private platform: Platform,
+    private draftService: DraftService
   ) {}
 
   ngOnInit() {
-    this.loadProducers();
-    this.loadUser();
     App.getInfo().then((info) => {
       this.appVersion = info.version;
     });
   }
 
-  async uploadSurveys() {
+  ionViewDidEnter() {
+    this.initializeApp();
+  }
 
+  private initializeApp() {
+    this.platform.ready().then(() => {
+      this.loadProducers();
+      this.loadUser();
+      this.surveyService.getNetworkStatus();
+      this.surveyService.addNetworkChangeListener();
+      this.surveyService.getLocalSurveys();
+      this.draftService.getLocalDrafts();
+    });
+  }
+
+  async uploadSurveys() {
     const logoutAlert = await this.alertController.create({
       header: 'Sincronizar',
-      message: 'Este proceso puede tardar. ¿Estás seguro que deseas sincronizar?',
+      message:
+        'Este proceso puede tardar. ¿Estás seguro que deseas sincronizar?',
       buttons: [
         {
           text: 'Cancelar',
@@ -52,13 +67,12 @@ export class HomePage {
           },
         },
       ],
-    })
+    });
 
     await logoutAlert.present();
   }
 
   async logout() {
-
     const logoutAlert = await this.alertController.create({
       header: 'Cerrar Sesión',
       message: '¿Estás seguro que deseas cerrar sesión?',
@@ -76,7 +90,7 @@ export class HomePage {
           },
         },
       ],
-    })
+    });
 
     await logoutAlert.present();
   }
