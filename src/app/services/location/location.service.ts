@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Geolocation, Position } from '@capacitor/geolocation';
-// import { NativeSettings, AndroidSettings } from 'capacitor-native-settings';
+import { NativeSettings, AndroidSettings } from 'capacitor-native-settings';
 
 @Injectable({
   providedIn: 'root',
@@ -41,10 +41,10 @@ export class LocationService {
 
   async openSettings(app = false) {
     console.log('open settings...');
-    /* return NativeSettings.openAndroid({
+    return NativeSettings.openAndroid({
       option: app
         ? AndroidSettings.ApplicationDetails
         : AndroidSettings.Location,
-    }); */
+    });
   }
 }
