@@ -87,6 +87,7 @@ export class QuestionComponent {
           role: 'confirm',
           cssClass: 'danger',
           handler: () => {
+            this.saveResponse(this.currentQuestion, this.formGroup);
             this.location.back();
           },
         },
