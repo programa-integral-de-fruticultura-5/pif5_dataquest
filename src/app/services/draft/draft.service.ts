@@ -66,7 +66,7 @@ export class DraftService {
 
   public getLocalDrafts(): void {
     this.getUUIDArrayFromStorage();
-    // this.createDraftsFolder();
+    this.createDraftsFolder();
     this.storageService.get('drafts').then((drafts) => {
       if (drafts) {
         this.drafts = drafts;

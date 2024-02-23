@@ -26,7 +26,7 @@ export class FilesystemService {
       console.log(`Creating ${path} folder`);
       await Filesystem.mkdir({
         path: path,
-        directory: Directory.Data,
+        directory: Directory.External,
         recursive: true,
       });
       console.log(`${path} folder created`);
@@ -40,7 +40,7 @@ export class FilesystemService {
       console.log(`Reading ${path} folder`);
       const result: ReaddirResult = await Filesystem.readdir({
         path: path,
-        directory: Directory.Data,
+        directory: Directory.External,
       });
       console.log(`${path} folder read`, result);
       return result;
@@ -64,7 +64,7 @@ export class FilesystemService {
   public async writeFile(
     path: string,
     data: string,
-    directory: Directory = Directory.Data
+    directory: Directory = Directory.External
   ): Promise<void> {
     try {
       console.log(`Saving file in ${path}`);
