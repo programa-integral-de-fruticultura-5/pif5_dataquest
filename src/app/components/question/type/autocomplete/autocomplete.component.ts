@@ -104,9 +104,8 @@ export class AutocompleteComponent implements OnInit {
       const formControl: FormControl = this.formGroup.get(
         `${this.question.id}`
       ) as FormControl;
-      if (!this.assignBeneficiary(selection)) {
+      if (!this.assignBeneficiary(selection))
         return;
-      }
       formControl.setValue(selection);
     } else {
       const formGroup: FormGroup = this.formGroup.get(
@@ -130,11 +129,15 @@ export class AutocompleteComponent implements OnInit {
   }
 
   private assignBeneficiary(id: string): boolean {
+    const cedula = id.split(' ')[0];
+    console.log('Cedula: ', cedula)
     const producers: Beneficiary.Producer[] = this.producersService.getProducers();
-    const beneficiary: Beneficiary.Producer = producers.find(
-      (producer) => producer.id === id
-    )!;
-
+    const beneficiary: Beneficiary.Producer | undefined = producers.find(
+      (producer) => producer.cedula == cedula
+    );
+    if (!beneficiary) {
+      return false;
+    }
     return this.detailedFormService.setBeneficiary(beneficiary);
   }
 

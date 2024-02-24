@@ -1,6 +1,11 @@
 import { Beneficiary } from "./Beneficiary.namespace";
 
 export namespace FormDetail {
+
+  export enum FormType {
+    SPECIALIZED = 1,
+  }
+
   export interface Form {
     id: number,
     uuid: string,

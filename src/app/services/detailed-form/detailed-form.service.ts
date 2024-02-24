@@ -70,33 +70,48 @@ export class DetailedFormService {
   public setBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean {
     const previousBeneficiary: Beneficiary.Producer =
       this.selectedForm.beneficiary;
-    const isSpecializedForm: boolean = this.selectedForm.id === 1;
-    if (isSpecializedForm && previousBeneficiary) {
-      previousBeneficiary.specialized = false;
-    }
+    const isSpecializedForm: boolean = this.selectedForm.id === FormDetail.FormType.SPECIALIZED;
+
     if (this.selectedForm.beneficiary === selectedBeneficiary) {
       return true;
     }
 
-    const canSet =
-      (isSpecializedForm &&
-        !this.existsProducerWithSpecializedForm(selectedBeneficiary)) ||
-      (isSpecializedForm && !selectedBeneficiary.specialized) ||
-      (!isSpecializedForm && selectedBeneficiary.specialized);
+    if (isSpecializedForm && previousBeneficiary) {
+      previousBeneficiary.specialized = false;
+    }
+
+    const canSet = this.canSetBeneficiary(selectedBeneficiary);
 
     if (canSet) {
-      if (this.selectedForm.id === 1) {
-        selectedBeneficiary.specialized = true;
-      }
       this.selectedForm.beneficiary = selectedBeneficiary;
       return true;
-    } else if (this.selectedForm.id === 1) {
-      this.showAlreadySpecializedBeneficiaryAlert();
-      return false;
     } else {
+      return false;
+    }
+  }
+
+  private canSetBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean {
+    const specializedFormId: number = FormDetail.FormType.SPECIALIZED;
+    const isSpecializedForm: boolean = this.selectedForm.id === specializedFormId;
+    const existsProducerWithSpecializedForm: boolean =
+      this.existsProducerWithSpecializedForm(selectedBeneficiary);
+    const isSpecializedBeneficiary: boolean = selectedBeneficiary.specialized;
+
+    if ((isSpecializedForm && !isSpecializedBeneficiary) && !existsProducerWithSpecializedForm) {
+      selectedBeneficiary.specialized = true;
+      return true;
+    } else if ((isSpecializedForm && isSpecializedBeneficiary) || existsProducerWithSpecializedForm) {
+      this.showAlreadySpecializedBeneficiaryAlert();
+      return false
+    }
+
+    if (!isSpecializedForm && isSpecializedBeneficiary) {
+      return true;
+    } else  {
       this.showNoSpecializedBeneficiaryAlert();
       return false;
     }
+
   }
 
   private existsProducerWithSpecializedForm(
@@ -107,23 +122,11 @@ export class DetailedFormService {
     const drafts: FormDetail.Form[] = this.draftService.getDrafts();
     const surveys: FormDetail.Form[] = this.surveyService.getSurveys();
 
-    drafts.some((draft) => {
-      if (draft.beneficiary.id === producerToSearch.id) {
-        exists = true;
-        return true;
-      }
+    const existsOnDrafts = drafts.some((d) => d.beneficiary.id === producerToSearch.id  && d.id === 1);
 
-      return false;
-    });
+    const existsOnSurveys = surveys.some((s) => s.beneficiary.id === producerToSearch.id  && s.id === 1);
 
-    surveys.some((survey) => {
-      if (survey.beneficiary.id === producerToSearch.id) {
-        exists = true;
-        return true;
-      }
-
-      return false;
-    });
+    exists = existsOnDrafts || existsOnSurveys;
 
     return exists;
   }
