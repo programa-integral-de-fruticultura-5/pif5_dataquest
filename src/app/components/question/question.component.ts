@@ -104,8 +104,6 @@ export class QuestionComponent {
     await loading.present();
     if (this.isQuestionValid()) {
       this.saveResponse(this.currentQuestion, this.formGroup);
-      if (this.isDraft())
-        this.draftService.saveDraftInStorage(this.currentForm);
       const nextQuestion = this.questionService.toggleNextQuestionFrom(
         this.currentQuestion,
         this.formGroup
@@ -235,6 +233,8 @@ export class QuestionComponent {
         this.saveSelection(question, questionFormGroup);
     }
     this.detailedFormService.updateModifyDate();
+    if (this.isDraft())
+      this.draftService.saveDraftInStorage(this.currentForm);
   }
 
   private saveTableResponse(
