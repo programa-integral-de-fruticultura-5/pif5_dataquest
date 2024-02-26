@@ -151,7 +151,7 @@ export class DraftService {
   }
 
   private async saveDraftInFile(draft: FormDetail.Form): Promise<void> {
-    if (draft.beneficiary === undefined) return;
+    if (draft.beneficiary.cedula === "" || draft.beneficiary.id === "") return;
     const draftId = draft.id;
     const draftBeneficiaryName = `${draft.beneficiary.firstname}-${draft.beneficiary.lastname}`;
     const timestamp = draft.fechaInicial;
