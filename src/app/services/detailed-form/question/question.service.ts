@@ -16,7 +16,7 @@ export class QuestionService {
   constructor(
     private questionControlService: QuestionControlService,
     private answerRelationService: AnswerRelationService,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   /*   getFilteredQuestions(): FormDetail.Question[] {
@@ -31,14 +31,16 @@ export class QuestionService {
   }
 
   setQuestions(questions: FormDetail.Question[]): void {
+    var userType = '';
+    this.authService.getUser().then((user) => {
+      userType = user.type;
+    });
     this.originalQuestions = questions;
     this.filteredQuestions = this.originalQuestions.filter(
-      async (question) =>
-        question.userTypeRestriction ===
-          (await this.authService.getUser()).type ||
+      (question) =>
+        question.userTypeRestriction === userType ||
         question.userTypeRestriction === null
     );
-    console.log(this.filteredQuestions);
   }
 
   getOriginalLength(): number {
@@ -60,7 +62,9 @@ export class QuestionService {
     return lastQuestion;
   }
 
-  private getNextQuestion(current: FormDetail.Question): FormDetail.Question | null {
+  private getNextQuestion(
+    current: FormDetail.Question
+  ): FormDetail.Question | null {
     if (current !== this.getLast()) {
       let next: FormDetail.Question =
         this.filteredQuestions[this.getCurrentIndex(current) + 1];
@@ -69,7 +73,10 @@ export class QuestionService {
     return null;
   }
 
-  toggleNextQuestionFrom(question: FormDetail.Question, formGroup: FormGroup): FormDetail.Question | null {
+  toggleNextQuestionFrom(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ): FormDetail.Question | null {
     const nextQuestion: FormDetail.Question | null =
       this.getNextQuestion(question);
     if (!nextQuestion) {
@@ -93,7 +100,9 @@ export class QuestionService {
     return currentIndex;
   }
 
-  private getPreviousQuestion(current: FormDetail.Question): FormDetail.Question | null {
+  private getPreviousQuestion(
+    current: FormDetail.Question
+  ): FormDetail.Question | null {
     if (current !== this.getFirst()) {
       let previous: FormDetail.Question =
         this.filteredQuestions[this.getCurrentIndex(current) - 1];
@@ -137,11 +146,17 @@ export class QuestionService {
     return this.questionControlService.toFormGroup(this.filteredQuestions);
   }
 
-  private enableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
+  private enableQuestion(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ): void {
     this.answerRelationService.enableQuestion(question, formGroup);
   }
 
-  private disableQuestion(question: FormDetail.Question, formGroup: FormGroup): void {
+  private disableQuestion(
+    question: FormDetail.Question,
+    formGroup: FormGroup
+  ): void {
     this.answerRelationService.disableQuestion(question, formGroup);
   }
 }
