@@ -17,13 +17,6 @@ export class StorageService {
     await this.storage.defineDriver(CordovaSQLiteDriver);
     const storage = await this.storage.create();
     this._storage = storage;
-    this.length().then((length) => {
-      console.log('Storage length:', length);
-    });
-    this.keys().then((keys) => {
-      console.log('Storage keys:', keys);
-    });
-    this.showStorage();
   }
 
   async set(key: string, value: any) {
@@ -50,7 +43,7 @@ export class StorageService {
     return await this._storage?.keys();
   }
 
-  showStorage() {
+  private showStorage() {
     this._storage?.forEach((value, key, index) => {
       console.log('Key:', key);
       console.log('Index:', index);
