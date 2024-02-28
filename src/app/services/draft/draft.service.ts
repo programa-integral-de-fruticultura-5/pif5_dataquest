@@ -155,7 +155,7 @@ export class DraftService {
     const draftId = draft.id;
     const draftBeneficiaryName = `${draft.beneficiary.firstname}-${draft.beneficiary.lastname}`;
     const timestamp = draft.fechaInicial;
-    const path = `borradores/${draftId}-${draftBeneficiaryName}-${timestamp}.txt`;
+    const path = `borradores/${draftId}-${draftBeneficiaryName}-${timestamp}/${draftId}-${draftBeneficiaryName}-${timestamp}.txt`;
     this.filesystemService.writeFile(path, JSON.stringify(draft));
   }
 
