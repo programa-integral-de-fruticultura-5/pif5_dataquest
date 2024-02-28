@@ -233,7 +233,7 @@ export class QuestionComponent {
         this.saveSelection(question, questionFormGroup);
     }
     this.detailedFormService.updateModifyDate();
-    if (this.isDraft())
+    if (this.isForm() || this.isDraft())
       this.draftService.saveDraftInStorage(this.currentForm);
   }
 
