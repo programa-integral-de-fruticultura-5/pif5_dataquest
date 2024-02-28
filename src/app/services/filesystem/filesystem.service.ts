@@ -115,16 +115,22 @@ export class FilesystemService {
     }
   }
 
-  public async copyFile(
+  public async copy(
     oldPath: string,
     newPath: string,
+    useFullPath: boolean = false,
+    fromDirectory: Directory = Directory.External,
+    toDirectory: Directory = Directory.External
   ): Promise<string | undefined> {
     try {
       console.log(`Copying file from ${oldPath} to ${newPath}`);
       const copyResult: CopyResult = await Filesystem.copy({
         from: oldPath,
         to: newPath,
-        toDirectory: Directory.External,
+        ...(!useFullPath && {
+          directory: fromDirectory
+        }),
+        toDirectory: toDirectory,
       });
       console.log('File copied');
       return copyResult.uri;

@@ -32,7 +32,7 @@ export class PhotoService {
     newPath: string
   ): Promise<string | undefined> {
     const absolutePath: string | undefined =
-      await this.filesystemService.copyFile(oldPath, newPath);
+      await this.filesystemService.copy(oldPath, newPath, true);
     return absolutePath;
   }
 

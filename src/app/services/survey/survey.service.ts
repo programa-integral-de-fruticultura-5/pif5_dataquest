@@ -6,7 +6,7 @@ import { Network } from '@capacitor/network';
 import { AlertController } from '@ionic/angular';
 import { Observable, catchError, forkJoin, from, mergeMap, of } from 'rxjs';
 import { environment } from 'environment';
-import mockForm  from '../../../data/mock-form';
+import mockForm from '../../../data/mock-form';
 import { FilesystemService } from '@services/filesystem/filesystem.service';
 
 /**
@@ -25,16 +25,16 @@ export class SurveyService {
     private alertController: AlertController,
     private storageService: StorageService,
     private filesystemService: FilesystemService
-  ) { }
+  ) {}
 
   /**
    * Pushes a survey to the list of surveys and saves them.
    * @param survey The survey to be pushed.
    */
-  public pushSurvey(survey: FormDetail.Form): void {
+  public pushSurvey(survey: FormDetail.Form, oldPath: string): void {
     const copy = JSON.parse(JSON.stringify(survey));
     this.surveys.push(copy);
-    this.saveSurveyInStorage(copy);
+    this.saveSurveyInStorage(copy, oldPath);
   }
 
   /**
@@ -77,7 +77,7 @@ export class SurveyService {
       /* if (!environment.production && this.surveys.length === 0)
         this.createMockSurveys(); */
     });
-    this.saveSurveys();
+    // this.saveSurveys();
   }
 
   /**
@@ -87,9 +87,11 @@ export class SurveyService {
   public getSurveysArrayFromStorage(): FormDetail.Form[] {
     var surveys: FormDetail.Form[] = [];
     for (let i = 0; i < this.uuidArray.length; i++) {
-      this.storageService.get(`${SURVEY_STORAGE_KEY}-${this.uuidArray[i]}`).then((survey) => {
-        if (survey) surveys.push(survey);
-      });
+      this.storageService
+        .get(`${SURVEY_STORAGE_KEY}-${this.uuidArray[i]}`)
+        .then((survey) => {
+          if (survey) surveys.push(survey);
+        });
     }
     return surveys;
   }
@@ -114,7 +116,7 @@ export class SurveyService {
   /**
    * Saves the surveys to the storage.
    */
-  public saveSurveys(): void {
+  private saveSurveys(): void {
     for (let i = 0; i < this.surveys.length; i++) {
       this.saveSurveyInStorage(this.surveys[i]);
     }
@@ -124,13 +126,13 @@ export class SurveyService {
   /**
    * Saves a survey to the storage.
    */
-  private saveSurveyInStorage(survey: FormDetail.Form): void {
+  private saveSurveyInStorage(survey: FormDetail.Form, oldPath?: string): void {
     this.storageService.set(`${SURVEY_STORAGE_KEY}-${survey.uuid}`, survey);
     if (!this.uuidArray.includes(survey.uuid)) {
       this.uuidArray.push(survey.uuid);
       this.storageService.set(UUID_ARRAY_STORAGE_KEY, this.uuidArray);
     }
-    this.saveSurveyInFile(survey);
+    this.saveSurveyInFile(survey, oldPath);
   }
 
   /**
@@ -140,33 +142,42 @@ export class SurveyService {
    */
   public syncSurveys(): void {
     if (this.online) {
-      const surveysToSync: FormDetail.Form[] = this.surveys.filter((survey) => !survey.sync);
-      const syncRequests: Observable<FormDetail.Form | undefined>[] = surveysToSync.map((survey) => {
-        return from(this.apiService.post(ENDPOINT, survey)).pipe(
-          mergeMap((response) => {
-            console.log(response)
-            return of(response.status === 200 ? survey : undefined);
-          }),
-          catchError((error) => {
-            console.error(error)
-            return of(undefined)
-          })
-        );
-      });
-
-      forkJoin(syncRequests).subscribe((syncResults: (FormDetail.Form | undefined)[]) => {
-        const updatedSurveys: FormDetail.Form[] = this.surveys.map((survey) => {
-          const syncedSurvey = syncResults.find((syncResult) => syncResult?.uuid === survey.uuid);
-          if (syncedSurvey) {
-            survey.sync = true;
-          }
-
-          return survey;
+      const surveysToSync: FormDetail.Form[] = this.surveys.filter(
+        (survey) => !survey.sync
+      );
+      const syncRequests: Observable<FormDetail.Form | undefined>[] =
+        surveysToSync.map((survey) => {
+          return from(this.apiService.post(ENDPOINT, survey)).pipe(
+            mergeMap((response) => {
+              console.log(response);
+              return of(response.status === 200 ? survey : undefined);
+            }),
+            catchError((error) => {
+              console.error(error);
+              return of(undefined);
+            })
+          );
         });
-        console.log(updatedSurveys)
-        this.surveys = updatedSurveys;
-        this.saveSurveys();
-      });
+
+      forkJoin(syncRequests).subscribe(
+        (syncResults: (FormDetail.Form | undefined)[]) => {
+          const updatedSurveys: FormDetail.Form[] = this.surveys.map(
+            (survey) => {
+              const syncedSurvey = syncResults.find(
+                (syncResult) => syncResult?.uuid === survey.uuid
+              );
+              if (syncedSurvey) {
+                survey.sync = true;
+              }
+
+              return survey;
+            }
+          );
+          console.log(updatedSurveys);
+          this.surveys = updatedSurveys;
+          this.saveSurveys();
+        }
+      );
     } else {
       this.presentAlert();
     }
@@ -213,12 +224,20 @@ export class SurveyService {
    * @param survey The survey to be saved.
    * @returns A promise that resolves when the survey is saved.
    */
-  private async saveSurveyInFile(survey: FormDetail.Form): Promise<void> {
+  private async saveSurveyInFile(
+    survey: FormDetail.Form,
+    oldPath?: string
+  ): Promise<void> {
     const surveyId = survey.id;
     const surveyBeneficiaryName = `${survey.beneficiary.firstname}-${survey.beneficiary.lastname}`;
     const timestamp = survey.fechaInicial;
-    const path = `encuestas/${surveyId}-${surveyBeneficiaryName}-${timestamp}.txt`;
-    this.filesystemService.writeFile(path, JSON.stringify(survey));
+    const path = `encuestas/${surveyId}-${surveyBeneficiaryName}-${timestamp}`;
+    if (oldPath) await this.filesystemService.copy(oldPath, path);
+    else
+      this.filesystemService.writeFile(
+        `${path}/${surveyId}-${surveyBeneficiaryName}-${timestamp}.txt`,
+        JSON.stringify(survey)
+      );
   }
 
   /* private createMockSurveys(): void {
@@ -238,7 +257,7 @@ const SURVEYS_STORAGE_KEY = 'uploadSurveys';
 /**
  * Key used to store individual surveys in local storage.
  */
-const SURVEY_STORAGE_KEY = 'survey-storage'
+const SURVEY_STORAGE_KEY = 'survey-storage';
 /**
  * Key used to store the size of the surveys in local storage.
  */

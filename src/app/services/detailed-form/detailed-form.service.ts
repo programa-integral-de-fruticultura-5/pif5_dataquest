@@ -181,7 +181,11 @@ export class DetailedFormService {
     const removedDraft: FormDetail.Form = this.draftService.removeDraft(
       this.selectedForm
     );
-    this.surveyService.pushSurvey(removedDraft);
+    const currentFormId = this.selectedForm.id;
+    const currentFormBeneficiaryName = `${this.selectedForm.beneficiary.firstname}-${this.selectedForm.beneficiary.lastname}`;
+    const currentFormTimestamp = this.selectedForm.fechaInicial;
+    const oldPath = `borradores/${currentFormId}-${currentFormBeneficiaryName}-${currentFormTimestamp}/`;
+    this.surveyService.pushSurvey(removedDraft, oldPath);
   }
 
   public updateModifyDate(): void {
