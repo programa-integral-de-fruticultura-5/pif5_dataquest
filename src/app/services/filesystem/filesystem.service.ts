@@ -6,6 +6,7 @@ import {
   WriteFileResult,
   ReaddirResult,
   PermissionStatus,
+  CopyResult,
 } from '@capacitor/filesystem';
 
 @Injectable({
@@ -111,6 +112,60 @@ export class FilesystemService {
     } catch (error) {
       console.error('Error requesting permissions', error);
       return { publicStorage: 'denied' };
+    }
+  }
+
+  public async copyFile(
+    oldPath: string,
+    newPath: string,
+  ): Promise<string | undefined> {
+    try {
+      console.log(`Copying file from ${oldPath} to ${newPath}`);
+      const copyResult: CopyResult = await Filesystem.copy({
+        from: oldPath,
+        to: newPath,
+        toDirectory: Directory.External,
+      });
+      console.log('File copied');
+      return copyResult.uri;
+    } catch (error) {
+      console.error('Error copying file', error);
+      return undefined;
+    }
+  }
+
+  public async readFileAsBase64(
+    path: string,
+  ): Promise<string | undefined> {
+    try {
+      console.log(`Reading file from ${path}`);
+      const readFileResult = await Filesystem.readFile({
+        path: path,
+      });
+      console.log('File read');
+      return readFileResult.data as string;
+    } catch (error) {
+      console.error('Error reading file', error);
+      return undefined;
+    }
+  }
+
+  public async readFile (
+    path: string,
+    directory: Directory = Directory.External
+  ): Promise<string | undefined> {
+    try {
+      console.log(`Reading file from ${path}`);
+      const readFileResult = await Filesystem.readFile({
+        path: path,
+        directory: directory,
+        encoding: Encoding.UTF8,
+      });
+      console.log('File read');
+      return readFileResult.data as string;
+    } catch (error) {
+      console.error('Error reading file', error);
+      return undefined;
     }
   }
 }
