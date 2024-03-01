@@ -21,7 +21,7 @@ export class PhotoDataTypeComponent implements OnInit {
 
   private currentForm!: FormDetail.Form;
   private path: string = DEFAULT_PHOTO;
-  private webPath: string = DEFAULT_PHOTO;
+  private photoAsBase64: string = DEFAULT_PHOTO;
 
   constructor(
     private photoService: PhotoService,
@@ -45,29 +45,21 @@ export class PhotoDataTypeComponent implements OnInit {
     const newPath: string | undefined = await this.getAbsolutePhotoPath();
     if (newPath) {
       this.path = newPath;
-      this.webPath = this.convertToWebPath();
+      this.photoAsBase64 = await this.convertToBase64(newPath);
     } else {
       this.path = DEFAULT_PHOTO;
-      this.webPath = DEFAULT_PHOTO;
+      this.photoAsBase64 = DEFAULT_PHOTO;
     }
   }
 
   async takePhoto() {
     const photo: Photo = await this.photoService.takePhoto();
-    this.webPath = photo.webPath!;
     this.savePhoto(photo);
-    const photoAsBase64: string | undefined = await this.readAsBase64(
-      photo.path!
-    );
-    if (photoAsBase64) {
-      this.formGroup.get(`${this.question.id}`)?.setValue(photoAsBase64);
-    } else {
-      this.formGroup.get(`${this.question.id}`)?.setValue('');
-    }
+    this.photoAsBase64 = await this.convertToBase64(photo.path!);
   }
 
   getPhoto(): string {
-    return this.webPath;
+    return this.photoAsBase64;
   }
 
   private async savePhoto(photo: Photo): Promise<void> {
@@ -76,6 +68,12 @@ export class PhotoDataTypeComponent implements OnInit {
       await this.photoService.savePhoto(photo.path!, createdPath);
     if (newAbsolutePath) {
       this.path = newAbsolutePath;
+      const photoAsBase64 = await this.readAsBase64(newAbsolutePath);
+      if (photoAsBase64) {
+        this.formGroup.get(`${this.question.id}`)?.setValue(photoAsBase64);
+      } else {
+        this.formGroup.get(`${this.question.id}`)?.setValue('');
+      }
     }
   }
 
@@ -105,8 +103,10 @@ export class PhotoDataTypeComponent implements OnInit {
     return await this.photoService.getPhotoAbsolutePath(photoFolder, photoName)
   }
 
-  private convertToWebPath(): string {
-    return Capacitor.convertFileSrc(this.path);
+  private async convertToBase64(paht: string): Promise<string> {
+    const photoAsBase64: string | undefined = await this.readAsBase64(paht);
+    const photoAsBase64WithPrefix: string = `data:image/jpeg;base64,${photoAsBase64}`;
+    return photoAsBase64 ? photoAsBase64WithPrefix : DEFAULT_PHOTO;
   }
 }
 
