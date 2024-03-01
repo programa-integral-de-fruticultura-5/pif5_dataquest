@@ -122,6 +122,7 @@ export function producerBuilder(
     associationId: producer.association_id,
     transplantDate: producer.transplantDate,
     recommendedActions: producer.selectedQuestionIds,
+    support: producer.sost_p5 === 1,
   };
 }
 

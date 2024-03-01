@@ -1,6 +1,6 @@
 import { FormDetail } from '@models/FormDetail.namespace';
 
-const mockForm: FormDetail.Form = {
+const mockForm = {
   id: 1,
   uuid: 'd2cb7128-df21-4fa1-a22f-d6295c577427',
   name: 'CARACTERIZACIÓN / ASISTENCIA ESPECIALIZADA',

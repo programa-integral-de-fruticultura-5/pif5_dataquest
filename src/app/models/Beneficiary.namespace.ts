@@ -15,6 +15,7 @@ export namespace Beneficiary {
     associationId: number;
     transplantDate: string;
     recommendedActions: SelectedQuestions
+    support: boolean; // Support visit / Technical Assistance
   }
 
   export const ProducerBaseParams = {
@@ -31,7 +32,8 @@ export namespace Beneficiary {
     supplies: false,
     associationId: 0,
     transplantDate: '',
-    recommendedActions: {}
+    recommendedActions: {},
+    support: false
   };
 
   export type ProducerResponse = {
@@ -42,6 +44,7 @@ export namespace Beneficiary {
     segundo_apellido: string;
     identification: string;
     has_especializada: number;
+    sost_p5: number;        // support visit
     at_p5: number;          // asistencia técnica
     pd_p5: number;          // parcela demostrativa
     cm_p5: number;          // casa malla (invernadero espacial)

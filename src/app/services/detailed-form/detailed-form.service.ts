@@ -96,6 +96,7 @@ export class DetailedFormService {
     const existsProducerWithSpecializedForm: boolean =
       this.existsProducerWithSpecializedForm(selectedBeneficiary);
     const isSpecializedBeneficiary: boolean = selectedBeneficiary.specialized;
+    const isSupportCandidate: boolean = selectedBeneficiary.support;
 
     if ((isSpecializedForm && !isSpecializedBeneficiary) && !existsProducerWithSpecializedForm) {
       selectedBeneficiary.specialized = true;
@@ -107,11 +108,24 @@ export class DetailedFormService {
 
     if (!isSpecializedForm && isSpecializedBeneficiary) {
       return true;
-    } else  {
+    } else if (!isSpecializedForm && !isSpecializedBeneficiary) {
       this.showNoSpecializedBeneficiaryAlert();
       return false;
+    } else if ((!isSpecializedForm && isSpecializedBeneficiary && isSupportCandidate))  {
+      return true;
+    } else {
+      this.showNoSupportBeneficiaryAlert();
+      return false;
     }
+  }
 
+  private async showNoSupportBeneficiaryAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Beneficiario no es candidato de asistencia técnica',
+      message: 'Escoge otro beneficiario',
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   private existsProducerWithSpecializedForm(
