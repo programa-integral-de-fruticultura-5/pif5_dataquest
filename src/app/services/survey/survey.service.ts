@@ -3,7 +3,7 @@ import { FormDetail } from '@models/FormDetail.namespace';
 import { StorageService } from '../storage/storage.service';
 import { ApiService } from '../api/api.service';
 import { Network } from '@capacitor/network';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { Observable, catchError, forkJoin, from, mergeMap, of } from 'rxjs';
 import { environment } from 'environment';
 import mockForm from '../../../data/mock-form';
@@ -19,10 +19,12 @@ export class SurveyService {
   private online: boolean = false;
   private surveys: FormDetail.Form[] = [];
   private uuidArray: string[] = [];
+  private counter: number = 0;
 
   constructor(
     private apiService: ApiService,
     private alertController: AlertController,
+    private loadingController: LoadingController,
     private storageService: StorageService,
     private filesystemService: FilesystemService
   ) {}
@@ -140,11 +142,14 @@ export class SurveyService {
    * If online, it sends the unsynced surveys to the server and updates the sync status.
    * If offline, it presents an alert.
    */
-  public syncSurveys(): void {
+  public async syncSurveys(): Promise<void> {
+    this.counter = 0;
     if (this.online) {
       const surveysToSync: FormDetail.Form[] = this.surveys.filter(
         (survey) => !survey.sync
       );
+      const loading: HTMLIonLoadingElement = await this.createLoading(surveysToSync.length);
+      loading.present();
       const syncRequests: Observable<FormDetail.Form | undefined>[] =
         surveysToSync.map((survey) => {
           return from(this.apiService.post(ENDPOINT, survey)).pipe(
@@ -167,6 +172,7 @@ export class SurveyService {
                 (syncResult) => syncResult?.uuid === survey.uuid
               );
               if (syncedSurvey) {
+                this.counter++;
                 survey.sync = true;
               }
 
@@ -178,9 +184,21 @@ export class SurveyService {
           this.saveSurveys();
         }
       );
+      loading.dismiss();
     } else {
       this.presentAlert();
     }
+  }
+
+  /**
+   * Creates a loading component.
+   * @returns The loading component.
+   */
+  private async createLoading(length: number): Promise<HTMLIonLoadingElement> {
+    const loading = await this.loadingController.create({
+      message: `Sincronizando encuestas... ${this.counter} de ${length}`,
+    });
+    return loading;
   }
 
   /**
