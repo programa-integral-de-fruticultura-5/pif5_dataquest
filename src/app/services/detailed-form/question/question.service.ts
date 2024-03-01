@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { QuestionControlService } from '../control/question-control.service';
 import { AuthService } from '../../auth/auth.service';
 import { AnswerRelationService } from './answer-relation/answer-relation.service';
+import { Authentication } from '@models/Auth.namespace';
 
 @Injectable({
   providedIn: 'root',
@@ -30,11 +31,10 @@ export class QuestionService {
     return this.originalQuestions;
   }
 
-  setQuestions(questions: FormDetail.Question[]): void {
+  async setQuestions(questions: FormDetail.Question[]): Promise<void> {
     var userType = '';
-    this.authService.getUser().then((user) => {
-      userType = user.type;
-    });
+    const user: Authentication.User = await this.authService.getUser()
+    userType = user.type;
     this.originalQuestions = questions;
     this.filteredQuestions = this.originalQuestions.filter(
       (question) =>
