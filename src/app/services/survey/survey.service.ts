@@ -184,7 +184,9 @@ export class SurveyService {
           this.saveSurveys();
         }
       );
-      loading.dismiss();
+      setTimeout(() => {
+        loading.dismiss();
+      }, 3000);
     } else {
       this.presentAlert();
     }
