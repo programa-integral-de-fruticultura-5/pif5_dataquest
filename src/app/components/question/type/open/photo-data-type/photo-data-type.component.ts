@@ -103,8 +103,8 @@ export class PhotoDataTypeComponent implements OnInit {
     return await this.photoService.getPhotoAbsolutePath(photoFolder, photoName)
   }
 
-  private async convertToBase64(paht: string): Promise<string> {
-    const photoAsBase64: string | undefined = await this.readAsBase64(paht);
+  private async convertToBase64(path: string): Promise<string> {
+    const photoAsBase64: string | undefined = await this.readAsBase64(path);
     const photoAsBase64WithPrefix: string = `data:image/jpeg;base64,${photoAsBase64}`;
     return photoAsBase64 ? photoAsBase64WithPrefix : DEFAULT_PHOTO;
   }
