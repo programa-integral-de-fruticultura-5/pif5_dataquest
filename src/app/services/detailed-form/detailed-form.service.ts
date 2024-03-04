@@ -54,9 +54,7 @@ export class DetailedFormService {
     this.form = formType;
     this.draft = draftType;
     this.survey = surveyType;
-    if (this.isDraft() || this.isSurvey()) {
-      this.setQuestions();
-    }
+    this.setQuestions();
   }
 
   public setQuestionsPage(questionPage: boolean): void {
