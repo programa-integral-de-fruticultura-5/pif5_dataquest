@@ -36,7 +36,7 @@ export class PhotoService {
     path: string,
     base64Photo: string
   ): Promise<void> {
-    await this.filesystemService.writeFile(path, base64Photo);
+    await this.filesystemService.writeFile(path, base64Photo, true);
   }
 
   public async readPhoto(photoPath: string): Promise<string | undefined> {

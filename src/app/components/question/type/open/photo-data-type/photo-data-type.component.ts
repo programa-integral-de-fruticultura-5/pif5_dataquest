@@ -51,9 +51,10 @@ export class PhotoDataTypeComponent implements OnInit {
 
   private async savePhoto(photo: Photo): Promise<void> {
     const createdPath: string = this.createPhotoPath();
+    const photoAsBase64: string = photo.base64String!;
 
     try {
-      await this.photoService.savePhoto(createdPath, photo.base64String!);
+      await this.photoService.savePhoto(createdPath, PHOTO_PREFIX + photoAsBase64);
     } catch (error) {
       console.error('Error saving photo', error);
       this.presentToast(SAVE_PHOTO_ERROR);
@@ -73,7 +74,7 @@ export class PhotoDataTypeComponent implements OnInit {
     const currentFormBeneficiaryName = `${this.currentForm.beneficiary.firstname}-${this.currentForm.beneficiary.lastname}`;
     const currentFormTimestamp = this.currentForm.fechaInicial;
     const currentQuestionId: string = this.question.id;
-    const newPath = `borradores/${currentFormId}-${currentFormBeneficiaryName}-${currentFormTimestamp}/${currentFormId}-${currentQuestionId}-${currentFormBeneficiaryName}-${currentFormTimestamp}.jpg`;
+    const newPath = `borradores/${currentFormId}-${currentFormBeneficiaryName}-${currentFormTimestamp}/${currentFormId}-${currentQuestionId}-${currentFormBeneficiaryName}-${currentFormTimestamp}.jpeg`;
     return newPath;
   }
 }

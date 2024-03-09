@@ -65,6 +65,7 @@ export class FilesystemService {
   public async writeFile(
     path: string,
     data: string,
+    isBase64: boolean = false,
     directory: Directory = Directory.External
   ): Promise<void> {
     try {
@@ -84,7 +85,9 @@ export class FilesystemService {
         path: path,
         data: data,
         directory: directory,
-        encoding: Encoding.UTF8,
+        ...(!isBase64 && {
+          encoding: Encoding.UTF8,
+        }),
         recursive: true,
       });
       console.log('File written in ', writeFileResult.uri);
