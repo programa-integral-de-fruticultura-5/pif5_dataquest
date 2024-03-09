@@ -78,7 +78,7 @@ export class DetailedFormService {
       previousBeneficiary.specialized = false;
     }
 
-    const canSet = this.canSetBeneficiary(selectedBeneficiary);
+    const canSet: boolean | undefined = this.canSetBeneficiary(selectedBeneficiary);
 
     if (canSet) {
       this.selectedForm.beneficiary = selectedBeneficiary;
@@ -88,33 +88,55 @@ export class DetailedFormService {
     }
   }
 
-  private canSetBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean {
-    const specializedFormId: number = FormDetail.FormType.SPECIALIZED;
-    const isSpecializedForm: boolean = this.selectedForm.id === specializedFormId;
+  private canSetBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean | undefined {
+
+    const formId = this.selectedForm.id;
+
+    switch (FormDetail.FormType[formId]) {
+      case 'SPECIALIZED':
+        return this.canSetSpecializedBeneficiary(selectedBeneficiary);
+      case 'SUPPORT':
+        return this.canSetSupportBeneficiary(selectedBeneficiary);
+      default:
+        return false;
+    }
+  }
+
+  private canSetSpecializedBeneficiary(
+    selectedBeneficiary: Beneficiary.Producer
+  ): boolean | undefined {
     const existsProducerWithSpecializedForm: boolean =
       this.existsProducerWithSpecializedForm(selectedBeneficiary);
     const isSpecializedBeneficiary: boolean = selectedBeneficiary.specialized;
-    const isSupportCandidate: boolean = selectedBeneficiary.support;
 
-    if ((isSpecializedForm && !isSpecializedBeneficiary) && !existsProducerWithSpecializedForm) {
+    if (!isSpecializedBeneficiary && !existsProducerWithSpecializedForm) {
       selectedBeneficiary.specialized = true;
       return true;
-    } else if ((isSpecializedForm && isSpecializedBeneficiary) || existsProducerWithSpecializedForm) {
+    } else if (isSpecializedBeneficiary || existsProducerWithSpecializedForm) {
       this.showAlreadySpecializedBeneficiaryAlert();
-      return false
+      return false;
     }
 
-    if (!isSpecializedForm && isSpecializedBeneficiary) {
+    return undefined;
+  }
+
+  private canSetSupportBeneficiary(
+    selectedBeneficiary: Beneficiary.Producer
+  ): boolean | undefined {
+    const isSpecializedBeneficiary: boolean = selectedBeneficiary.specialized;
+    const isSupportCandidate: boolean = selectedBeneficiary.support;
+
+    if (isSpecializedBeneficiary && isSupportCandidate) {
       return true;
-    } else if (!isSpecializedForm && !isSpecializedBeneficiary) {
+    } else if (!isSpecializedBeneficiary) {
       this.showNoSpecializedBeneficiaryAlert();
       return false;
-    } else if ((!isSpecializedForm && isSpecializedBeneficiary && isSupportCandidate))  {
-      return true;
-    } else {
+    } else if (!isSupportCandidate) {
       this.showNoSupportBeneficiaryAlert();
       return false;
     }
+
+    return undefined;
   }
 
   private async showNoSupportBeneficiaryAlert(): Promise<void> {
