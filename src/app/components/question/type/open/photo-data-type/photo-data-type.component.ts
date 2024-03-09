@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Form, FormControl, FormGroup } from '@angular/forms';
 import { Photo } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { FormDetail } from '@models/FormDetail.namespace';
 import { DetailedFormService } from '@services/detailed-form/detailed-form.service';
 import { PhotoService } from '@services/detailed-form/question/photo/photo.service';
@@ -20,65 +20,52 @@ export class PhotoDataTypeComponent implements OnInit {
   @Input({ required: true }) disabled!: boolean;
 
   private currentForm!: FormDetail.Form;
-  private path: string = DEFAULT_PHOTO;
-  private photoAsBase64: string = DEFAULT_PHOTO;
 
   constructor(
     private photoService: PhotoService,
-    private detailedFormService: DetailedFormService
+    private detailedFormService: DetailedFormService,
+    private toastController: ToastController
   ) {}
 
   async ngOnInit() {
     this.currentForm = this.detailedFormService.getForm();
-    await this.setNewPath();
-  }
-
-  async ngOnChanges (simpleChanges: SimpleChanges) {
-    const currentValue: FormDetail.Question = simpleChanges['question'].currentValue;
-    const previousValue: FormDetail.Question = simpleChanges['question'].previousValue;
-    if (currentValue !== previousValue) {
-      await this.setNewPath();
-    }
-  }
-
-  private async setNewPath(): Promise<void> {
-    const newPath: string | undefined = await this.getAbsolutePhotoPath();
-    if (newPath) {
-      this.path = newPath;
-      this.photoAsBase64 = await this.convertToBase64(newPath);
-    } else {
-      this.path = DEFAULT_PHOTO;
-      this.photoAsBase64 = DEFAULT_PHOTO;
-    }
   }
 
   async takePhoto() {
+    const questionFormControl: FormControl = this.getFormControl();
     const photo: Photo = await this.photoService.takePhoto();
+    questionFormControl.setValue(photo.base64String);
     this.savePhoto(photo);
-    this.photoAsBase64 = await this.convertToBase64(photo.path!);
+  }
+
+  private getFormControl(): FormControl {
+    const questionId: string = this.question.id;
+    return this.formGroup.get(questionId) as FormControl;
   }
 
   getPhoto(): string {
-    return this.photoAsBase64;
+    const questionFormControl: FormControl = this.getFormControl();
+    const photoAsBase64: string = questionFormControl.value;
+    return photoAsBase64 === '' ? DEFAULT_PHOTO : PHOTO_PREFIX + photoAsBase64;
   }
 
   private async savePhoto(photo: Photo): Promise<void> {
     const createdPath: string = this.createPhotoPath();
-    const newAbsolutePath: string | undefined =
-      await this.photoService.savePhoto(photo.path!, createdPath);
-    if (newAbsolutePath) {
-      this.path = newAbsolutePath;
-      const photoAsBase64 = await this.readAsBase64(newAbsolutePath);
-      if (photoAsBase64) {
-        this.formGroup.get(`${this.question.id}`)?.setValue(photoAsBase64);
-      } else {
-        this.formGroup.get(`${this.question.id}`)?.setValue('');
-      }
+
+    try {
+      await this.photoService.savePhoto(createdPath, photo.base64String!);
+    } catch (error) {
+      console.error('Error saving photo', error);
+      this.presentToast(SAVE_PHOTO_ERROR);
     }
   }
 
-  private async readAsBase64(photoPath: string): Promise<string | undefined> {
-    return await this.photoService.readPhoto(photoPath);
+  private async presentToast(message: string): Promise<void> {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+    });
+    toast.present();
   }
 
   private createPhotoPath(): string {
@@ -89,25 +76,8 @@ export class PhotoDataTypeComponent implements OnInit {
     const newPath = `borradores/${currentFormId}-${currentFormBeneficiaryName}-${currentFormTimestamp}/${currentFormId}-${currentQuestionId}-${currentFormBeneficiaryName}-${currentFormTimestamp}.jpg`;
     return newPath;
   }
-
-  private async getAbsolutePhotoPath(): Promise<string | undefined> {
-    var folder: string = this.detailedFormService.isDraft()
-      ? 'borradores'
-      : 'encuestas';
-    const currentFormId = this.currentForm.id;
-    const currentFormBeneficiaryName = `${this.currentForm.beneficiary.firstname}-${this.currentForm.beneficiary.lastname}`;
-    const currentFormTimestamp = this.currentForm.fechaInicial;
-    const currentQuestionId: string = this.question.id;
-    const photoFolder = `${folder}/${currentFormId}-${currentFormBeneficiaryName}-${currentFormTimestamp}`;
-    const photoName: string = `${currentFormId}-${currentQuestionId}-${currentFormBeneficiaryName}-${currentFormTimestamp}.jpg`;
-    return await this.photoService.getPhotoAbsolutePath(photoFolder, photoName)
-  }
-
-  private async convertToBase64(path: string): Promise<string> {
-    const photoAsBase64: string | undefined = await this.readAsBase64(path);
-    const photoAsBase64WithPrefix: string = `data:image/jpeg;base64,${photoAsBase64}`;
-    return photoAsBase64 ? photoAsBase64WithPrefix : DEFAULT_PHOTO;
-  }
 }
 
 const DEFAULT_PHOTO: string = 'assets/imgs/dataquest-icon-2732px.png';
+const PHOTO_PREFIX: string = 'data:image/jpeg;base64,';
+const SAVE_PHOTO_ERROR: string = 'Error guardando la foto';
