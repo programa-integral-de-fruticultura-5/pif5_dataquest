@@ -68,7 +68,8 @@ export class DetailedFormService {
   public setBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean {
     const previousBeneficiary: Beneficiary.Producer =
       this.selectedForm.beneficiary;
-    const isSpecializedForm: boolean = this.selectedForm.id === FormDetail.FormType.SPECIALIZED;
+    const isSpecializedForm: boolean =
+      this.selectedForm.id === FormDetail.FormType.SPECIALIZED;
 
     if (this.selectedForm.beneficiary === selectedBeneficiary) {
       return true;
@@ -78,7 +79,8 @@ export class DetailedFormService {
       previousBeneficiary.specialized = false;
     }
 
-    const canSet: boolean | undefined = this.canSetBeneficiary(selectedBeneficiary);
+    const canSet: boolean | undefined =
+      this.canSetBeneficiary(selectedBeneficiary);
 
     if (canSet) {
       this.selectedForm.beneficiary = selectedBeneficiary;
@@ -88,8 +90,9 @@ export class DetailedFormService {
     }
   }
 
-  private canSetBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean | undefined {
-
+  private canSetBeneficiary(
+    selectedBeneficiary: Beneficiary.Producer
+  ): boolean | undefined {
     const formId = this.selectedForm.id;
 
     switch (FormDetail.FormType[formId]) {
@@ -124,11 +127,13 @@ export class DetailedFormService {
     selectedBeneficiary: Beneficiary.Producer
   ): boolean | undefined {
     const isSpecializedBeneficiary: boolean = selectedBeneficiary.specialized;
+    const existsProducerWithSpecializedForm: boolean =
+      this.existsProducerWithSpecializedForm(selectedBeneficiary);
     const isSupportCandidate: boolean = selectedBeneficiary.support;
 
     if (isSpecializedBeneficiary && isSupportCandidate) {
       return true;
-    } else if (!isSpecializedBeneficiary) {
+    } else if (!isSpecializedBeneficiary || !existsProducerWithSpecializedForm) {
       this.showNoSpecializedBeneficiaryAlert();
       return false;
     } else if (!isSupportCandidate) {
@@ -156,9 +161,13 @@ export class DetailedFormService {
     const drafts: FormDetail.Form[] = this.draftService.getDrafts();
     const surveys: FormDetail.Form[] = this.surveyService.getSurveys();
 
-    const existsOnDrafts = drafts.some((d) => d.beneficiary.id === producerToSearch.id  && d.id === 1);
+    const existsOnDrafts = drafts.some(
+      (d) => d.beneficiary.id === producerToSearch.id && d.id === 1
+    );
 
-    const existsOnSurveys = surveys.some((s) => s.beneficiary.id === producerToSearch.id  && s.id === 1);
+    const existsOnSurveys = surveys.some(
+      (s) => s.beneficiary.id === producerToSearch.id && s.id === 1
+    );
 
     exists = existsOnDrafts || existsOnSurveys;
 
