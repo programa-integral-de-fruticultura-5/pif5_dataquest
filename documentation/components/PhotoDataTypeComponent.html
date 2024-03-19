@@ -201,6 +201,21 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#currentForm" >currentForm</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -211,12 +226,32 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createPhotoPath" >createPhotoPath</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getFormControl" >getFormControl</a>
+                            </li>
+                            <li>
                                 <a href="#getPhoto" >getPhoto</a>
                             </li>
                             <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#ngOnInit" >ngOnInit</a>
                             </li>
                             <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#presentToast" >presentToast</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#savePhoto" >savePhoto</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#takePhoto" >takePhoto</a>
                             </li>
                         </ul>
@@ -257,12 +292,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(photoService: <a href="../injectables/PhotoService.html" target="_self">PhotoService</a>)</code>
+<code>constructor(photoService: <a href="../injectables/PhotoService.html" target="_self">PhotoService</a>, detailedFormService: <a href="../injectables/DetailedFormService.html" target="_self">DetailedFormService</a>, toastController: ToastController)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:22</a></div>
                             </td>
                         </tr>
 
@@ -284,6 +319,30 @@
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/PhotoService.html" target="_self" >PhotoService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>detailedFormService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/DetailedFormService.html" target="_self" >DetailedFormService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>toastController</td>
+                                                  
+                                                        <td>
+                                                                    <code>ToastController</code>
                                                         </td>
                                                   
                                                     <td>
@@ -323,7 +382,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:18</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:20</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -349,7 +408,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:17</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:19</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -375,7 +434,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:16</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:18</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -393,6 +452,84 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="createPhotoPath"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>createPhotoPath</b></span>
+                        <a href="#createPhotoPath"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createPhotoPath()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFormControl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getFormControl</b></span>
+                        <a href="#getFormControl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFormControl()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="41"
+                                    class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Form.html" target="_self" >FormControl</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getPhoto"></a>
                     <span class="name">
                         <span ><b>getPhoto</b></span>
@@ -403,6 +540,45 @@
             <tr>
                 <td class="col-md-4">
 <code>getPhoto()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>ngOnInit()</code>
                 </td>
             </tr>
 
@@ -430,24 +606,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="ngOnInit"></a>
+                    <a name="presentToast"></a>
                     <span class="name">
-                        <span ><b>ngOnInit</b></span>
-                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>presentToast</b></span>
+                        <a href="#presentToast"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>ngOnInit()</code>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>presentToast(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="22"
-                                    class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:22</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:64</a></div>
                         </td>
                     </tr>
 
@@ -455,10 +634,110 @@
             <tr>
                 <td class="col-md-4">
 
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>message</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="savePhoto"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>savePhoto</b></span>
+                        <a href="#savePhoto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>savePhoto(photo: Photo)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>photo</td>
+                                            <td>
+                                                        <code>Photo</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -469,6 +748,7 @@
                 <td class="col-md-4">
                     <a name="takePhoto"></a>
                     <span class="name">
+                            <span class="modifier">Async</span>
                         <span ><b>takePhoto</b></span>
                         <a href="#takePhoto"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -476,15 +756,16 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>takePhoto()</code>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>takePhoto()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="24"
-                                    class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:24</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="34"
+                                    class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:34</a></div>
                         </td>
                     </tr>
 
@@ -493,11 +774,44 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                 </td>
             </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentForm"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>currentForm</b></span>
+                        <a href="#currentForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Form.html" target="_self" >FormDetail.Form</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/components/question/type/open/photo-data-type/photo-data-type.component.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
         </tbody>
     </table>
 </section>
@@ -506,10 +820,13 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnInit } from &#x27;@angular/core&#x27;;
-import { FormGroup } from &#x27;@angular/forms&#x27;;
-import { IonicModule } from &#x27;@ionic/angular&#x27;;
-import { FormDetail } from &#x27;@models/FormDetail.namespace&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnInit, SimpleChanges } from &#x27;@angular/core&#x27;;
+import { Form, FormControl, FormGroup } from &#x27;@angular/forms&#x27;;
+import { Photo } from &#x27;@capacitor/camera&#x27;;
+import { Capacitor } from &#x27;@capacitor/core&#x27;;
+import { IonicModule, ToastController } from &#x27;@ionic/angular&#x27;;
+import { FormDetail } from &#x27;@models/FormDetail.namespace&#x27;;
+import { DetailedFormService } from &#x27;@services/detailed-form/detailed-form.service&#x27;;
 import { PhotoService } from &#x27;@services/detailed-form/question/photo/photo.service&#x27;;
 
 @Component({
@@ -517,30 +834,76 @@ import { PhotoService } from &#x27;@services/detailed-form/question/photo/photo.
   templateUrl: &#x27;./photo-data-type.component.html&#x27;,
   styleUrls: [&#x27;./photo-data-type.component.scss&#x27;],
   standalone: true,
-  imports: [ IonicModule ],
+  imports: [IonicModule],
 })
-export class PhotoDataTypeComponent  implements OnInit {
+export class PhotoDataTypeComponent implements OnInit {
+  @Input({ required: true }) question!: FormDetail.Question;
+  @Input({ required: true }) formGroup!: FormGroup;
+  @Input({ required: true }) disabled!: boolean;
 
-  @Input({ required: true }) question!: FormDetail.Question
-  @Input({ required: true }) formGroup!: FormGroup
-  @Input({ required: true }) disabled!: boolean
+  private currentForm!: FormDetail.Form;
 
-  constructor(private photoService: PhotoService) { }
+  constructor(
+    private photoService: PhotoService,
+    private detailedFormService: DetailedFormService,
+    private toastController: ToastController
+  ) {}
 
-  ngOnInit() { }
-
-  takePhoto() {
-    this.photoService.takePhoto().then((photo) &#x3D;&gt; {
-      this.formGroup.get(&#x60;${this.question.id}&#x60;)?.setValue(photo);
-    })
+  async ngOnInit() {
+    this.currentForm &#x3D; this.detailedFormService.getForm();
   }
 
-  getPhoto(): any {
-    let photoBase64 &#x3D; this.formGroup.get(&#x60;${this.question.id}&#x60;)?.value;
-    let photo &#x3D; &#x60;data:image/jpeg;base64,${photoBase64}&#x60;;
-    return photo;
+  async takePhoto() {
+    const questionFormControl: FormControl &#x3D; this.getFormControl();
+    const photo: Photo &#x3D; await this.photoService.takePhoto();
+    questionFormControl.setValue(photo.base64String);
+    this.savePhoto(photo);
+  }
+
+  private getFormControl(): FormControl {
+    const questionId: string &#x3D; this.question.id;
+    return this.formGroup.get(questionId) as FormControl;
+  }
+
+  getPhoto(): string {
+    const questionFormControl: FormControl &#x3D; this.getFormControl();
+    const photoAsBase64: string &#x3D; questionFormControl.value;
+    return photoAsBase64 &#x3D;&#x3D;&#x3D; &#x27;&#x27; ? DEFAULT_PHOTO : PHOTO_PREFIX + photoAsBase64;
+  }
+
+  private async savePhoto(photo: Photo): Promise&lt;void&gt; {
+    const createdPath: string &#x3D; this.createPhotoPath();
+    const photoAsBase64: string &#x3D; photo.base64String!;
+
+    try {
+      await this.photoService.savePhoto(createdPath, PHOTO_PREFIX + photoAsBase64);
+    } catch (error) {
+      console.error(&#x27;Error saving photo&#x27;, error);
+      this.presentToast(SAVE_PHOTO_ERROR);
+    }
+  }
+
+  private async presentToast(message: string): Promise&lt;void&gt; {
+    const toast &#x3D; await this.toastController.create({
+      message: message,
+      duration: 2000,
+    });
+    toast.present();
+  }
+
+  private createPhotoPath(): string {
+    const currentFormId &#x3D; this.currentForm.id;
+    const currentFormBeneficiaryName &#x3D; &#x60;${this.currentForm.beneficiary.firstname}-${this.currentForm.beneficiary.lastname}&#x60;;
+    const currentFormTimestamp &#x3D; this.currentForm.fechaInicial;
+    const currentQuestionId: string &#x3D; this.question.id;
+    const newPath &#x3D; &#x60;borradores/${currentFormId}-${currentFormBeneficiaryName}-${currentFormTimestamp}/${currentFormId}-${currentQuestionId}-${currentFormBeneficiaryName}-${currentFormTimestamp}.jpeg&#x60;;
+    return newPath;
   }
 }
+
+const DEFAULT_PHOTO: string &#x3D; &#x27;assets/imgs/dataquest-icon-2732px.png&#x27;;
+const PHOTO_PREFIX: string &#x3D; &#x27;data:image/jpeg;base64,&#x27;;
+const SAVE_PHOTO_ERROR: string &#x3D; &#x27;Error guardando la foto&#x27;;
 </code></pre>
     </div>
 

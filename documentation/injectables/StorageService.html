@@ -159,6 +159,10 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#clear" >clear</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#get" >get</a>
                             </li>
                             <li>
@@ -182,6 +186,7 @@
                                 <a href="#set" >set</a>
                             </li>
                             <li>
+                                    <span class="modifier">Private</span>
                                 <a href="#showStorage" >showStorage</a>
                             </li>
                         </ul>
@@ -254,6 +259,45 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="clear"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>clear</b></span>
+                        <a href="#clear"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>clear()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="34"
+                                    class="link-to-prism">src/app/services/storage/storage.service.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="get"></a>
                     <span class="name">
                             <span class="modifier">Async</span>
@@ -272,8 +316,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="33"
-                                    class="link-to-prism">src/app/services/storage/storage.service.ts:33</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="26"
+                                    class="link-to-prism">src/app/services/storage/storage.service.ts:26</a></div>
                         </td>
                     </tr>
 
@@ -380,8 +424,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/app/services/storage/storage.service.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/app/services/storage/storage.service.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -419,8 +463,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="41"
-                                    class="link-to-prism">src/app/services/storage/storage.service.ts:41</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="38"
+                                    class="link-to-prism">src/app/services/storage/storage.service.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -458,8 +502,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="37"
-                                    class="link-to-prism">src/app/services/storage/storage.service.ts:37</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="30"
+                                    class="link-to-prism">src/app/services/storage/storage.service.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -527,8 +571,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/app/services/storage/storage.service.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="22"
+                                    class="link-to-prism">src/app/services/storage/storage.service.ts:22</a></div>
                         </td>
                     </tr>
 
@@ -592,6 +636,7 @@
                 <td class="col-md-4">
                     <a name="showStorage"></a>
                     <span class="name">
+                            <span class="modifier">Private</span>
                         <span ><b>showStorage</b></span>
                         <a href="#showStorage"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -599,15 +644,16 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>showStorage()</code>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showStorage()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="49"
-                                    class="link-to-prism">src/app/services/storage/storage.service.ts:49</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/app/services/storage/storage.service.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -686,13 +732,6 @@ export class StorageService {
     await this.storage.defineDriver(CordovaSQLiteDriver);
     const storage &#x3D; await this.storage.create();
     this._storage &#x3D; storage;
-    this.length().then((length) &#x3D;&gt; {
-      console.log(&#x27;Storage length:&#x27;, length);
-    });
-    this.keys().then((keys) &#x3D;&gt; {
-      console.log(&#x27;Storage keys:&#x27;, keys);
-    });
-    this.showStorage();
   }
 
   async set(key: string, value: any) {
@@ -707,6 +746,10 @@ export class StorageService {
     return await this._storage?.remove(key);
   }
 
+  async clear() {
+    return await this._storage?.clear();
+  }
+
   async length() {
     return await this._storage?.length();
   }
@@ -715,7 +758,7 @@ export class StorageService {
     return await this._storage?.keys();
   }
 
-  showStorage() {
+  private showStorage() {
     this._storage?.forEach((value, key, index) &#x3D;&gt; {
       console.log(&#x27;Key:&#x27;, key);
       console.log(&#x27;Index:&#x27;, index);

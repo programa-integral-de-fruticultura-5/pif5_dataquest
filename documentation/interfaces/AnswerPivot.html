@@ -283,6 +283,12 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Beneficiary } from &quot;./Beneficiary.namespace&quot;;
 
 export namespace FormDetail {
+
+  export enum FormType {
+    SPECIALIZED &#x3D; 1,
+    SUPPORT &#x3D; 5,
+  }
+
   export interface Form {
     id: number,
     uuid: string,

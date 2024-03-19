@@ -167,7 +167,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     <a href="injectables/DraftService.html" data-type="entity-link" >DraftService</a>
                                 </li>
                                 <li class="link">
+                                    <a href="injectables/FilesystemService.html" data-type="entity-link" >FilesystemService</a>
+                                </li>
+                                <li class="link">
                                     <a href="injectables/FormService.html" data-type="entity-link" >FormService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="injectables/LocationService.html" data-type="entity-link" >LocationService</a>
                                 </li>
                                 <li class="link">
                                     <a href="injectables/OfflineManagerService.html" data-type="entity-link" >OfflineManagerService</a>
@@ -246,6 +252,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             <span class="icon ion-ios-arrow-down"></span>
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? 'id="miscellaneous-links"' : 'id="xs-miscellaneous-links"' }>
+                            <li class="link">
+                                <a href="miscellaneous/enumerations.html" data-type="entity-link">Enums</a>
+                            </li>
                             <li class="link">
                                 <a href="miscellaneous/functions.html" data-type="entity-link">Functions</a>
                             </li>

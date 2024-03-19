@@ -539,8 +539,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="132"
-                                    class="link-to-prism">src/app/components/question/type/autocomplete/autocomplete.component.ts:132</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="131"
+                                    class="link-to-prism">src/app/components/question/type/autocomplete/autocomplete.component.ts:131</a></div>
                         </td>
                     </tr>
 
@@ -608,8 +608,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="141"
-                                    class="link-to-prism">src/app/components/question/type/autocomplete/autocomplete.component.ts:141</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/app/components/question/type/autocomplete/autocomplete.component.ts:144</a></div>
                         </td>
                     </tr>
 
@@ -1002,8 +1002,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="122"
-                                    class="link-to-prism">src/app/components/question/type/autocomplete/autocomplete.component.ts:122</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="121"
+                                    class="link-to-prism">src/app/components/question/type/autocomplete/autocomplete.component.ts:121</a></div>
                         </td>
                     </tr>
 
@@ -1273,9 +1273,8 @@ export class AutocompleteComponent implements OnInit {
       const formControl: FormControl &#x3D; this.formGroup.get(
         &#x60;${this.question.id}&#x60;
       ) as FormControl;
-      if (!this.assignBeneficiary(selection)) {
+      if (!this.assignBeneficiary(selection))
         return;
-      }
       formControl.setValue(selection);
     } else {
       const formGroup: FormGroup &#x3D; this.formGroup.get(
@@ -1299,11 +1298,15 @@ export class AutocompleteComponent implements OnInit {
   }
 
   private assignBeneficiary(id: string): boolean {
+    const cedula &#x3D; id.split(&#x27; &#x27;)[0];
+    console.log(&#x27;Cedula: &#x27;, cedula)
     const producers: Beneficiary.Producer[] &#x3D; this.producersService.getProducers();
-    const beneficiary: Beneficiary.Producer &#x3D; producers.find(
-      (producer) &#x3D;&gt; producer.id &#x3D;&#x3D;&#x3D; id
-    )!;
-
+    const beneficiary: Beneficiary.Producer | undefined &#x3D; producers.find(
+      (producer) &#x3D;&gt; producer.cedula &#x3D;&#x3D; cedula
+    );
+    if (!beneficiary) {
+      return false;
+    }
     return this.detailedFormService.setBeneficiary(beneficiary);
   }
 

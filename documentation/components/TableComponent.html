@@ -1238,7 +1238,7 @@ export class TableComponent {
   ) {}
 
   ngOnInit() {
-    if (this.question.order &#x3D;&#x3D;&#x3D; 5) {
+    if (this.question.text &#x3D;&#x3D;&#x3D; RECOMMENDED_ACTIONS_QUESTION_TEXT) {
       this.disabled &#x3D; true;
       this.preloadSelectedAnswers();
     }
@@ -1378,6 +1378,8 @@ export class TableComponent {
     this.answerRelationService.disableQuestion(question, formGroup);
   }
 }
+
+const RECOMMENDED_ACTIONS_QUESTION_TEXT &#x3D; &quot;Actividades recomendadas visita anterior&quot;;
 </code></pre>
     </div>
 
