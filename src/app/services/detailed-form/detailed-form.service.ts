@@ -131,7 +131,7 @@ export class DetailedFormService {
       this.existsProducerWithSpecializedForm(selectedBeneficiary);
     const isSupportCandidate: boolean = selectedBeneficiary.support;
 
-    if (isSpecializedBeneficiary && isSupportCandidate) {
+    if ((isSpecializedBeneficiary || existsProducerWithSpecializedForm) && isSupportCandidate) {
       return true;
     } else if (!isSpecializedBeneficiary || !existsProducerWithSpecializedForm) {
       this.showNoSpecializedBeneficiaryAlert();
