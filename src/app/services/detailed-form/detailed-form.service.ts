@@ -99,7 +99,7 @@ export class DetailedFormService {
       case 'SPECIALIZED':
         return this.canSetSpecializedBeneficiary(selectedBeneficiary);
       case 'SUPPORT':
-        return this.canSetSupportBeneficiary(selectedBeneficiary);
+        return true; /* this.canSetSupportBeneficiary(selectedBeneficiary) */
       default:
         return false;
     }
