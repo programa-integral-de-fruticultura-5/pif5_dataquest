@@ -62,20 +62,30 @@ export class DrawingPadDataTypeComponent {
   }
 
   clearPad() {
+    this.signatureImg = '';
+    this.formGroup.get(`${this.question.id}`)?.setValue(null);
     this.signaturePad.clear();
   }
 
   savePad() {
-    const base64Data = this.signaturePad.toDataURL('image/png', 0.5);
-    this.signatureImg = base64Data;
-    this.formGroup.get(`${this.question.id}`)?.setValue(base64Data);
+    if (!this.signaturePad.isEmpty()) {
+      const base64Data = this.signaturePad.toDataURL('image/png', 0.5);
+      this.signatureImg = base64Data;
+      this.formGroup.get(`${this.question.id}`)?.setValue(base64Data);
+    } else {
+      this.clearPad();
+    }
+
   }
 
   undoPad() {
     const data = this.signaturePad.toData();
     if (data) {
       data.pop();
-      this.signaturePad.fromData(data);
+      if (data.length)
+        this.signaturePad.fromData(data);
+      else
+        this.clearPad();
     }
   }
 }
