@@ -65,13 +65,18 @@ export class AuthService implements Authentication.AuthManagement {
   public async login(
     authParams: Authentication.AuthParams
   ): Promise<Authentication.User> {
-    const response: HttpResponse = await this.apiService.post(
-      ENDPOINT,
-      authParams
-    );
+    var response: HttpResponse | null = null;
+    try {
+       response = await this.apiService.post(
+        ENDPOINT,
+        authParams
+      );
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
     console.log(response);
     if (response.status !== 200) {
-      throw new Error(response.data.error);
+      throw new Error(response.data.message);
     }
     const authResponse: Authentication.AuthResponse =
       response.data as Authentication.AuthResponse;

@@ -45,13 +45,14 @@ export class LoginPage implements OnInit {
 
     if (this.form.valid) {
       try {
-        this.authService.login(this.form.value);
+        await this.authService.login(this.form.value);
         await this.loadingController.dismiss();
       } catch (error: any) {
         await this.loadingController.dismiss();
+        const message = error.message
         const alert = await this.alertController.create({
           header: 'Error',
-          message: error.message,
+          message: message || 'Ha ocurrido un error inesperado',
           buttons: ['OK'],
         });
         await alert.present();
