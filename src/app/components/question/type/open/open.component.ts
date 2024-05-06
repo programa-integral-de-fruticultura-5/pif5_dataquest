@@ -45,6 +45,8 @@ export class OpenComponent  implements OnInit {
   @Input({ required: true }) formGroup!: FormGroup
   @Input({ required: true }) disabled!: boolean
 
+  dataType = DataType;
+
   constructor() { }
 
   ngOnInit() {}
@@ -53,4 +55,19 @@ export class OpenComponent  implements OnInit {
     return this.question.dataType;
   }
 
+}
+
+enum DataType {
+  TEXT = 'text',
+  TEXTAREA = 'textarea',
+  NUMBER = 'number',
+  DATE = 'date',
+  PERCENTAGE = 'percentage',
+  MONTH = 'month',
+  EMAIL = 'email',
+  MONEY = 'money',
+  PHONE = 'tel',
+  PHOTO = 'photo',
+  DRAWING_PAD = 'drawing pad',
+  AUTOCOMPLETE = 'autocomplete'
 }

@@ -2,72 +2,72 @@
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'text'"
+  *ngIf="getDataType() === dataType.TEXT"
 />
 <app-autocomplete
   open
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'autocomplete'"
+  *ngIf="getDataType() === dataType.AUTOCOMPLETE"
 />
 <app-date-data-type
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'date'"
+  *ngIf="getDataType() === dataType.DATE"
 />
 <app-photo-data-type
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'photo'"
+  *ngIf="getDataType() === dataType.PHOTO"
 />
 <app-drawing-pad-data-type
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'drawing pad'"
+  *ngIf="getDataType() === dataType.DRAWING_PAD"
 />
 <app-text-area-data-type
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'textarea'"
+  *ngIf="getDataType() === dataType.TEXTAREA"
 />
 <app-number-data-type
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'number'"
+  *ngIf="getDataType() === dataType.NUMBER"
 />
 <app-percentage-data-type
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'percentage'"
+  *ngIf="getDataType() === dataType.PERCENTAGE"
 />
 <app-month-data-type
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'month'"
+  *ngIf="getDataType() === dataType.MONTH"
 />
 <app-email-data-type
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'email'"
+  *ngIf="getDataType() === dataType.EMAIL"
 />
 <app-money-data-type
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'money'"
+  *ngIf="getDataType() === dataType.MONEY"
 />
 <app-phone-data-type
   [disabled]="disabled"
   [question]="question"
   [formGroup]="formGroup"
-  *ngIf="getDataType() === 'tel'"
+  *ngIf="getDataType() === dataType.PHONE"
 />
