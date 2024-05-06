@@ -13,7 +13,7 @@ import { PercentageDataTypeComponent } from './percentage-data-type/percentage-d
 import { MonthDataTypeComponent } from './month-data-type/month-data-type.component';
 import { EmailDataTypeComponent } from './email-data-type/email-data-type.component';
 import { MoneyDataTypeComponent } from './money-data-type/money-data-type.component';
-import { FormDetail } from '@models/FormDetail.namespace'
+import { FormDetail } from '@models/FormDetail.namespace';
 import { FormGroup } from '@angular/forms';
 import { PhoneDataTypeComponent } from './phone-data-type/phone-data-type.component';
 
@@ -35,26 +35,24 @@ import { PhoneDataTypeComponent } from './phone-data-type/phone-data-type.compon
     MonthDataTypeComponent,
     EmailDataTypeComponent,
     MoneyDataTypeComponent,
-    PhoneDataTypeComponent
+    PhoneDataTypeComponent,
   ],
   standalone: true,
 })
-export class OpenComponent  implements OnInit {
-
-  @Input({ required: true }) question!: FormDetail.Question
-  @Input({ required: true }) formGroup!: FormGroup
-  @Input({ required: true }) disabled!: boolean
+export class OpenComponent implements OnInit {
+  @Input({ required: true }) question!: FormDetail.Question;
+  @Input({ required: true }) formGroup!: FormGroup;
+  @Input({ required: true }) disabled!: boolean;
 
   dataType = DataType;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {}
 
   getDataType(): string {
     return this.question.dataType;
   }
-
 }
 
 enum DataType {
@@ -69,5 +67,6 @@ enum DataType {
   PHONE = 'tel',
   PHOTO = 'photo',
   DRAWING_PAD = 'drawing pad',
-  AUTOCOMPLETE = 'autocomplete'
+  AUTOCOMPLETE = 'autocomplete',
+  TIME = 'hour',
 }

@@ -71,3 +71,10 @@
   [formGroup]="formGroup"
   *ngIf="getDataType() === dataType.PHONE"
 />
+
+<app-time-data-type
+  [disabled]="disabled"
+  [question]="question"
+  [formGroup]="formGroup"
+  *ngIf="getDataType() === dataType.TIME"
+/>
