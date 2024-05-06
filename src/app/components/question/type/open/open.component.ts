@@ -16,6 +16,7 @@ import { MoneyDataTypeComponent } from './money-data-type/money-data-type.compon
 import { FormDetail } from '@models/FormDetail.namespace';
 import { FormGroup } from '@angular/forms';
 import { PhoneDataTypeComponent } from './phone-data-type/phone-data-type.component';
+import { TimeDataTypeComponent } from './time-data-type/time-data-type.component';
 
 @Component({
   selector: 'app-open',
@@ -36,6 +37,7 @@ import { PhoneDataTypeComponent } from './phone-data-type/phone-data-type.compon
     EmailDataTypeComponent,
     MoneyDataTypeComponent,
     PhoneDataTypeComponent,
+    TimeDataTypeComponent
   ],
   standalone: true,
 })
