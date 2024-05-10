@@ -101,7 +101,7 @@ export class DetailedFormService {
       case 'SUPPORT':
         return true; /* this.canSetSupportBeneficiary(selectedBeneficiary) */
       default:
-        return false;
+        return true;
     }
   }
 
