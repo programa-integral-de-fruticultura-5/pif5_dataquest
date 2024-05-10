@@ -1,5 +1,9 @@
 export const environment = {
   production: false,
-  url: 'http://192.168.1.18:3000',
-  appVersion: "1.0.0",
+  url: 'https://agroinsumos.blaucast.com',
+  authEndpoint: 'auth/login',
+  formsEndpoint: 'form-detail',
+  producersEndpoint: 'producers',
+  associationsEndpoint: 'associations',
+  syncEndpoint: 'uploadSurvey',
 };
