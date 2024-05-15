@@ -149,8 +149,9 @@ export class DetailedFormService {
   private canSetSupplyBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean | undefined {
     const isSupplyCandidate: boolean = selectedBeneficiary.supplies;
 
-    if (isSupplyCandidate)
+    if (isSupplyCandidate) {
       return true
+    }
     else {
       this.showNoSupplyBeneficiaryAlert();
     }
@@ -167,12 +168,14 @@ export class DetailedFormService {
     await alert.present();
   }
 
-  private showNoSupplyBeneficiaryAlert() {
-    this.alertController.create({
+  private async showNoSupplyBeneficiaryAlert() {
+    const alert = await this.alertController.create({
       header: 'Beneficiario no es candidato de entrega de insumos',
       message: 'Escoge otro beneficiario',
       buttons: ['OK'],
     });
+
+    await alert.present();
   }
 
   private existsProducerWithSpecializedForm(
