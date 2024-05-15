@@ -148,12 +148,11 @@ export class DetailedFormService {
 
   private canSetSupplyBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean | undefined {
     const isSpecializedBeneficiary: boolean = selectedBeneficiary.specialized;
-    const existsProducerWithSpecializedForm: boolean = this.existsProducerWithSpecializedForm(selectedBeneficiary);
     const isSupplyCandidate: boolean = selectedBeneficiary.supplies;
 
-    if ((isSpecializedBeneficiary || existsProducerWithSpecializedForm) && isSupplyCandidate) {
+    if (isSpecializedBeneficiary && isSupplyCandidate) {
       return true;
-    } else if (!isSpecializedBeneficiary || !existsProducerWithSpecializedForm) {
+    } else if (!isSpecializedBeneficiary) {
       this.showNoSpecializedBeneficiaryAlert();
       return false;
     } else if (!isSupplyCandidate) {
