@@ -95,11 +95,13 @@ export class DetailedFormService {
   ): boolean | undefined {
     const formId = this.selectedForm.id;
 
-    switch (FormDetail.FormType[formId]) {
-      case 'SPECIALIZED':
+    switch (formId) {
+      case FormDetail.FormType.SPECIALIZED:
         return this.canSetSpecializedBeneficiary(selectedBeneficiary);
-      case 'SUPPORT':
+      case FormDetail.FormType.SUPPORT:
         return true; /* this.canSetSupportBeneficiary(selectedBeneficiary) */
+      case FormDetail.FormType.SUPPLY:
+        return this.canSetSupplyBeneficiary(selectedBeneficiary);
       default:
         return false;
     }
@@ -144,6 +146,24 @@ export class DetailedFormService {
     return undefined;
   }
 
+  private canSetSupplyBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean | undefined {
+    const isSpecializedBeneficiary: boolean = selectedBeneficiary.specialized;
+    const existsProducerWithSpecializedForm: boolean = this.existsProducerWithSpecializedForm(selectedBeneficiary);
+    const isSupplyCandidate: boolean = selectedBeneficiary.supplies;
+
+    if ((isSpecializedBeneficiary || existsProducerWithSpecializedForm) && isSupplyCandidate) {
+      return true;
+    } else if (!isSpecializedBeneficiary || !existsProducerWithSpecializedForm) {
+      this.showNoSpecializedBeneficiaryAlert();
+      return false;
+    } else if (!isSupplyCandidate) {
+      this.showNoSupplyBeneficiaryAlert();
+      return false;
+    }
+
+    return undefined;
+  }
+
   private async showNoSupportBeneficiaryAlert(): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Beneficiario no es candidato de asistencia técnica',
@@ -151,6 +171,14 @@ export class DetailedFormService {
       buttons: ['OK'],
     });
     await alert.present();
+  }
+
+  private showNoSupplyBeneficiaryAlert() {
+    this.alertController.create({
+      header: 'Beneficiario no es candidato de entrega de insumos',
+      message: 'Escoge otro beneficiario',
+      buttons: ['OK'],
+    });
   }
 
   private existsProducerWithSpecializedForm(
