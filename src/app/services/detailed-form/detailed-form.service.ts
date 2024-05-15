@@ -147,20 +147,15 @@ export class DetailedFormService {
   }
 
   private canSetSupplyBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean | undefined {
-    const isSpecializedBeneficiary: boolean = selectedBeneficiary.specialized;
     const isSupplyCandidate: boolean = selectedBeneficiary.supplies;
 
-    if (isSpecializedBeneficiary && isSupplyCandidate) {
-      return true;
-    } else if (!isSpecializedBeneficiary) {
-      this.showNoSpecializedBeneficiaryAlert();
-      return false;
-    } else if (!isSupplyCandidate) {
+    if (isSupplyCandidate)
+      return true
+    else {
       this.showNoSupplyBeneficiaryAlert();
-      return false;
     }
 
-    return undefined;
+    return false;
   }
 
   private async showNoSupportBeneficiaryAlert(): Promise<void> {
