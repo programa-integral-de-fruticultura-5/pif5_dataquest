@@ -95,11 +95,13 @@ export class DetailedFormService {
   ): boolean | undefined {
     const formId = this.selectedForm.id;
 
-    switch (FormDetail.FormType[formId]) {
-      case 'SPECIALIZED':
+    switch (formId) {
+      case FormDetail.FormType.SPECIALIZED:
         return this.canSetSpecializedBeneficiary(selectedBeneficiary);
-      case 'SUPPORT':
+      case FormDetail.FormType.SUPPORT:
         return true; /* this.canSetSupportBeneficiary(selectedBeneficiary) */
+      case FormDetail.FormType.SUPPLY:
+        return this.canSetSupplyBeneficiary(selectedBeneficiary);
       default:
         return true;
     }
@@ -144,12 +146,35 @@ export class DetailedFormService {
     return undefined;
   }
 
+  private canSetSupplyBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean | undefined {
+    const isSupplyCandidate: boolean = selectedBeneficiary.supplies;
+
+    if (isSupplyCandidate) {
+      return true
+    }
+    else {
+      this.showNoSupplyBeneficiaryAlert();
+    }
+
+    return false;
+  }
+
   private async showNoSupportBeneficiaryAlert(): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Beneficiario no es candidato de asistencia técnica',
       message: 'Escoge otro beneficiario',
       buttons: ['OK'],
     });
+    await alert.present();
+  }
+
+  private async showNoSupplyBeneficiaryAlert() {
+    const alert = await this.alertController.create({
+      header: 'Beneficiario no es candidato de entrega de insumos',
+      message: 'Escoge otro beneficiario',
+      buttons: ['OK'],
+    });
+
     await alert.present();
   }
 
