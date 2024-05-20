@@ -171,13 +171,13 @@ export class SurveyService {
         );
         if (syncedSurvey) {
           survey.sync = true;
+          this.saveSurveyInStorage(survey);
         }
 
         return survey;
       });
 
       this.surveys = updatedSurveys;
-      this.saveSurveys();
       this.isSyncing = false;
     } else {
       this.presentAlert();
