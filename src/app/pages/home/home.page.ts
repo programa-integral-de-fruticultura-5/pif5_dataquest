@@ -108,4 +108,20 @@ export class HomePage {
   getAppVersion(): string {
     return this.appVersion;
   }
+
+  isSyncing(): boolean {
+    return this.surveyService.isSyncing;
+  }
+
+  getCounter(): number {
+    return this.surveyService.counter;
+  }
+
+  getSurveysLength(): number {
+    return this.surveyService.getSurveys().length;
+  }
+
+  getLoadingMessage(): string {
+    return `Sincronizando encuestas... ${ this.getCounter() } de ${ this.getSurveysLength() }`;
+  }
 }

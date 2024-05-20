@@ -20,6 +20,8 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-loading [isOpen]="isSyncing()" [message]="getLoadingMessage()"></ion-loading>
+
 <ion-content>
   <ion-tabs>
     <ion-tab-bar slot="bottom">
