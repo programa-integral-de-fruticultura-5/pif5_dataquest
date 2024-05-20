@@ -117,11 +117,12 @@ export class HomePage {
     return this.surveyService.counter;
   }
 
-  getSurveysLength(): number {
-    return this.surveyService.getSurveys().length;
+  getSurveysToSyncLength(): number {
+    return this.surveyService.getSurveys().filter((survey) => !survey.sync)
+      .length;
   }
 
   getLoadingMessage(): string {
-    return `Sincronizando encuestas... ${ this.getCounter() } de ${ this.getSurveysLength() }`;
+    return `Sincronizando encuestas... ${this.getCounter()} de ${this.getSurveysToSyncLength()}`;
   }
 }
