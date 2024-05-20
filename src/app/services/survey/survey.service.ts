@@ -4,10 +4,10 @@ import { StorageService } from '../storage/storage.service';
 import { ApiService } from '../api/api.service';
 import { Network } from '@capacitor/network';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { Observable, catchError, forkJoin, from, mergeMap, of } from 'rxjs';
 import { environment } from 'environment';
 import mockForm from '../../../data/mock-form';
 import { FilesystemService } from '@services/filesystem/filesystem.service';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Service for managing surveys.
@@ -19,7 +19,8 @@ export class SurveyService {
   private online: boolean = false;
   private surveys: FormDetail.Form[] = [];
   private uuidArray: string[] = [];
-  private counter: number = 0;
+  public counter: number = 0;
+  public isSyncing: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -137,70 +138,54 @@ export class SurveyService {
     this.saveSurveyInFile(survey, oldPath);
   }
 
-  /**
-   * Syncs the surveys with the server.
-   * If online, it sends the unsynced surveys to the server and updates the sync status.
-   * If offline, it presents an alert.
-   */
   public async syncSurveys(): Promise<void> {
     this.counter = 0;
+    this.isSyncing = true;
     if (this.online) {
       const surveysToSync: FormDetail.Form[] = this.surveys.filter(
         (survey) => !survey.sync
       );
-      const loading: HTMLIonLoadingElement = await this.createLoading(surveysToSync.length);
-      loading.present();
-      const syncRequests: Observable<FormDetail.Form | undefined>[] =
-        surveysToSync.map((survey) => {
-          return from(this.apiService.post(ENDPOINT, survey)).pipe(
-            mergeMap((response) => {
-              console.log(response);
-              return of(response.status === 200 ? survey : undefined);
-            }),
-            catchError((error) => {
-              console.error(error);
-              return of(undefined);
-            })
-          );
-        });
 
-      forkJoin(syncRequests).subscribe(
-        (syncResults: (FormDetail.Form | undefined)[]) => {
-          const updatedSurveys: FormDetail.Form[] = this.surveys.map(
-            (survey) => {
-              const syncedSurvey = syncResults.find(
-                (syncResult) => syncResult?.uuid === survey.uuid
-              );
-              if (syncedSurvey) {
-                this.counter++;
-                survey.sync = true;
-              }
-
-              return survey;
-            }
-          );
-          console.log(updatedSurveys);
-          this.surveys = updatedSurveys;
-          this.saveSurveys();
+      // Iterate over the surveysToSync with a delay
+      const syncResults: (FormDetail.Form | undefined)[] = [];
+      for (const survey of surveysToSync) {
+        this.counter += 1;
+        try {
+          const response = await this.apiService
+            .post(ENDPOINT, survey);
+          if (response.status === 200) {
+            syncResults.push(survey);
+          } else {
+            syncResults.push(undefined);
+          }
+        } catch (error) {
+          syncResults.push(undefined);
         }
-      );
-      setTimeout(() => {
-        loading.dismiss();
-      }, 3000);
+        // Add delay of 5000 ms after each request
+        await this.delay(5000);
+      }
+
+      const updatedSurveys: FormDetail.Form[] = this.surveys.map((survey) => {
+        const syncedSurvey = syncResults.find(
+          (syncResult) => syncResult?.uuid === survey.uuid
+        );
+        if (syncedSurvey) {
+          survey.sync = true;
+        }
+
+        return survey;
+      });
+
+      this.surveys = updatedSurveys;
+      this.saveSurveys();
+      this.isSyncing = false;
     } else {
       this.presentAlert();
     }
   }
 
-  /**
-   * Creates a loading component.
-   * @returns The loading component.
-   */
-  private async createLoading(length: number): Promise<HTMLIonLoadingElement> {
-    const loading = await this.loadingController.create({
-      message: `Sincronizando encuestas... ${this.counter} de ${length}`,
-    });
-    return loading;
+  private delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
@@ -260,14 +245,16 @@ export class SurveyService {
       );
   }
 
-  /* private createMockSurveys(): void {
-    const mockSurveys: FormDetail.Form[] = [];
-    for (let i = 0; i < 50; i++) {
-      mockSurveys.push(mockForm);
-    }
-    this.surveys.push(...mockSurveys);
-    this.saveSurveys();
-  } */
+  // private createMockSurveys(): void {
+  //   const mockSurveys: FormDetail.Form[] = [];
+  //   for (let i = 0; i < 20; i++) {
+  //     const uuid = uuidv4();
+  //     mockForm.uuid = uuid;
+  //     mockSurveys.push(JSON.parse(JSON.stringify(mockForm)));
+  //   }
+  //   this.surveys.push(...mockSurveys);
+  //   this.saveSurveys();
+  // }
 }
 
 /**
