@@ -1,4 +1,4 @@
-<app-dataquest-header progressBar></app-dataquest-header>
+<app-dataquest-header (confirmExit)="confirmExit()" progressBar></app-dataquest-header>
 <ion-content class="ion-padding">
   <ng-container [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <app-type

@@ -66,7 +66,7 @@ export class QuestionComponent {
     this.backButtonSubscription.unsubscribe();
   }
 
-  private async confirmExit() {
+  public async confirmExit() {
     var message: string = ''
     if (this.isForm())
       message = 'Si sale, su progreso se guardará como borrador. ¿Desea salir?';
