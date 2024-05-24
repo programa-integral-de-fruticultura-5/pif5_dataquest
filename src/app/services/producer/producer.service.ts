@@ -63,6 +63,10 @@ export class ProducerService {
   private setLocalProducers(producers: Beneficiary.Producer[]): void {
     this.storageService.set(ENDPOINT, producers);
   }
+
+  public getProducersIds(): string[] {
+    return this.producers.map((producer) => producer.id);
+  }
 }
 
 const PRODUCERS_STORAGE_KEY = 'producers';

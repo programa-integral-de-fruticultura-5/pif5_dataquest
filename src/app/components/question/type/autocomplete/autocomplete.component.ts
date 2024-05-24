@@ -85,17 +85,11 @@ export class AutocompleteComponent implements OnInit {
   private getData(): string[] {
     let result: string[] = [];
     if (this.open) {
-      const producers: Beneficiary.Producer[] = this.producersService.getProducers();
-      result = producers.map((producer) => producer.id);
+      result = this.producersService.getProducersIds();
     } else {
-      const answers = this.getAnswers();
-      result = answers.map((answer) => answer.value);
+      result = this.question.answers.map((answer) => answer.value);
     }
     return result;
-  }
-
-  getAnswers() {
-    return this.question.answers;
   }
 
   selectionChanged(selection: string) {
@@ -142,7 +136,7 @@ export class AutocompleteComponent implements OnInit {
   }
 
   private getAnswerId(value: string): string {
-    const answer = this.getAnswers().find((answer) => answer.value === value);
+    const answer: FormDetail.Answer | undefined = this.question.answers.find((answer) => answer.value === value);
     return answer ? answer.id.toString() : '';
   }
 }
