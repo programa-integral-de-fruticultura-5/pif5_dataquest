@@ -36,17 +36,19 @@ export class AutocompleteComponent implements OnInit {
   @Input({ required: true }) disabled!: boolean;
 
   selection!: string;
+  formId!: number;
 
   public data: string[] = [];
 
   constructor(
     private producersService: ProducerService,
-    private alertController: AlertController,
+    private associationService: AssociationService,
     private detailedFormService: DetailedFormService
   ) {}
 
   ngOnInit() {
     this.selection = this.getQuestionValue();
+    this.formId = this.detailedFormService.getForm().id;
   }
 
   openModal(): void {
@@ -85,7 +87,7 @@ export class AutocompleteComponent implements OnInit {
   private getData(): string[] {
     let result: string[] = [];
     if (this.open) {
-      result = this.producersService.getProducersIds();
+      result =  this.formId != 9 ? this.producersService.getProducersIds() : this.associationService.getAssociationsIds();
     } else {
       result = this.question.answers.map((answer) => answer.value);
     }
@@ -98,7 +100,7 @@ export class AutocompleteComponent implements OnInit {
       const formControl: FormControl = this.formGroup.get(
         `${this.question.id}`
       ) as FormControl;
-      if (!this.assignBeneficiary(selection))
+      if (this.formId != 9 && !this.assignBeneficiary(selection))
         return;
       formControl.setValue(selection);
     } else {
