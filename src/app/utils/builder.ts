@@ -123,6 +123,7 @@ export function producerBuilder(
     transplantDate: producer.transplantDate,
     recommendedActions: producer.selectedQuestionIds,
     support: producer.sost_p5 === 1,
+    preloadedQuestions: producer.QuestionPreloaded
   };
 }
 

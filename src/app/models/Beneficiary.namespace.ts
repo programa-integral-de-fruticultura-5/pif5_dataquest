@@ -16,6 +16,7 @@ export namespace Beneficiary {
     transplantDate: string;
     recommendedActions: SelectedQuestions
     support: boolean; // Support visit / Technical Assistance
+    preloadedQuestions: PreloadedQuestion;
   }
 
   export const ProducerBaseParams = {
@@ -33,7 +34,8 @@ export namespace Beneficiary {
     associationId: 0,
     transplantDate: '',
     recommendedActions: {},
-    support: false
+    support: false,
+    preloadedQuestions: {}
   };
 
   export type ProducerResponse = {
@@ -52,9 +54,12 @@ export namespace Beneficiary {
     association_id: number; // id de la asociacion
     transplantDate: string;
     selectedQuestionIds: SelectedQuestions
+    QuestionPreloaded: PreloadedQuestion;
   }
 
   export type SelectedQuestions = { [questionId: string] : boolean };
+
+  export type PreloadedQuestion = { [questionId: string] : string | boolean };
 
   export interface Association {
     id: number;

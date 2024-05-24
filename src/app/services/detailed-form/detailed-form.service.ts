@@ -261,4 +261,8 @@ export class DetailedFormService {
       this.draftService.updateModifyDate(this.selectedForm);
     }
   }
+
+  public getFormBeneficiary(): Beneficiary.Producer {
+    return this.selectedForm.beneficiary;
+  }
 }

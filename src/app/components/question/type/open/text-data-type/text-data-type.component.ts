@@ -48,6 +48,12 @@ export class TextDataTypeComponent implements OnInit {
         formControl.setValue(association.name);
         this.disabled = true;
       }
+    } else {
+      const preloadedQuestion = this.detailedFormService.getFormBeneficiary().preloadedQuestions[this.question.id]
+      if (preloadedQuestion) {
+        formControl.setValue(preloadedQuestion);
+        this.disabled = true;
+      }
     }
   }
 
