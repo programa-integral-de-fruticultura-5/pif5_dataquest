@@ -36,17 +36,19 @@ export class AutocompleteComponent implements OnInit {
   @Input({ required: true }) disabled!: boolean;
 
   selection!: string;
+  formId!: number;
 
   public data: string[] = [];
 
   constructor(
     private producersService: ProducerService,
-    private alertController: AlertController,
+    private associationService: AssociationService,
     private detailedFormService: DetailedFormService
   ) {}
 
   ngOnInit() {
     this.selection = this.getQuestionValue();
+    this.formId = this.detailedFormService.getForm().id;
   }
 
   openModal(): void {
@@ -85,17 +87,11 @@ export class AutocompleteComponent implements OnInit {
   private getData(): string[] {
     let result: string[] = [];
     if (this.open) {
-      const producers: Beneficiary.Producer[] = this.producersService.getProducers();
-      result = producers.map((producer) => producer.id);
+      result =  this.formId != 9 ? this.producersService.getProducersIds() : this.associationService.getAssociationsIds();
     } else {
-      const answers = this.getAnswers();
-      result = answers.map((answer) => answer.value);
+      result = this.question.answers.map((answer) => answer.value);
     }
     return result;
-  }
-
-  getAnswers() {
-    return this.question.answers;
   }
 
   selectionChanged(selection: string) {
@@ -104,7 +100,7 @@ export class AutocompleteComponent implements OnInit {
       const formControl: FormControl = this.formGroup.get(
         `${this.question.id}`
       ) as FormControl;
-      if (!this.assignBeneficiary(selection))
+      if (this.formId != 9 && !this.assignBeneficiary(selection))
         return;
       formControl.setValue(selection);
     } else {
@@ -142,7 +138,7 @@ export class AutocompleteComponent implements OnInit {
   }
 
   private getAnswerId(value: string): string {
-    const answer = this.getAnswers().find((answer) => answer.value === value);
+    const answer: FormDetail.Answer | undefined = this.question.answers.find((answer) => answer.value === value);
     return answer ? answer.id.toString() : '';
   }
 }

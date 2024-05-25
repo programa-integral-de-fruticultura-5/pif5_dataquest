@@ -69,6 +69,10 @@ export class AssociationService {
   public getAssociationById(id: number): Beneficiary.Association | undefined {
     return this.associations.find((association) => association.id === id);
   }
+
+  public getAssociationsIds(): string[] {
+    return this.associations.map((association) => association.identification);
+  }
 }
 
 const ASSOCIATIONS_STORAGE_KEY = 'associations';
