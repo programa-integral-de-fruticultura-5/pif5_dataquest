@@ -23,8 +23,13 @@ export class AssociationService {
     });
   }
 
+  public updateAssociations(): void {
+    this.syncAssociations(true).subscribe((associations: Beneficiary.Association[]) => {
+      this.associations = associations;
+    });
+  }
+
   public getAssociations(): Beneficiary.Association[] {
-    console.log(this.associations);
     return this.associations;
   }
 

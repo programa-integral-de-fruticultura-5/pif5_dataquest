@@ -6,6 +6,7 @@ import { SurveyService } from '@services/survey/survey.service';
 import { App } from '@capacitor/app';
 import { ProducerService } from '@services/producer/producer.service';
 import { DraftService } from '@services/draft/draft.service';
+import { AssociationService } from '@services/association/association.service';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,8 @@ export class HomePage {
     private authService: AuthService,
     private producerService: ProducerService,
     private platform: Platform,
-    private draftService: DraftService
+    private draftService: DraftService,
+    private associationService: AssociationService
   ) {}
 
   ngOnInit() {
@@ -42,6 +44,7 @@ export class HomePage {
   private initializeApp() {
     this.platform.ready().then(() => {
       this.loadProducers();
+      this.loadAssociations();
       this.loadUser();
       this.surveyService.getNetworkStatus();
       this.surveyService.addNetworkChangeListener();
@@ -103,6 +106,10 @@ export class HomePage {
 
   private loadProducers(): void {
     this.producerService.updateProducers();
+  }
+
+  private loadAssociations(): void {
+    this.associationService.updateAssociations();
   }
 
   getAppVersion(): string {
