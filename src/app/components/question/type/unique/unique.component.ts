@@ -38,7 +38,7 @@ export class UniqueComponent implements OnInit {
   ngOnInit() {}
 
   getAnswers(): FormDetail.Answer[] {
-    return this.question.answers;
+    return this.question.answers.filter((answer) => answer.value !== 'Or');
   }
 
   setValue(event: any): void {
