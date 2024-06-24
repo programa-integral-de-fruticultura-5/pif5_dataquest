@@ -21,6 +21,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Give permission to execute the script
+        run: chmod +x extract-version.sh
+
       - name: Extract version information
         run: ./extract-version.sh
 
