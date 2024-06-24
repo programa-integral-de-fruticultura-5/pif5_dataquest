@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Set Deploy Environment Variables
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Extract version information
         run: ./extract_version.sh
 
