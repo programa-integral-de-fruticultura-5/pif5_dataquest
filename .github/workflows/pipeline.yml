@@ -17,6 +17,10 @@ jobs:
   variables:
     runs-on: ubuntu-latest
     name: Set Deploy Environment Variables
+    outputs:
+      VERSION_NAME: ${{ steps.version.outputs.VERSION_NAME }}
+      VERSION_CODE: ${{ steps.version.outputs.VERSION_CODE }}
+      DEPLOY_ENVIRONMENT: ${{ steps.get_env.outputs.DEPLOY_ENVIRONMENT }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -34,10 +38,6 @@ jobs:
 
       - name: Print DEPLOY_ENVIRONMENT variable
         run: echo "The environment is $DEPLOY_ENVIRONMENT"
-    outputs:
-      VERSION_NAME: ${{ steps.version.outputs.VERSION_NAME }}
-      VERSION_CODE: ${{ steps.version.outputs.VERSION_CODE }}
-      DEPLOY_ENVIRONMENT: ${{ steps.get_env.outputs.DEPLOY_ENVIRONMENT }}
 
   docker:
     runs-on: ubuntu-latest
@@ -49,7 +49,7 @@ jobs:
       DEPLOY_ENVIRONMENT: ${{ needs.variables.outputs.DEPLOY_ENVIRONMENT }}
     steps:
       - name: Show output variables
-        run: echo "The version name is $VERSION_NAME, the version code is $VERSION_CODE, and the deploy environment is $DEPLOY_ENVIRONMENT"
+        run: echo $GITHUB_OUTPUT
 
       - name: Docker Login
         uses: docker/login-action@v3.2.0
