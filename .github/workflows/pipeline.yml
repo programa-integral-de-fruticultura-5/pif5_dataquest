@@ -37,7 +37,7 @@ jobs:
         run: echo "DEPLOY_ENVIRONMENT=$([[ ${{ github.ref }} == 'refs/heads/master' ]] && echo 'prod' || echo 'test')" >> $$GITHUB_OUTPUT
 
       - name: Print DEPLOY_ENVIRONMENT variable
-        run: echo "The environment is $DEPLOY_ENVIRONMENT"
+        run: echo "The environment is ${{ steps.get_env.outputs.DEPLOY_ENVIRONMENT }}"
 
   docker:
     runs-on: ubuntu-latest
