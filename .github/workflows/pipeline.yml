@@ -60,8 +60,6 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v6.1.0
         with:
-          context: .
-          file: ./Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/dataquest:latest
