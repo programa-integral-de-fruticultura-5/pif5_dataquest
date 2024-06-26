@@ -6,13 +6,6 @@ on:
       - master
       - test
 
-# env:
-#   SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-#   KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-#   KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
-#   KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-#   KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
-
 jobs:
   variables:
     runs-on: ubuntu-latest
@@ -59,8 +52,19 @@ jobs:
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v6.1.0
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
         with:
           push: true
+          build-args: |
+            KEYSTORE=$KEYSTORE_BASE64
+            KEYSTORE_ALIAS=$KEYSTORE_ALIAS
+            KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD
+            KEYSTORE_ALIAS_PASSWORD=$KEYSTORE_ALIAS_PASSWORD
+            ENVIRONMENT=$([[ ${{ env.DEPLOY_ENVIRONMENT }} == 'test' ]] && echo 'development' || echo '')
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/dataquest:latest
             ${{ secrets.DOCKER_USERNAME }}/dataquest:${{ env.VERSION_NAME }}-${{ env.DEPLOY_ENVIRONMENT }}.${{ env.VERSION_CODE }}
