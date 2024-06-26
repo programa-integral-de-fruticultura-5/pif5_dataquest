@@ -73,6 +73,9 @@ RUN ionic cap build android --configuration=${ENVIRONMENT}
 # Create the keystore file
 RUN echo ${KEYSTORE} | base64 -d > android/dataquest-keystore.jks
 
+# Declare a volume to persist data
+VOLUME /www/app/android/app/build/outputs/bundle/release
+
 # Compile the artifact (.aab)
 RUN npx cap build android \
     --androidreleasetype=AAB \
