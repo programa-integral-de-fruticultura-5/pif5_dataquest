@@ -104,4 +104,4 @@ ENTRYPOINT ["npx", "cap", "build", "android", \
   "--keystorealias=${KEYSTORE_ALIAS}", \
   "--keystorealiaspass=${KEYSTORE_ALIAS_PASSWORD}", \
   "--keystorepass=${KEYSTORE_PASSWORD}", \
-  "--keystorepath=dataquest-keystore.jks"]
+  "--keystorepath='dataquest-keystore.jks'"]
