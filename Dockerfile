@@ -52,15 +52,14 @@ ARG KEYSTORE_ALIAS_PASSWORD
 # Print environment variables for verification
 RUN echo "Environment: ${ENVIRONMENT}"
 
-# Install app dependencies
-COPY package*.json ./
-
-RUN npm install
-RUN npm i -D @capacitor/cli
-RUN npm install -g @ionic/cli
-
 # Create app directory
 WORKDIR /www/app
+
+# Install app dependencies
+COPY package*.json .
+
+RUN npm install --include dev
+RUN npm install -g @ionic/cli
 
 # Bundle app source
 COPY . /www/app/
