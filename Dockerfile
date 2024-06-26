@@ -87,21 +87,21 @@ RUN echo ${KEYSTORE} | base64 -d > android/dataquest-keystore.jks
 # Declare a volume to persist data
 VOLUME /www/app/android/app/build/outputs/bundle/release
 
-# # Compile the artifact (.aab)
-# RUN npx cap build android \
-#     --androidreleasetype=AAB \
-#     --keystorealias=${KEYSTORE_ALIAS} \
-#     --keystorealiaspass=${KEYSTORE_ALIAS_PASSWORD} \
-#     --keystorepass=${KEYSTORE_PASSWORD} \
-#     --keystorepath="dataquest-keystore.jks"
+# Compile the artifact (.aab)
+RUN npx cap build android \
+    --androidreleasetype=AAB \
+    --keystorealias=${KEYSTORE_ALIAS} \
+    --keystorealiaspass=${KEYSTORE_ALIAS_PASSWORD} \
+    --keystorepass=${KEYSTORE_PASSWORD} \
+    --keystorepath="dataquest-keystore.jks"
 
 # Expose port 8100
 EXPOSE 8100
 
 # Set the ENTRYPOINT to compile the artifact (.aab)
-ENTRYPOINT ["npx", "cap", "build", "android", \
+ENTRYPOINT [ "npx", "cap", "build", "android", \
   "--androidreleasetype=AAB", \
   "--keystorealias=${KEYSTORE_ALIAS}", \
   "--keystorealiaspass=${KEYSTORE_ALIAS_PASSWORD}", \
   "--keystorepass=${KEYSTORE_PASSWORD}", \
-  "--keystorepath=./dataquest-keystore.jks"]
+  "--keystorepath=/dataquest-keystore.jks" ]
