@@ -44,6 +44,9 @@ jobs:
       - name: Show output variables
         run: echo $GITHUB_OUTPUT
 
+      - name: Set up ENVIRONMENT variable
+        run: echo "ENVIRONMENT=$([[ ${{ env.DEPLOY_ENVIRONMENT }} == 'test' ]] && echo 'development')" >> $GITHUB_ENV
+
       - name: Docker Login
         uses: docker/login-action@v3.2.0
         with:
@@ -64,7 +67,7 @@ jobs:
             KEYSTORE_ALIAS=$KEYSTORE_ALIAS
             KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD
             KEYSTORE_ALIAS_PASSWORD=$KEYSTORE_ALIAS_PASSWORD
-            ENVIRONMENT=$([[ ${{ env.DEPLOY_ENVIRONMENT }} == 'test' ]] && echo 'development' || echo '')
+            ENVIRONMENT=$ENVIRONMENT
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/dataquest:latest
             ${{ secrets.DOCKER_USERNAME }}/dataquest:${{ env.VERSION_NAME }}-${{ env.DEPLOY_ENVIRONMENT }}.${{ env.VERSION_CODE }}
