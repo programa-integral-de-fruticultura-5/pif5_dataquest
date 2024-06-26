@@ -55,8 +55,7 @@ RUN echo "Environment: ${ENVIRONMENT}"
 # Install app dependencies
 COPY package*.json ./
 
-RUN unset NODE_ENV
-RUN npm install
+RUN npm install --include dev
 RUN npm install -g @ionic/cli
 
 # Create app directory
