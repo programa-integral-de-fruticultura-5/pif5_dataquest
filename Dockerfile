@@ -49,6 +49,9 @@ ARG KEYSTORE_ALIAS
 ARG KEYSTORE_PASSWORD
 ARG KEYSTORE_ALIAS_PASSWORD
 
+# Print environment variables for verification
+RUN echo "Environment: ${ENVIRONMENT}"
+
 # Install app dependencies
 COPY package*.json ./
 
