@@ -15,8 +15,8 @@ jobs:
       VERSION_CODE: ${{ steps.version.outputs.VERSION_CODE }}
       DEPLOY_ENVIRONMENT: ${{ steps.get_env.outputs.DEPLOY_ENVIRONMENT }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
 
       - name: Give permission to execute the script
         run: chmod +x extract-version.sh
