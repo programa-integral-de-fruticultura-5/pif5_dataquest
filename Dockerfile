@@ -58,6 +58,10 @@ ENV KEYSTORE_ALIAS_PASSWORD=${KEYSTORE_ALIAS_PASSWORD}
 
 # Print environment variables for verification
 RUN echo "Environment: ${ENVIRONMENT}"
+RUN echo "Keystore: ${KEYSTORE}"
+RUN echo "Keystore Alias: ${KEYSTORE_ALIAS}"
+RUN echo "Keystore Password: ${KEYSTORE_PASSWORD}"
+RUN echo "Keystore Alias Password: ${KEYSTORE_ALIAS_PASSWORD}"
 
 # Create app directory
 WORKDIR /www/app
