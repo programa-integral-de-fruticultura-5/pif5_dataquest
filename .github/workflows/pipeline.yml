@@ -63,11 +63,11 @@ jobs:
         with:
           push: true
           build-args: |
-            KEYSTORE=$KEYSTORE_BASE64
-            KEYSTORE_ALIAS=$KEYSTORE_ALIAS
-            KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD
-            KEYSTORE_ALIAS_PASSWORD=$KEYSTORE_ALIAS_PASSWORD
-            ENVIRONMENT=$ENVIRONMENT
+            KEYSTORE=${{ env.KEYSTORE_BASE64 }}
+            KEYSTORE_ALIAS=${{ env.KEYSTORE_ALIAS }}
+            KEYSTORE_PASSWORD=${{ env.KEYSTORE_PASSWORD }}
+            KEYSTORE_ALIAS_PASSWORD=${{ env.KEYSTORE_ALIAS_PASSWORD}}
+            ENVIRONMENT=${{ env.ENVIRONMENT }}
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/dataquest:latest
             ${{ secrets.DOCKER_USERNAME }}/dataquest:${{ env.VERSION_NAME }}-${{ env.DEPLOY_ENVIRONMENT }}.${{ env.VERSION_CODE }}
