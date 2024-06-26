@@ -74,8 +74,7 @@ RUN ionic cap build android --configuration=${ENVIRONMENT}
 RUN echo ${KEYSTORE} | base64 -d > android/dataquest-keystore.jks
 
 # Compile the artifact (.aab)
-RUN cd android && \
-    npx cap build android \
+RUN npx cap build android \
     --androidreleasetype=AAB \
     --keystorealias=${KEYSTORE_ALIAS} \
     --keystorealiaspass=${KEYSTORE_ALIAS_PASSWORD} \
