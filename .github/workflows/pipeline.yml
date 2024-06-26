@@ -61,6 +61,7 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
         with:
+          no-cache: true
           push: true
           build-args: |
             KEYSTORE=${{ env.KEYSTORE_BASE64 }}
