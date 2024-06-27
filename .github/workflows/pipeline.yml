@@ -77,15 +77,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Publish Android Bundle on Google Play Store
     needs: [ docker, variables ]
-    defaults:
-      run:
-        shell: bash
     env:
       DEPLOY_ENVIRONMENT: ${{ needs.variables.outputs.DEPLOY_ENVIRONMENT }}
-    container:
-      image: blaucastmedia/dataquest:latest
-      volumes:
-        - ${{ github.workspace }}:/www/app/android/app/build/outputs/bundle/release
+      VERSION_NAME: ${{ needs.variables.outputs.VERSION_NAME }}
+      VERSION_CODE: ${{ needs.variables.outputs.VERSION_CODE }}
     steps:
       # - name: Check out the code
       #   uses: actions/checkout@v4.1.7
@@ -100,12 +95,20 @@ jobs:
       - name: Print track
         run: echo "The track is ${{ steps.set_track.outputs.TRACK }}"
 
+      - name: Docker Extract
+        uses: shrink/actions-docker-extract@v3.0.0
+        with:
+          image: ${{ secrets.DOCKER_USERNAME }}/dataquest:${{ env.VERSION_NAME }}-${{ env.DEPLOY_ENVIRONMENT }}.${{ env.VERSION_CODE }}
+          path: /www/app/android/app/build/outputs/bundle/release/.
+          destination: ${{ github.workspace }}/bundle
+
       - name: Upload Android Release to Play Store
         uses: r0adkll/upload-google-play@v1.1.3
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.blaucastmedia.dataquest.app
-          releaseFiles: ${{ github.workspace }}/app-release-signed.aab
+          releaseFiles: ${{ github.workspace }}/bundle/app-release-signed.aab
+          releaseName: ${{ env.VERSION_NAME }}-${{ env.DEPLOY_ENVIRONMENT }}.${{ env.VERSION_CODE }}
           track: ${{ steps.set_track.outputs.TRACK }}
 
 #  The  SERVICE_ACCOUNT_JSON  is a secret that we will add to the repository.
