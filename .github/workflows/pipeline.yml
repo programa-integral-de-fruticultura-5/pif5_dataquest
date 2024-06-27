@@ -27,7 +27,7 @@ jobs:
 
       - name: Get environment
         id: get_env
-        run: echo "DEPLOY_ENVIRONMENT=$([[ ${{ github.ref }} == 'refs/heads/master' ]] && echo 'prod' || echo 'test')" >> $GITHUB_OUTPUT
+        run: echo "DEPLOY_ENVIRONMENT=$([[ "${{ github.ref }}" = "refs/heads/test" ]] && echo 'test' || echo 'prod')" >> $GITHUB_OUTPUT
 
       - name: Print DEPLOY_ENVIRONMENT variable
         run: echo "The environment is ${{ steps.get_env.outputs.DEPLOY_ENVIRONMENT }}"
