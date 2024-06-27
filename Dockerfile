@@ -84,15 +84,8 @@ RUN ionic cap build android --configuration=${ENVIRONMENT}
 # Create the keystore file
 RUN echo ${KEYSTORE} | base64 -d > android/dataquest-keystore.jks
 
-# Declare a volume to persist data
-VOLUME /www/app/android/app/build/outputs/bundle/release
-
-# Expose port 8100
-EXPOSE 8100
-
 # Set the ENTRYPOINT to compile the artifact (.aab)
-ENTRYPOINT pwd && \
-  npx cap build android \
+RUN npx cap build android \
   --androidreleasetype=AAB \
   --keystorealias=${KEYSTORE_ALIAS} \
   --keystorealiaspass=${KEYSTORE_ALIAS_PASSWORD} \
