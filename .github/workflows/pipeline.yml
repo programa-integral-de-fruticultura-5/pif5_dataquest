@@ -90,17 +90,16 @@ jobs:
       - name: Show GitHub workspace
         run: echo ${{ github.workspace }}
 
-      - name: Set track
-        id: set_track
-        run: |
-          if [ "${{ env.DEPLOY_ENVIRONMENT }}" == "test" ]; then
-            echo "TRACK=internal" >> $GITHUB_OUTPUT
-          else
-            echo "TRACK=production" >> $GITHUB_OUTPUT
-          fi
+      - name: Set track if the environment is prod
+        if: ${{ env.DEPLOY_ENVIRONMENT }} == 'prod'
+        run: echo "TRACK=production" >> $GITHUB_ENV
+
+      - name: Set track if the environment is test
+        if: ${{ env.DEPLOY_ENVIRONMENT }} == 'test'
+        run: echo "TRACK=internal" >> $GITHUB_ENV
 
       - name: Print track
-        run: echo "The track is ${{ steps.set_track.outputs.TRACK }}"
+        run: echo "The track is ${{ env.TRACK }}"
 
       - name: Upload Android Release to Play Store
         uses: r0adkll/upload-google-play@v1.1.3
@@ -108,7 +107,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.blaucastmedia.dataquest.app
           releaseFiles: ${{ github.workspace }}/app-release-signed.aab
-          track: ${{ steps.set_track.outputs.TRACK }}
+          track: ${{ env.TRACK }}
 
 #  The  SERVICE_ACCOUNT_JSON  is a secret that we will add to the repository.
 #  To add the secret, go to the repository settings, then click on the  Secrets  tab. Click on  New repository secret  and add the  SERVICE_ACCOUNT_JSON  secret.
