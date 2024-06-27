@@ -92,7 +92,7 @@ jobs:
 
       - name: Set track
         id: set_track
-        run: echo "TRACK=$([[ ${{ env.DEPLOY_ENVIRONMENT }} == 'test' ]] && echo 'internal')" >> $GITHUB_OUTPUT
+        run: echo "TRACK=$([[ ${{ env.DEPLOY_ENVIRONMENT }} == test ]] && echo 'internal')" >> $GITHUB_OUTPUT
 
       - name: Print track
         run: echo "The track is ${{ steps.set_track.outputs.TRACK }}"
