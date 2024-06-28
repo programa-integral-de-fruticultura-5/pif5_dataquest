@@ -81,6 +81,9 @@ RUN chmod +x /www/app/android/gradlew
 # Build the app
 RUN ionic cap build android --configuration=${ENVIRONMENT}
 
+# GeneratE browser application bundles and copy them to the native project
+RUN npx ng build  --configuration=${ENVIRONMENT} && npx cap copy
+
 # Create the keystore file
 RUN echo ${KEYSTORE} | base64 -d > android/dataquest-keystore.jks
 
