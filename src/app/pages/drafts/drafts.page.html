@@ -5,7 +5,7 @@
         ># {{ draft.uuid }}</ion-card-subtitle
       >
       <ion-card-title>{{ draft.name }}</ion-card-title>
-      <ion-card-subtitle>Finaliza el {{ draft.dateEnd }}</ion-card-subtitle>
+      <ion-card-subtitle>Iniciado en {{ draft.fechaInicial | date: 'full' }}</ion-card-subtitle>
       <ion-card-subtitle>{{
         draft.questions[0].answers[0].value
       }}</ion-card-subtitle>
