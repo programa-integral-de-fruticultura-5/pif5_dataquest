@@ -80,14 +80,19 @@ COPY . /www/app/
 # Grant execution permissions to gradlew
 RUN chmod +x /www/app/android/gradlew
 
+# Install sed
+RUN apt-get update && \
+  apt-get install -y sed && \
+  rm -rf /var/lib/apt/lists/*
+
 # Set the path to the build.gradle file and update the versionName
-ENV PATH="/www/app/android/app/build.gradle"
+ENV ANDROID_BUILD_PATH="/www/app/android/app/build.gradle"
 
 # Modify the android/app/build.gradle version name for Play Console bundle naming purposes
-RUN if [[ "${ENVIRONMENT}" == "development" ]]; then \
-    sed -i -E "s/(versionName \")(.*)(\")/\1\2-test.${VERSION_CODE}\3/" ${PATH}; \
+RUN if [ "${ENVIRONMENT}" == "development" ]]; then \
+    sed -i -E "s/(versionName \")(.*)(\")/\1\2-test.${VERSION_CODE}\3/" ${ANDROID_BUILD_PATH}; \
   else \
-    sed -i -E "s/(versionName \")(.*)(\")/\1\2-prod.${VERSION_CODE}\3/" ${PATH}; \
+    sed -i -E "s/(versionName \")(.*)(\")/\1\2-prod.${VERSION_CODE}\3/" ${ANDROID_BUILD_PATH}; \
   fi
 
 # Build the app
