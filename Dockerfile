@@ -79,8 +79,8 @@ COPY . /www/app/
 RUN chmod +x /www/app/android/gradlew
 
 # Modify the android/app/build.gradle version name for Play Console bundle naming purposes
-RUN PATH="/www/app/android/app/build.gradle" \
-  VERSION_CODE=$(grep -m1 versionCode /www/app/android/app/build.gradle | awk '{print $2}') \
+RUN PATH="/www/app/android/app/build.gradle" && \
+  VERSION_CODE=$(grep -m1 versionCode /www/app/android/app/build.gradle | awk '{print $2}') && \
   if [ "$ENVIRONMENT" == "development" ]; then \
     sed -i -E "s/(versionName \")(.*)(\")/\1\2-test.$VERSION_CODE\3/" $PATH \
   else \
