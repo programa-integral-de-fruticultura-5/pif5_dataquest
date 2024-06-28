@@ -96,9 +96,7 @@ export class QuestionService {
   }
 
   getCurrentIndex(current: FormDetail.Question): number {
-    let currentIndex: number = this.filteredQuestions.findIndex(
-      (question) => question.id === current.id && question.text === current.text
-    );
+    let currentIndex: number = this.filteredQuestions.indexOf(current);
     return currentIndex;
   }
 
