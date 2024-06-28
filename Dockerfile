@@ -89,7 +89,7 @@ RUN apt-get update && \
 ENV ANDROID_BUILD_PATH="/www/app/android/app/build.gradle"
 
 # Modify the android/app/build.gradle version name for Play Console bundle naming purposes
-RUN if [ "${ENVIRONMENT}" == "development" ]]; then \
+RUN if [ "${ENVIRONMENT}" == "development" ]; then \
     sed -i -E "s/(versionName \")(.*)(\")/\1\2-test.${VERSION_CODE}\3/" ${ANDROID_BUILD_PATH}; \
   else \
     sed -i -E "s/(versionName \")(.*)(\")/\1\2-prod.${VERSION_CODE}\3/" ${ANDROID_BUILD_PATH}; \
