@@ -85,7 +85,7 @@ RUN PATH="/www/app/android/app/build.gradle"
 RUN VERSION_CODE=$(grep -m1 versionCode android/app/build.gradle | awk '{print $2}')
 
 # Modify the android/app/build.gradle version name for Play Console bundle naming purposes
-RUN if [ "${ENVIRONMENT}" == "development" ]; then \
+RUN if [[ "${ENVIRONMENT}" == "development" ]]; then \
     sed -i -E "s/(versionName \")(.*)(\")/\1\2-test.${VERSION_CODE}\3/" ${PATH}; \
   else \
     sed -i -E "s/(versionName \")(.*)(\")/\1\2-prod.${VERSION_CODE}\3/" ${PATH}; \
