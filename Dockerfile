@@ -79,10 +79,12 @@ COPY . /www/app/
 RUN chmod +x /www/app/android/gradlew
 
 # Set the path to the build.gradle file and update the versionName
-RUN PATH="/www/app/android/app/build.gradle"
+RUN PATH="/www/app/android/app/build.gradle" && \
+  echo ${PATH}
 
 # Get the version code from the build.gradle file
-RUN VERSION_CODE=$(grep -m1 versionCode android/app/build.gradle | awk '{print $2}')
+RUN VERSION_CODE=$(grep -m1 versionCode android/app/build.gradle | awk '{print $2}') && \
+  echo ${VERSION_CODE}
 
 # Modify the android/app/build.gradle version name for Play Console bundle naming purposes
 RUN if [[ "${ENVIRONMENT}" == "development" ]]; then \
