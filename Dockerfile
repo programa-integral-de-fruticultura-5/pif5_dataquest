@@ -78,11 +78,20 @@ COPY . /www/app/
 # Grant execution permissions to gradlew
 RUN chmod +x /www/app/android/gradlew
 
+# Modify the android/app/build.gradle version name for Play Console bundle naming purposes
+RUN PATH="/www/app/android/app/build.gradle" \
+  VERSION_CODE=$(grep -m1 versionCode /www/app/android/app/build.gradle | awk '{print $2}') \
+  if [ "$ENVIRONMENT" == "development" ]; then \
+    sed -i -E "s/(versionName \")(.*)(\")/\1\2-test.$VERSION_CODE\3/" $PATH \
+  else \
+    sed -i -E "s/(versionName \")(.*)(\")/\1\2-prod.$VERSION_CODE\3/" $PATH \
+  fi
+
 # Build the app
-RUN ionic cap build android --configuration=${ENVIRONMENT}
+RUN ionic cap build android --configuration=${ENVIRONMENT} --no-open
 
 # GeneratE browser application bundles and copy them to the native project
-RUN npx ng build  --configuration=${ENVIRONMENT} && npx cap copy
+# RUN npx ng build  --configuration=${ENVIRONMENT} && npx cap copy
 
 # Create the keystore file
 RUN echo ${KEYSTORE} | base64 -d > android/dataquest-keystore.jks
