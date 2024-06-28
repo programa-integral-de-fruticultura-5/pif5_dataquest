@@ -44,6 +44,7 @@ RUN yes | sdkmanager --licenses && \
 FROM sdk AS final
 
 ARG ENVIRONMENT=production
+ARG VERSION_CODE
 ARG KEYSTORE
 ARG KEYSTORE_ALIAS
 ARG KEYSTORE_PASSWORD
@@ -55,6 +56,7 @@ ENV KEYSTORE=${KEYSTORE}
 ENV KEYSTORE_ALIAS=${KEYSTORE_ALIAS}
 ENV KEYSTORE_PASSWORD=${KEYSTORE_PASSWORD}
 ENV KEYSTORE_ALIAS_PASSWORD=${KEYSTORE_ALIAS_PASSWORD}
+ENV VERSION_CODE=${VERSION_CODE}
 
 # Print environment variables for verification
 RUN echo "Environment: ${ENVIRONMENT}"
@@ -80,9 +82,6 @@ RUN chmod +x /www/app/android/gradlew
 
 # Set the path to the build.gradle file and update the versionName
 ENV PATH="/www/app/android/app/build.gradle"
-
-# Get the version code from the build.gradle file
-ENV VERSION_CODE=$(grep -m1 versionCode android/app/build.gradle | awk '{print $2}')
 
 # Modify the android/app/build.gradle version name for Play Console bundle naming purposes
 RUN if [[ "${ENVIRONMENT}" == "development" ]]; then \

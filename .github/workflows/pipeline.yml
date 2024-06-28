@@ -68,6 +68,7 @@ jobs:
             KEYSTORE_PASSWORD=${{ env.KEYSTORE_PASSWORD }}
             KEYSTORE_ALIAS_PASSWORD=${{ env.KEYSTORE_ALIAS_PASSWORD}}
             ENVIRONMENT=${{ env.ENVIRONMENT }}
+            VERSION_CODE=${{ env.VERSION_CODE }}
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/dataquest:latest
             ${{ secrets.DOCKER_USERNAME }}/dataquest:${{ env.VERSION_NAME }}-${{ env.DEPLOY_ENVIRONMENT }}.${{ env.VERSION_CODE }}
