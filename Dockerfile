@@ -82,9 +82,9 @@ RUN chmod +x /www/app/android/gradlew
 RUN PATH="/www/app/android/app/build.gradle" && \
   VERSION_CODE=$(grep -m1 versionCode /www/app/android/app/build.gradle | awk '{print $2}') && \
   if [ "$ENVIRONMENT" == "development" ]; then \
-    sed -i -E "s/(versionName \")(.*)(\")/\1\2-test.$VERSION_CODE\3/" $PATH \
+    sed -i -E "s/(versionName \")(.*)(\")/\1\2-test.$VERSION_CODE\3/" $PATH; \
   else \
-    sed -i -E "s/(versionName \")(.*)(\")/\1\2-prod.$VERSION_CODE\3/" $PATH \
+    sed -i -E "s/(versionName \")(.*)(\")/\1\2-prod.$VERSION_CODE\3/" $PATH; \
   fi
 
 # Build the app
