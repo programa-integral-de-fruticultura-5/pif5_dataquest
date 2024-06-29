@@ -1,3 +1,6 @@
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEsCo from '@angular/common/locales/es-CO';
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter } from '@angular/router';
@@ -19,8 +22,11 @@ if (environment.production) {
   enableProdMode();
 }
 
+registerLocaleData(localeEsCo);
+
 bootstrapApplication(AppComponent, {
   providers: [
+    { provide: LOCALE_ID, useValue: 'es-CO' },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: CurrencyPipe, useClass: CurrencyPipe },
     importProvidersFrom(

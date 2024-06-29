@@ -33,7 +33,7 @@ export class QuestionService {
 
   async setQuestions(questions: FormDetail.Question[]): Promise<void> {
     var userType = '';
-    const user: Authentication.User = await this.authService.getUser()
+    const user: Authentication.User = await this.authService.getUser();
     userType = user.type;
     this.originalQuestions = questions;
     this.filteredQuestions = this.originalQuestions.filter(

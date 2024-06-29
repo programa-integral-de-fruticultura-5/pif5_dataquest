@@ -42,7 +42,6 @@ export class TableComponent {
       this.question.id
     ] as FormArray;
     const sectionFormGroup: FormGroup = formArray.at(0) as FormGroup;
-    console.log('selectedAnswers', selectedAnswers);
     Object.keys(sectionFormGroup.controls).forEach((key) => {
       const answersFormGroup: FormGroup = sectionFormGroup.get(
         key
@@ -52,7 +51,6 @@ export class TableComponent {
         ? answersControls[0]
         : answersControls[1];
       answersFormGroup.get(answerFormGroupKey)?.setValue(true);
-      console.log('selectedAnswer', selectedAnswers[key]);
     });
   }
 

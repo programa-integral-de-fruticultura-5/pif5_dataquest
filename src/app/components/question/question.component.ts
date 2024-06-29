@@ -132,21 +132,10 @@ export class QuestionComponent {
       const isTable: boolean = type === 'Tabla';
       this.presentAlert(isTable);
     }
+    if (this.isForm() || this.isDraft())
+      this.draftService.saveDraftInStorage(this.currentForm);
     await loading.dismiss();
   }
-
-  // private getLastAnsweredQuestion(): FormDetail.Question {
-  //   let lastAnsweredQuestion: FormDetail.Question =
-  //     this.questionService.getFirst();
-  //   const formGroup: FormGroup = this.formGroup;
-  //   while (formGroup.controls[lastAnsweredQuestion.id.toString()].valid) {
-  //     lastAnsweredQuestion = this.questionService.getNextValidQuestionFrom(
-  //       lastAnsweredQuestion,
-  //       this.formGroup
-  //     )!;
-  //   }
-  //   return lastAnsweredQuestion;
-  // }
 
   previousQuestion(): void {
     const previousQuestion = this.questionService.getPreviousValidQuestionFrom(
@@ -233,8 +222,6 @@ export class QuestionComponent {
         this.saveSelection(question, questionFormGroup);
     }
     this.detailedFormService.updateModifyDate();
-    if (this.isForm() || this.isDraft())
-      this.draftService.saveDraftInStorage(this.currentForm);
   }
 
   private saveTableResponse(

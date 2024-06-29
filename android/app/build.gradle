@@ -7,8 +7,8 @@ android {
         applicationId "com.blaucastmedia.dataquest.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 74
-        versionName "1.9.20-prod.74"
+        versionCode 82
+        versionName "1.10.23"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

@@ -75,28 +75,28 @@ export class HomePage {
     await logoutAlert.present();
   }
 
-  async logout() {
-    const logoutAlert = await this.alertController.create({
-      header: 'Cerrar Sesión',
-      message: '¿Estás seguro que deseas cerrar sesión?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Cerrar Sesión',
-          cssClass: 'logout',
-          handler: () => {
-            this.authService.logout();
-            this.modal.dismiss();
-          },
-        },
-      ],
-    });
+  // async logout() {
+  //   const logoutAlert = await this.alertController.create({
+  //     header: 'Cerrar Sesión',
+  //     message: '¿Estás seguro que deseas cerrar sesión?',
+  //     buttons: [
+  //       {
+  //         text: 'Cancelar',
+  //         role: 'cancel',
+  //       },
+  //       {
+  //         text: 'Cerrar Sesión',
+  //         cssClass: 'logout',
+  //         handler: () => {
+  //           this.authService.logout();
+  //           this.modal.dismiss();
+  //         },
+  //       },
+  //     ],
+  //   });
 
-    await logoutAlert.present();
-  }
+  //   await logoutAlert.present();
+  // }
 
   loadUser(): void {
     this.authService.getUser().then((user) => {
