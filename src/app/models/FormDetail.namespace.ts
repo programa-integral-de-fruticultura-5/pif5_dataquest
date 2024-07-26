@@ -5,7 +5,9 @@ export namespace FormDetail {
   export enum FormType {
     SPECIALIZED = 1,
     SUPPORT = 5,
-    SUPPLY = 7
+    SUPPLY = 7,
+    PARCEL = 11,
+    PARCEL_SUPPLIES = 12,
   }
 
   export interface Form {
