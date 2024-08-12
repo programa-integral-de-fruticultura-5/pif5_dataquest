@@ -7,6 +7,8 @@ import { App } from '@capacitor/app';
 import { ProducerService } from '@services/producer/producer.service';
 import { DraftService } from '@services/draft/draft.service';
 import { AssociationService } from '@services/association/association.service';
+import { Logger, LoggingService, LogMessage } from 'ionic-logging-service';
+import { FilesystemService } from '@services/filesystem/filesystem.service';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +23,8 @@ export class HomePage {
   user!: Authentication.User;
   appVersion!: string;
 
+  private logger: Logger;
+
   constructor(
     private surveyService: SurveyService,
     private alertController: AlertController,
@@ -28,8 +32,12 @@ export class HomePage {
     private producerService: ProducerService,
     private platform: Platform,
     private draftService: DraftService,
-    private associationService: AssociationService
-  ) {}
+    private associationService: AssociationService,
+    private loggingService: LoggingService,
+    private filesystemService: FilesystemService
+  ) {
+    this.logger = this.loggingService.getLogger('HomePage');
+  }
 
   ngOnInit() {
     App.getInfo().then((info) => {
@@ -97,6 +105,33 @@ export class HomePage {
 
   //   await logoutAlert.present();
   // }
+
+  saveLogs() {
+    const methodName: string = 'saveLogs';
+    this.logger.entry(methodName);
+    const logMessages: LogMessage[] = this.loggingService.getLogMessages();
+    const logs: string = logMessages.map(this.formatLogMessage).join('\n\n');
+    const date: Date = new Date();
+    const fileName = `logs/${date.toISOString()}.log`;
+    this.filesystemService.writeFile(fileName, logs);
+  }
+
+  private formatLogMessage(logMessage: LogMessage): string {
+    const timeStamp = logMessage.timeStamp.toISOString();
+    const level = logMessage.level.toUpperCase();
+    const logger = logMessage.logger;
+    const methodName = logMessage.methodName;
+    const messages = logMessage.message.map((msg) => `  - ${msg}`).join('\n');
+
+    const formatedLogMessage: string = [
+      `[${level}] ${timeStamp}`,
+      `Logger: ${logger}`,
+      `Method: ${methodName}`,
+      `Messages:\n${messages}`,
+    ].join('\n');
+
+    return formatedLogMessage;
+  }
 
   loadUser(): void {
     this.authService.getUser().then((user) => {
