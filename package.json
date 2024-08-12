@@ -45,6 +45,7 @@
     "capacitor-native-settings": "^5.0.1",
     "cordova-sqlite-storage": "^6.1.0",
     "date-fns": "^2.30.0",
+    "ionic-logging-service": "^17.0.0",
     "ionicons": "^7.0.0",
     "json-server": "^0.17.3",
     "jwt-decode": "^3.1.2",
