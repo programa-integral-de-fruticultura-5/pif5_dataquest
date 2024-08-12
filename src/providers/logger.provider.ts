@@ -17,10 +17,10 @@ export const loggingServiceConfiguration: LoggingServiceConfiguration = {
   localStorageAppender: {
     localStorageKey: 'ionic-logging-service',
     maxMessages: 250,
-    threshold: 'WARN',
+    threshold: 'ALL',
   },
   browserConsoleAppender: {
-    threshold: 'DEBUG',
+    threshold: 'ALL',
   },
   logLevels: [
     {
