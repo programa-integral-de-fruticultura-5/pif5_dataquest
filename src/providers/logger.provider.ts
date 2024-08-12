@@ -1,6 +1,6 @@
 import { APP_INITIALIZER } from '@angular/core';
 import { LoggingService, LoggingServiceConfiguration } from 'ionic-logging-service';
-import { environment } from '../../../environments/environment';
+import { environment } from '../environments/environment';
 
 export const loggingServiceProvider = {
   deps: [LoggingService],

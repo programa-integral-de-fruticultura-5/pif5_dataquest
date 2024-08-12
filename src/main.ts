@@ -17,7 +17,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { CurrencyPipe } from '@angular/common';
 import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import { Drivers } from '@ionic/storage';
-import { loggingServiceProvider } from '@services/logger/logger.service.provider';
+import { loggingServiceProvider } from 'providers/logger.provider';
 
 if (environment.production) {
   enableProdMode();
