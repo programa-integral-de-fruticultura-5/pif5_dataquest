@@ -17,6 +17,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { CurrencyPipe } from '@angular/common';
 import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import { Drivers } from '@ionic/storage';
+import { loggingServiceProvider } from '@services/logger/logger.service.provider';
 
 if (environment.production) {
   enableProdMode();
@@ -26,6 +27,7 @@ registerLocaleData(localeEsCo);
 
 bootstrapApplication(AppComponent, {
   providers: [
+    loggingServiceProvider,
     { provide: LOCALE_ID, useValue: 'es-CO' },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: CurrencyPipe, useClass: CurrencyPipe },
@@ -45,6 +47,8 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptorsFromDi()),
   ],
 });
+
+
 
 function tokenGetter() {
   return window.sessionStorage.getItem('TOKEN_KEY');
