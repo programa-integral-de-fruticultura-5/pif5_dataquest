@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormDetail } from '@models/FormDetail.namespace';
 import { StorageService } from '../storage/storage.service';
-import { v4 as uuidv4 } from 'uuid';
+import { customAlphabet } from 'nanoid';
 import { Beneficiary } from '@models/Beneficiary.namespace';
 import { ProducerService } from '@services/producer/producer.service';
 import { environment } from 'environment';
@@ -133,7 +133,8 @@ export class DraftService {
   }
 
   public generateUUID(): string {
-    return uuidv4();
+    const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    return nanoid(5);
   }
 
   public updateModifyDate(draft: FormDetail.Form): void {
@@ -151,7 +152,7 @@ export class DraftService {
   }
 
   private async saveDraftInFile(draft: FormDetail.Form): Promise<void> {
-    if (draft.beneficiary.cedula === "" || draft.beneficiary.id === "") return;
+    if (draft.beneficiary.cedula === '' || draft.beneficiary.id === '') return;
     const draftId = draft.id;
     const draftBeneficiaryName = `${draft.beneficiary.firstname}-${draft.beneficiary.lastname}`;
     const timestamp = draft.fechaInicial;

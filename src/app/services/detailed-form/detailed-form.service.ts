@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { FormDetail } from '@models/FormDetail.namespace';
 import { FormService } from '../form/form.service';
 import { Geolocation } from '@capacitor/geolocation';
-import { v4 as uuidv4 } from 'uuid';
 import { QuestionService } from './question/question.service';
 import { DraftService } from '../draft/draft.service';
 import { SurveyService } from '../survey/survey.service';
@@ -260,7 +259,7 @@ export class DetailedFormService {
 
   public startDraft(): void {
     const copy: FormDetail.Form = _.cloneDeep(this.selectedForm);
-    copy.uuid = uuidv4();
+    copy.uuid = this.draftService.generateUUID();
     this.draftService.pushDraft(copy);
     this.selectedForm = copy;
     this.setQuestions();
