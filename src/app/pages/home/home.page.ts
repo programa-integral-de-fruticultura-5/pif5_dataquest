@@ -9,6 +9,7 @@ import { DraftService } from '@services/draft/draft.service';
 import { AssociationService } from '@services/association/association.service';
 import { Logger, LoggingService, LogMessage } from 'ionic-logging-service';
 import { FilesystemService } from '@services/filesystem/filesystem.service';
+import { EmailComposer } from 'capacitor-email-composer';
 
 @Component({
   selector: 'app-home',
@@ -106,14 +107,37 @@ export class HomePage {
   //   await logoutAlert.present();
   // }
 
-  saveLogs() {
+  async saveLogs() {
     const methodName: string = 'saveLogs';
     this.logger.entry(methodName);
     const logMessages: LogMessage[] = this.loggingService.getLogMessages();
     const logs: string = logMessages.map(this.formatLogMessage).join('\n\n');
     const date: Date = new Date();
-    const fileName = `logs/${date.toISOString()}.log`;
-    this.filesystemService.writeFile(fileName, logs);
+    const filename = `logs/${date.toISOString()}.log`;
+    await this.filesystemService.writeFile(filename, logs);
+    this.sendLogsByEmail(filename);
+    this.logger.exit(methodName);
+  }
+
+  private sendLogsByEmail(filename: string) {
+    const methodName: string = 'sendLogsByEmail';
+    this.logger.entry('sendLogsByEmail', filename);
+    try {
+      EmailComposer.open({
+        to: ['soporte@gmail.com'],
+        subject: `Logs - ${this.user.name}`,
+        attachments: [
+          {
+            type: 'absolute',
+            path: `storage/emulated/0/Android/data/com.blaucastmedia.dataquest.app/files/${filename}`, // Android
+          },
+        ],
+      });
+      this.logger.exit(methodName, filename);
+    } catch (error) {
+      this.logger.error(methodName, 'Error sending logs by email', error);
+      this.logger.exit(methodName, filename);
+    }
   }
 
   private formatLogMessage(logMessage: LogMessage): string {
