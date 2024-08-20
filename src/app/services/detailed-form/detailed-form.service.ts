@@ -102,6 +102,9 @@ export class DetailedFormService {
         return true; /* this.canSetSupportBeneficiary(selectedBeneficiary) */
       case FormDetail.FormType.SUPPLY:
         return this.canSetSupplyBeneficiary(selectedBeneficiary);
+      case FormDetail.FormType.PARCEL:
+      case FormDetail.FormType.PARCEL_SUPPLIES:
+        return this.canSetParcelBeneficiary(selectedBeneficiary);
       default:
         return true;
     }
@@ -159,6 +162,15 @@ export class DetailedFormService {
     return false;
   }
 
+  private canSetParcelBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean {
+    if (selectedBeneficiary.demonstrationPlot) {
+      return true;
+    } else {
+      this.showNoParcelBeneficiaryAlert();
+      return false;
+    }
+  }
+
   private async showNoSupportBeneficiaryAlert(): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Beneficiario no es candidato de asistencia técnica',
@@ -175,6 +187,15 @@ export class DetailedFormService {
       buttons: ['OK'],
     });
 
+    await alert.present();
+  }
+
+  private async showNoParcelBeneficiaryAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Escoge otro beneficiario',
+      message: 'Beneficiario no es candidato de parcela demostrativa',
+      buttons: ['OK'],
+    });
     await alert.present();
   }
 
