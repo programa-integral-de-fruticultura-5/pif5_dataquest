@@ -7,11 +7,12 @@ import { ProducerService } from '@services/producer/producer.service';
 import { FilesystemService } from '@services/filesystem/filesystem.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
 import { IDraftService } from './draft.service.interface';
+import mockForm from 'data/mock-form';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DraftService implements IDraftService {
+export class MockDraftService implements IDraftService {
   private drafts: FormDetail.Form[] = [];
   private uuidArray: string[] = [];
   private logger: Logger;
@@ -101,11 +102,6 @@ export class DraftService implements IDraftService {
       } else {
         this.drafts = [];
       }
-      /* if (!environment.production){
-        console.log('Creating mock drafts')
-        this.createMockDrafts()
-        console.log('Drafts:', this.drafts)
-      } */
     });
     this.saveDrafts();
     this.logger.exit(methodName, this.drafts);
@@ -136,9 +132,11 @@ export class DraftService implements IDraftService {
   }
 
   public getDrafts(): FormDetail.Form[] {
+    this.loggingService.removeLogMessagesFromLocalStorage('ionic-logging-service');
     const methodName = 'getDrafts';
     this.logger.entry(methodName);
-    this.logger.exit(methodName, this.drafts);
+    this.createMockDrafts();
+    this.logger.exit(methodName);
     return this.drafts;
   }
 
@@ -155,10 +153,13 @@ export class DraftService implements IDraftService {
   }
 
   public saveDrafts(): void {
+    const methodName = 'saveDrafts';
+    this.logger.entry(methodName);
     for (let i = 0; i < this.drafts.length; i++) {
       this.saveDraftInStorage(this.drafts[i]);
     }
     this.storageService.remove('drafts');
+    this.logger.exit(methodName, this.drafts);
   }
 
   public saveDraftInStorage(draft: FormDetail.Form): void {
@@ -207,7 +208,30 @@ export class DraftService implements IDraftService {
     this.filesystemService.writeFile(path, JSON.stringify(draft));
     this.logger.exit(methodName);
   }
+
+  private createMockDrafts(): void {
+    const methodName = 'createMockDrafts';
+    this.logger.entry(methodName);
+    const mockDrafts: FormDetail.Form[] = [];
+
+    let i = 0; // Initialize the counter
+    const intervalId = setInterval(() => {
+      if (i < 10) {
+        this.logger.debug(methodName, 'Creating mock draft', i);
+        mockDrafts.push(mockForm); // Add a new mock draft
+
+        this.logger.debug(methodName, 'Current mock drafts:', mockDrafts);
+        this.drafts = mockDrafts;
+        this.saveDrafts(); // Save the drafts
+
+        i++; // Increment the counter
+      } else {
+        clearInterval(intervalId); // Stop the interval after 10 drafts are added
+        this.logger.exit(methodName);
+      }
+    }, 5000); // 5000ms = 5 seconds
+  }
 }
 
-const DRAFT_STORAGE_KEY = 'draft-storage';
-const UUID_ARRAY_STORAGE_KEY = 'drafts-uuid-array';
+const DRAFT_STORAGE_KEY = 'mock-draft-storage';
+const UUID_ARRAY_STORAGE_KEY = 'mock-drafts-uuid-array';

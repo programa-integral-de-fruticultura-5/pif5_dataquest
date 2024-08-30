@@ -7,7 +7,6 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { environment } from 'environment';
 import mockForm from '../../../data/mock-form';
 import { FilesystemService } from '@services/filesystem/filesystem.service';
-import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Service for managing surveys.

@@ -10,6 +10,7 @@ export namespace Beneficiary {
     specialized: boolean;
     technicalAssistance: boolean;
     demonstrationPlot: boolean;
+    supportDemonstrationPlot: boolean;
     greenhouse: boolean;
     supplies: boolean;
     associationId: number;
@@ -29,6 +30,7 @@ export namespace Beneficiary {
     specialized: false,
     technicalAssistance: false,
     demonstrationPlot: false,
+    supportDemonstrationPlot: false,
     greenhouse: false,
     supplies: false,
     associationId: 0,
@@ -50,6 +52,7 @@ export namespace Beneficiary {
     at_p5: number;          // asistencia técnica
     pd_p5: number;          // parcela demostrativa
     cm_p5: number;          // casa malla (invernadero espacial)
+    pd_at: number;          // parcela demostrativa asistencia técnica
     insumo_p5: number;      // insumos
     association_id: number; // id de la asociacion
     transplantDate: string;
