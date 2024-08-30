@@ -117,6 +117,7 @@ export function producerBuilder(
     specialized: producer.has_especializada === 1,
     technicalAssistance: producer.at_p5 === 1,
     demonstrationPlot: producer.pd_p5 === 1,
+    supportDemonstrationPlot: producer.pd_at === 1,
     greenhouse: producer.cm_p5 === 1,
     supplies: producer.insumo_p5 === 1,
     associationId: producer.association_id,

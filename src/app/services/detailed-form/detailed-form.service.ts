@@ -104,9 +104,55 @@ export class DetailedFormService {
       case FormDetail.FormType.PARCEL:
       case FormDetail.FormType.PARCEL_SUPPLIES:
         return this.canSetParcelBeneficiary(selectedBeneficiary);
+      case FormDetail.FormType.GREENHOUSE:
+      case FormDetail.FormType.GREENHOUSE_SUPPLIES:
+      case FormDetail.FormType.GREENHOUSE_SUPPORT:
+        return this.canSetGreenhouseBeneficiary(selectedBeneficiary);
+      case FormDetail.FormType.PARCEL_SUPPORT:
+        return this.canSetParcelSupportBeneficiary(selectedBeneficiary);
       default:
         return true;
     }
+  }
+
+  private canSetGreenhouseBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean {
+    const isGreenhouseBeneficiary: boolean = selectedBeneficiary.greenhouse;
+
+    if (isGreenhouseBeneficiary) {
+      return true;
+    } else {
+      this.showNoGreenhouseBeneficiaryAlert();
+      return false;
+    }
+  }
+
+  private async showNoGreenhouseBeneficiaryAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Beneficiario no es candidato de casa malla',
+      message: 'Escoge otro beneficiario',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  private canSetParcelSupportBeneficiary(selectedBeneficiary: Beneficiary.Producer): boolean {
+    const isSupportBeneficiary: boolean = selectedBeneficiary.supportDemonstrationPlot;
+
+    if (isSupportBeneficiary) {
+      return true;
+    } else {
+      this.showNoParcelSupportBeneficiaryAlert();
+      return false;
+    }
+  }
+
+  private async showNoParcelSupportBeneficiaryAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Beneficiario no es candidato de parcela demostrativa con asistencia técnica',
+      message: 'Escoge otro beneficiario',
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   private canSetSpecializedBeneficiary(
