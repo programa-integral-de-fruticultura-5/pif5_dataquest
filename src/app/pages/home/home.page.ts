@@ -124,7 +124,7 @@ export class HomePage {
     this.logger.entry('sendLogsByEmail', filename);
     try {
       EmailComposer.open({
-        to: ['soporte@gmail.com'],
+        to: ['soporte@blaucastmedia.com'],
         subject: `Logs - ${this.user.name}`,
         attachments: [
           {
