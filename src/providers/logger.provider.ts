@@ -17,7 +17,7 @@ export const loggingServiceConfiguration: LoggingServiceConfiguration = {
   localStorageAppender: {
     localStorageKey: 'ionic-logging-service',
     maxMessages: 250,
-    threshold: 'ALL',
+    threshold: 'OFF',
   },
   browserConsoleAppender: {
     threshold: 'ALL',
