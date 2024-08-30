@@ -30,7 +30,7 @@ registerLocaleData(localeEsCo);
 bootstrapApplication(AppComponent, {
   providers: [
     loggingServiceProvider,
-    { provide: DraftService, useClass: environment.production ? DraftService : MockDraftService },
+    { provide: DraftService, useClass: environment.mockServices ? MockDraftService : DraftService },
     { provide: LOCALE_ID, useValue: 'es-CO' },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: CurrencyPipe, useClass: CurrencyPipe },
