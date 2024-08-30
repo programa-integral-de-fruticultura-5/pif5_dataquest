@@ -18,6 +18,8 @@ import { CurrencyPipe } from '@angular/common';
 import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import { Drivers } from '@ionic/storage';
 import { loggingServiceProvider } from 'providers/logger.provider';
+import { DraftService } from '@services/draft/draft.service';
+import { MockDraftService } from '@services/draft/draft.service mock';
 
 if (environment.production) {
   enableProdMode();
@@ -28,6 +30,7 @@ registerLocaleData(localeEsCo);
 bootstrapApplication(AppComponent, {
   providers: [
     loggingServiceProvider,
+    { provide: DraftService, useClass: environment.production ? DraftService : MockDraftService },
     { provide: LOCALE_ID, useValue: 'es-CO' },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: CurrencyPipe, useClass: CurrencyPipe },
