@@ -11400,6 +11400,7 @@ const mockForm: FormDetail.Form = {
     specialized: true,
     technicalAssistance: false,
     demonstrationPlot: false,
+    supportDemonstrationPlot: false,
     greenhouse: false,
     supplies: false,
     associationId: 16,

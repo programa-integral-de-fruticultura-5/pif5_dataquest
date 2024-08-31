@@ -8,6 +8,10 @@ export namespace FormDetail {
     SUPPLY = 7,
     PARCEL = 11,
     PARCEL_SUPPLIES = 12,
+    GREENHOUSE = 13,
+    GREENHOUSE_SUPPLIES = 14,
+    PARCEL_SUPPORT = 15,
+    GREENHOUSE_SUPPORT = 16,
   }
 
   export interface Form {
