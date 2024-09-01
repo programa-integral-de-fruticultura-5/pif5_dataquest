@@ -41,9 +41,9 @@
           },
           "configurations": {
             "production": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
+              "buildOptimizer": true,
+              "optimization": true,
+              "vendorChunk": false,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
