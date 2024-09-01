@@ -17,7 +17,6 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { CurrencyPipe } from '@angular/common';
 import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import { Drivers } from '@ionic/storage';
-import { loggingServiceProvider } from 'providers/logger.provider';
 import { DraftService } from '@services/draft/draft.service';
 import { MockDraftService } from '@services/draft/draft.service mock';
 
@@ -29,7 +28,6 @@ registerLocaleData(localeEsCo);
 
 bootstrapApplication(AppComponent, {
   providers: [
-    loggingServiceProvider,
     { provide: DraftService, useClass: environment.mockServices ? MockDraftService : DraftService },
     { provide: LOCALE_ID, useValue: 'es-CO' },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

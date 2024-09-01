@@ -7,7 +7,7 @@ import { DraftService } from '../draft/draft.service';
 import { SurveyService } from '../survey/survey.service';
 import { Beneficiary } from '@models/Beneficiary.namespace';
 import { AlertController } from '@ionic/angular';
-import _ from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 
 @Injectable({
   providedIn: 'root',
@@ -304,7 +304,7 @@ export class DetailedFormService {
   }
 
   public startDraft(): void {
-    const copy: FormDetail.Form = _.cloneDeep(this.selectedForm);
+    const copy: FormDetail.Form = cloneDeep(this.selectedForm);
     copy.uuid = this.draftService.generateUUID();
     this.draftService.pushDraft(copy);
     this.selectedForm = copy;
