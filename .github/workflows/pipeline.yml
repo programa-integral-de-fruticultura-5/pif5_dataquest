@@ -73,6 +73,8 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/dataquest:latest
             ${{ secrets.DOCKER_USERNAME }}/dataquest:${{ env.VERSION_NAME }}-${{ env.DEPLOY_ENVIRONMENT }}.${{ env.VERSION_CODE }}
             ${{ secrets.DOCKER_USERNAME }}/dataquest:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   publish:
     runs-on: ubuntu-latest
