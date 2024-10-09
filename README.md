@@ -5,9 +5,6 @@
     <h1 align="center">DATAQUEST</h1>
 </p>
 <p align="center">
-    <em><code>❯ REPLACE-ME</code></em>
-</p>
-<p align="center">
 	<img src="https://img.shields.io/github/license/programa-integral-de-fruticultura-5/dataquest?style=flat&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
 	<img src="https://img.shields.io/github/last-commit/programa-integral-de-fruticultura-5/dataquest?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
 	<img src="https://img.shields.io/github/languages/top/programa-integral-de-fruticultura-5/dataquest?style=flat&color=0080ff" alt="repo-top-language">
@@ -54,19 +51,6 @@
 - [🎗 License](#-license)
 - [🙌 Acknowledgments](#-acknowledgments)
 
----
-
-## 📍 Overview
-
-<code>❯ REPLACE-ME</code>
-
----
-
-## 👾 Features
-
-<code>❯ REPLACE-ME</code>
-
----
 
 ## 📂 Repository Structure
 
