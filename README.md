@@ -358,6 +358,26 @@ To contribute to the project, please follow this guidelines
       await alert.present();
     }
    ```
+
+6. **Change the version name and code**: Change the version name and code in the `android\app\build.gradle` file.
+
+   ```gradle
+    android {
+      ...
+      defaultConfig {
+        applicationId "com.blaucastmedia.dataquest.app"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 90 
+        versionName "1.12.25"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ...
+      }
+    }
+   ```
+
+   - **versionCode**: An integer value that represents the version of the application code, relative to other versions. Change the version code +1 each time you want to release a new version independently of the environment (otherwise the app will not update and will show an error on the deploy)
+   - **versionName**: A string value that represents the version of the application, shown to users. Change the version name each time you want to release a new version in the form `mayor.minor.patch`
 </details>
 
 <details closed>
