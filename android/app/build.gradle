@@ -7,7 +7,7 @@ android {
         applicationId "com.blaucastmedia.dataquest.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 91
+        versionCode 93
         versionName "1.13.25"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
