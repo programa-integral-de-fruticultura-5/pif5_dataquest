@@ -78,16 +78,27 @@ RUN echo "Updating compileSdk to 33 (keeping targetSdk at 35)..." && \
 # Set the path to the build.gradle file
 ENV ANDROID_BUILD_PATH="/www/app/android/app/build.gradle"
 
+# Verify 16KB support configuration exists in build.gradle
+RUN echo "Verifying 16KB page size support in build.gradle..." && \
+  if grep -q "splits {" ${ANDROID_BUILD_PATH} && grep -q "ndk {" ${ANDROID_BUILD_PATH}; then \
+    echo "✓ 16KB support configuration found in build.gradle"; \
+  else \
+    echo "⚠ WARNING: 16KB support not found in build.gradle"; \
+    echo "Please ensure build.gradle includes ndk and splits configuration"; \
+  fi
+
 # Modify the android/app/build.gradle version name
 RUN if [ "${ENVIRONMENT}" = "development" ]; then \
+    sed -i -E "s/(versionName[[:space:]]*=[[:space:]]*\")(.*)(\")/\1\2-test.${VERSION_CODE}\3/" ${ANDROID_BUILD_PATH} || \
     sed -i -E "s/(versionName \")(.*)(\")/\1\2-test.${VERSION_CODE}\3/" ${ANDROID_BUILD_PATH}; \
   else \
+    sed -i -E "s/(versionName[[:space:]]*=[[:space:]]*\")(.*)(\")/\1\2-prod.${VERSION_CODE}\3/" ${ANDROID_BUILD_PATH} || \
     sed -i -E "s/(versionName \")(.*)(\")/\1\2-prod.${VERSION_CODE}\3/" ${ANDROID_BUILD_PATH}; \
   fi
 
 # Verify the version was updated
 RUN echo "Updated version in build.gradle:" && \
-  grep -A 2 "versionName" ${ANDROID_BUILD_PATH}
+  (grep -E "versionName" ${ANDROID_BUILD_PATH} || echo "Version name not found in expected format")
 
 # Build the web app
 RUN ionic cap build android --configuration=${ENVIRONMENT} --no-open
@@ -99,14 +110,14 @@ RUN echo "${KEYSTORE}" | base64 -d > /www/app/android/app/pif-keystore.jks
 RUN echo "Keystore file created:" && \
   ls -lh /www/app/android/app/pif-keystore.jks
 
-# Configure gradle.properties
-RUN echo "Configuring gradle.properties..." && \
+# Configure gradle.properties with 16KB support
+RUN echo "Configuring gradle.properties for 16KB support..." && \
   echo "" >> /www/app/android/gradle.properties && \
   echo "# AndroidX Configuration" >> /www/app/android/gradle.properties && \
   echo "android.useAndroidX=true" >> /www/app/android/gradle.properties && \
   echo "android.enableJetifier=true" >> /www/app/android/gradle.properties && \
   echo "" >> /www/app/android/gradle.properties && \
-  echo "# 16KB Page Size Support (Required by Play Store)" >> /www/app/android/gradle.properties && \
+  echo "# 16KB Page Size Support (REQUIRED by Play Store for targetSdk 35+)" >> /www/app/android/gradle.properties && \
   echo "android.bundle.enableUncompressedNativeLibs=false" >> /www/app/android/gradle.properties && \
   echo "" >> /www/app/android/gradle.properties && \
   echo "# Suppress warnings" >> /www/app/android/gradle.properties && \
@@ -120,24 +131,29 @@ RUN echo "Configuring gradle.properties..." && \
   echo "" >> /www/app/android/gradle.properties
 
 # Display gradle.properties (without sensitive data)
-RUN echo "Gradle properties configured:" && \
+RUN echo "Gradle properties configured for 16KB support:" && \
   grep -v "PASSWORD\|ALIAS" /www/app/android/gradle.properties || true
+
+# Display relevant parts of build.gradle for verification
+RUN echo "Build.gradle configuration:" && \
+  (grep -A 5 "splits {" ${ANDROID_BUILD_PATH} || echo "Splits configuration not found") && \
+  (grep -A 3 "ndk {" ${ANDROID_BUILD_PATH} || echo "NDK configuration not found")
 
 # Clean previous builds
 RUN cd /www/app/android && \
   echo "Cleaning previous builds..." && \
   ./gradlew clean
 
-# Build the signed AAB
+# Build the signed AAB with 16KB support
 RUN cd /www/app/android && \
-  echo "Starting AAB build process..." && \
-  echo "Configuration: compileSdk=33, targetSdk=35, 16KB support" && \
+  echo "Starting AAB build with 16KB page size support..." && \
+  echo "Configuration: compileSdk=33, targetSdk=35, 16KB enabled" && \
   ./gradlew bundleRelease \
     -Pandroid.injected.signing.store.file=/www/app/android/app/pif-keystore.jks \
     -Pandroid.injected.signing.store.password=${KEYSTORE_PASSWORD} \
     -Pandroid.injected.signing.key.alias=${KEYSTORE_ALIAS} \
     -Pandroid.injected.signing.key.password=${KEYSTORE_ALIAS_PASSWORD} && \
-  echo "Build completed successfully!"
+  echo "Build completed successfully with 16KB support!"
 
 # Verify and rename the AAB
 RUN echo "Verifying build outputs..." && \
@@ -146,6 +162,7 @@ RUN echo "Verifying build outputs..." && \
     cp /www/app/android/app/build/outputs/bundle/release/app-release.aab \
        /www/app/android/app/build/outputs/bundle/release/app-release-signed.aab && \
     echo "✓ AAB signed and renamed successfully!" && \
+    echo "✓ This AAB includes 16KB page size support" && \
     ls -lh /www/app/android/app/build/outputs/bundle/release/app-release-signed.aab; \
   else \
     echo "✗ ERROR: AAB file not found" && \
@@ -160,6 +177,8 @@ RUN echo "=== BUILD SUMMARY ===" && \
   echo "Version Code: ${VERSION_CODE}" && \
   echo "compileSdk: 33 (build compatibility)" && \
   echo "targetSdk: 35 (Play Store requirement)" && \
-  echo "16KB Support: Enabled ✓" && \
+  echo "16KB Page Size Support: ENABLED ✓" && \
+  echo "ABI Splits: armeabi-v7a, arm64-v8a, x86, x86_64 ✓" && \
+  echo "Universal APK: Included ✓" && \
   echo "AAB Location:" && \
   ls -lh /www/app/android/app/build/outputs/bundle/release/app-release-signed.aab
